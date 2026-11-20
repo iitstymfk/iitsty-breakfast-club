@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07050c">
+<title>Dungeon Dwellers: The Gray Ledger</title>
+<style>
+:root{color-scheme:dark;--ink:#f4ead8;--dim:#b9ab95;--gold:#e9b85a;--red:#e2574c;--blue:#7cc6ff;--bg:#07050c;--panel:rgba(10,7,16,.86)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+#game{position:fixed;inset:0;overflow:hidden;background:#000}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+#stage{position:absolute;left:0;right:0;bottom:21vh;height:62%;pointer-events:none;display:flex;justify-content:center;align-items:flex-end;gap:0}
+.actor{position:absolute;bottom:0;width:min(46vw,300px);transition:left .6s ease,opacity .5s ease,transform .5s ease,filter .4s;filter:brightness(.62) saturate(.8);transform-origin:50% 100%}
+.actor.on{filter:none}
+.actor.talk .mo-c{display:none}.actor.talk .mo-o{display:block}
+.actor .mo-o{display:none}
+.actor.talk.flap .mo-o{display:none}.actor.talk.flap .mo-c{display:block}
+.actor svg{width:100%;height:auto;display:block;animation:breathe 4.2s ease-in-out infinite}
+.actor .eyelid{animation:blink 5.3s infinite}
+.actor.hurt svg{animation:breathe 4.2s ease-in-out infinite,hurtj .45s}
+@keyframes breathe{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-1.2%) scaleY(1.008)}}
+@keyframes blink{0%,95%,100%{transform:scaleY(0)}97%{transform:scaleY(1)}}
+@keyframes hurtj{0%{transform:translateX(0)}25%{transform:translateX(-4%)}50%{transform:translateX(4%)}100%{transform:none}}
+#bars i{position:absolute;left:0;right:0;height:0;background:#000;transition:height .8s ease;z-index:5}
+#bars i:first-child{top:0}#bars i:last-child{bottom:0}
+#game.cine #bars i{height:9vh}
+#vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.65) 100%);z-index:2}
+#fx{position:absolute;inset:0;pointer-events:none;z-index:6;opacity:0;transition:opacity .25s}
+#hud{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:10px;z-index:30;display:flex;gap:8px}
+.hbtn{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);color:var(--ink);border-radius:20px;padding:7px 12px;font:600 13px system-ui,sans-serif}
+#remember{position:absolute;top:calc(env(safe-area-inset-top) + 12px);left:12px;z-index:31;display:flex;flex-direction:column;gap:6px;pointer-events:none;max-width:70%}
+.rem{background:rgba(0,0,0,.55);padding:7px 12px 7px 34px;border-radius:4px;font:italic 15px Georgia,serif;color:#fff;position:relative;animation:remIn 4.2s forwards;text-shadow:0 1px 3px #000}
+.rem:before{content:"";position:absolute;left:10px;top:50%;width:14px;height:14px;margin-top:-7px;border:2px solid var(--gold);border-radius:50%;box-shadow:0 0 8px var(--gold)}
+@keyframes remIn{0%{opacity:0;transform:translateX(-12px)}10%,80%{opacity:1;transform:none}100%{opacity:0}}
+#dlg{position:absolute;left:0;right:0;bottom:0;z-index:20;padding:0 14px calc(env(safe-area-inset-bottom) + 16px);display:none;background:linear-gradient(transparent,rgba(0,0,0,.82) 32%)}
+#dlg.show{display:block}
+#who{font:700 15px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;margin:26px 0 4px;text-shadow:0 2px 4px #000}
+#line{font-size:19px;line-height:1.42;min-height:3.2em;text-shadow:0 2px 4px #000,0 0 2px #000}
+#line.narr{font-style:italic;color:#e7dcc8}
+#tapnext{position:absolute;right:16px;bottom:calc(env(safe-area-inset-bottom) + 10px);font:12px system-ui;color:var(--dim);opacity:0;transition:opacity .3s}
+#dlg.done #tapnext{opacity:.8}
+#choices{position:absolute;left:0;right:0;bottom:0;z-index:22;padding:12px 12px calc(env(safe-area-inset-bottom) + 14px);display:none;background:linear-gradient(transparent,rgba(0,0,0,.88) 22%)}
+#choices.show{display:block}
+#cq{font:italic 16px Georgia,serif;color:var(--dim);margin:20px 4px 10px;text-shadow:0 1px 3px #000}
+#copts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#copts.one{grid-template-columns:1fr}
+.copt{background:rgba(18,12,26,.92);border:1px solid rgba(233,184,90,.35);color:var(--ink);font:17px Georgia,serif;padding:14px 12px;border-radius:6px;text-align:left;min-height:56px;line-height:1.25;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+.copt:active{background:#3a2a12}
+.copt .k{display:inline-block;min-width:22px;color:var(--gold);font:700 13px system-ui}
+.copt.big{grid-column:1/-1;text-align:center;border-color:var(--gold)}
+#ctimer{height:5px;background:rgba(255,255,255,.14);border-radius:3px;margin:12px 2px 0;overflow:hidden;display:none}
+#ctimer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#fff,var(--gold));transform-origin:left}
+#qte{position:absolute;inset:0;z-index:40;display:none}
+#qte.show{display:block}
+#qte .ring{position:absolute;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;border:4px solid #fff;display:flex;align-items:center;justify-content:center;font:800 28px system-ui;color:#fff;text-shadow:0 0 10px #000;box-shadow:0 0 22px rgba(255,255,255,.55),inset 0 0 18px rgba(255,255,255,.35);background:rgba(0,0,0,.25)}
+#qte .shrink{position:absolute;inset:-4px;border-radius:50%;border:3px solid var(--gold);pointer-events:none}
+#qte .lbl{position:absolute;left:0;right:0;top:22%;text-align:center;font:800 22px system-ui;letter-spacing:.12em;color:#fff;text-shadow:0 0 12px #000,0 2px 4px #000}
+#qte .meter{position:absolute;left:12%;right:12%;top:30%;height:16px;border:2px solid #fff;border-radius:9px;overflow:hidden;background:rgba(0,0,0,.5)}
+#qte .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#fff)}
+#qte .meter b{position:absolute;top:0;bottom:0;background:rgba(124,198,255,.45);border-left:2px solid var(--blue);border-right:2px solid var(--blue)}
+#qte .arrow{position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:4px solid #fff;display:flex;align-items:center;justify-content:center;font:900 76px system-ui;color:#fff;box-shadow:0 0 30px rgba(255,255,255,.4);background:rgba(0,0,0,.3)}
+#qte .ok{border-color:#8f8!important;box-shadow:0 0 30px #8f8!important}
+#qte .bad{border-color:var(--red)!important;box-shadow:0 0 30px var(--red)!important}
+#insp{position:absolute;inset:0;z-index:15;display:none}
+#insp.show{display:block}
+.hot{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hot:before{content:"";width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff,0 0 22px rgba(255,255,255,.6);animation:hotp 1.8s ease-in-out infinite}
+.hot.seen:before{background:transparent;border:2px solid rgba(255,255,255,.75);box-shadow:none;animation:none;width:11px;height:11px}
+.hot span{position:absolute;top:40px;white-space:nowrap;font:600 12px system-ui;background:rgba(0,0,0,.6);padding:2px 7px;border-radius:9px;opacity:.9}
+@keyframes hotp{0%,100%{transform:scale(.8);opacity:.75}50%{transform:scale(1.15);opacity:1}}
+#ibar{position:absolute;left:0;right:0;bottom:0;padding:12px 14px calc(env(safe-area-inset-bottom) + 14px);background:linear-gradient(transparent,rgba(0,0,0,.85) 30%);display:flex;align-items:flex-end;gap:10px}
+#ibar p{flex:1;margin:0;font:italic 15px Georgia,serif;color:var(--dim)}
+#ileave{background:rgba(18,12,26,.95);border:1px solid var(--gold);color:var(--ink);font:16px Georgia;padding:11px 16px;border-radius:6px}
+#ileave[disabled]{opacity:.35}
+#look{position:absolute;inset:0;z-index:16;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
+#look.show{display:flex}
+#look .card{width:min(88vw,420px);background:#120c18;border:1px solid rgba(233,184,90,.45);border-radius:8px;padding:16px 16px 12px;box-shadow:0 10px 40px #000}
+#look .ic{width:100%;height:150px;display:flex;align-items:center;justify-content:center;background:radial-gradient(#2a1d33,#0b0710);border-radius:6px;margin-bottom:10px}
+#look .ic svg{height:130px}
+#look h3{margin:0 0 6px;font:700 17px Georgia;color:var(--gold)}
+#look p{margin:0 0 12px;font-size:16px;line-height:1.4}
+#look .row{display:flex;gap:8px;flex-wrap:wrap}
+#look button{flex:1;background:#24182e;border:1px solid rgba(255,255,255,.2);color:var(--ink);font:15px Georgia;padding:10px;border-radius:6px}
+#card{position:absolute;inset:0;z-index:45;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#000;padding:20px}
+#card.show{display:flex;animation:fadein 1s}
+#card .ep{font:600 13px system-ui;letter-spacing:.35em;color:var(--dim);text-transform:uppercase}
+#card h1{font:400 clamp(30px,8vw,56px) Georgia;margin:12px 0 6px;color:var(--ink);letter-spacing:.04em}
+#card .sub{font:italic 17px Georgia;color:var(--gold)}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+#menu,#panel{position:absolute;inset:0;z-index:60;display:none;overflow:auto;background:radial-gradient(ellipse at 50% 30%,rgba(40,20,50,.55),rgba(0,0,0,.92));padding:calc(env(safe-area-inset-top) + 24px) 18px 30px}
+#menu.show,#panel.show{display:block}
+#menu .logo{text-align:center;margin:6vh 0 4vh}
+#menu .logo small{display:block;font:600 12px system-ui;letter-spacing:.45em;color:var(--dim)}
+#menu .logo b{display:block;font:400 clamp(34px,10vw,64px) Georgia;letter-spacing:.06em;line-height:1.05;text-shadow:0 0 30px rgba(233,184,90,.35)}
+#menu .logo i{display:block;font:italic 18px Georgia;color:var(--gold);margin-top:8px}
+.mbtn{display:block;width:min(100%,380px);margin:10px auto;background:rgba(18,12,26,.9);border:1px solid rgba(233,184,90,.4);color:var(--ink);font:18px Georgia;padding:14px;border-radius:6px}
+.mbtn small{display:block;font:12px system-ui;color:var(--dim);margin-top:3px}
+#panel h2{font:400 26px Georgia;margin:0 0 14px;color:var(--gold)}
+#panel .box{background:rgba(18,12,26,.9);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 14px;margin-bottom:12px}
+#panel label{display:flex;align-items:center;justify-content:space-between;gap:10px;font:15px system-ui;padding:8px 0}
+#panel select,#panel input[type=range]{max-width:55%}
+#panel .note{font:13px system-ui;color:var(--dim);line-height:1.45}
+.rcap{font:15px Georgia;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.rcap b{color:var(--gold);font-weight:400}
+.ending{display:inline-block;margin:4px;padding:6px 10px;border-radius:14px;font:13px system-ui;border:1px solid rgba(255,255,255,.2)}
+.ending.got{border-color:var(--gold);color:var(--gold)}
+#toast{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);z-index:70;background:rgba(0,0,0,.8);padding:10px 16px;border-radius:8px;font:14px system-ui;display:none;max-width:80%;text-align:center}
+#rel{position:absolute;top:calc(env(safe-area-inset-top) + 50px);right:10px;z-index:29;display:none;flex-direction:column;gap:4px}
+#rel.show{display:flex}
+#rel div{font:12px system-ui;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:10px;text-align:right}
+</style>
+</head>
+<body>
+<div id="game">
+  <canvas id="scene"></canvas>
+  <div id="vign"></div>
+  <div id="stage"></div>
+  <div id="bars"><i></i><i></i></div>
+  <div id="fx"></div>
+  <div id="insp"><div id="hots"></div><div id="ibar"><p id="ihint">Tap the white circles to look around.</p><button id="ileave">Move on</button></div></div>
+  <div id="look"><div class="card"><div class="ic"></div><h3></h3><p></p><div class="row"></div></div></div>
+  <div id="dlg"><div id="who"></div><div id="line"></div><div id="tapnext">tap ▸</div></div>
+  <div id="choices"><div id="cq"></div><div id="copts"></div><div id="ctimer"><i></i></div></div>
+  <div id="qte"></div>
+  <div id="remember"></div>
+  <div id="rel"></div>
+  <div id="hud"><button class="hbtn" id="hrel">♥</button><button class="hbtn" id="hmenu">☰</button></div>
+  <div id="card"><div class="ep"></div><h1></h1><div class="sub"></div></div>
+  <div id="menu"></div>
+  <div id="panel"></div>
+  <div id="toast"></div>
+</div>
+<script>
+/* ==========================================================================
+   DUNGEON DWELLERS: THE GRAY LEDGER  -  a Telltale-style narrative chapter game
+   Core: helpers, seeded randomness, sound, voices (Piper neural voices + phone voice fallback)
+   ========================================================================== */
+'use strict';
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var J = function (s, d) { try { var v = JSON.parse(s); return v == null ? d : v; } catch (e) { return d; } };
+var LS = {
+    get: function (k, d) { try { return J(localStorage.getItem(k), d); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+};
+var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+
+/* ---------------------------------------------------------------- seeded randomness: every run is its own seed */
+function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+var RNG = { seed: 1, n: 0, f: mulberry(1) };
+function reseed(seed, n) { RNG.seed = seed >>> 0; RNG.n = 0; RNG.f = mulberry(RNG.seed); for (var i = 0; i < (n || 0); i++) rnd(); }
+function rnd() { RNG.n++; return RNG.f(); }
+function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+function chance(p) { return rnd() < p; }
+function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function weighted(o) { var tot = 0, k; for (k in o) tot += o[k]; var r = rnd() * tot; for (k in o) { r -= o[k]; if (r <= 0) return k; } return k; }
+
+/* ---------------------------------------------------------------- settings */
+var CFG = Object.assign({ music: 0.55, sfx: 0.8, voice: 1, piper: false, speed: 32, auto: false, qte: 'normal', rel: true, timers: true }, LS.get('ddt_cfg', {}));
+function saveCfg() { LS.set('ddt_cfg', CFG); }
+
+/* ---------------------------------------------------------------- sound: ambience, stings, hits (all made live, no files) */
+var AU = (function () {
+    var ctx = null, master, mus, sfx, amb = null;
+    function init() {
+        if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return ctx; }
+        try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; }
+        master = ctx.createGain(); master.connect(ctx.destination);
+        mus = ctx.createGain(); mus.gain.value = CFG.music * 0.5; mus.connect(master);
+        sfx = ctx.createGain(); sfx.gain.value = CFG.sfx; sfx.connect(master);
+        return ctx;
+    }
+    function vol() { if (!ctx) return; mus.gain.setTargetAtTime(CFG.music * 0.5 * (duck ? 0.45 : 1), ctx.currentTime, 0.3); sfx.gain.value = CFG.sfx; }
+    var duck = false;
+    function setDuck(d) { duck = d; vol(); }
+    function noiseBuf() { var b = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate), d = b.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; }
+    var NB = null;
+    /* a drone per place: root note, colour, wind */
+    var MOODS = {
+        gate: [55, 'sine', 0.5, 900], office: [65.4, 'triangle', 0.15, 500], lift: [49, 'sawtooth', 0.35, 400], crypt: [46.2, 'sine', 0.25, 600],
+        cage: [46.2, 'triangle', 0.3, 500], camp: [73.4, 'triangle', 0.08, 700], ice: [61.7, 'sine', 0.45, 1600], chapel: [82.4, 'sine', 0.2, 2000],
+        forge: [41.2, 'sawtooth', 0.15, 300], throne: [36.7, 'sawtooth', 0.3, 350], surface: [87.3, 'sine', 0.25, 2500], black: [41.2, 'sine', 0.1, 300]
+    };
+    function ambience(name) {
+        if (!init()) return;
+        var m = MOODS[name] || MOODS.black;
+        if (amb && amb.name === name) return;
+        var old = amb; amb = { name: name, nodes: [] };
+        if (old) { old.g.gain.setTargetAtTime(0, ctx.currentTime, 0.8); setTimeout(function () { old.nodes.forEach(function (n) { try { n.stop(); } catch (e) { } }); }, 4000); }
+        var g = ctx.createGain(); g.gain.value = 0; g.connect(mus); amb.g = g;
+        var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = m[3]; lp.connect(g);
+        [1, 1.5, 2.004, 0.5].forEach(function (mul, i) {
+            var o = ctx.createOscillator(); o.type = i === 3 ? 'sine' : m[1]; o.frequency.value = m[0] * mul; o.detune.value = (i - 1.5) * 6;
+            var og = ctx.createGain(); og.gain.value = [0.16, 0.09, 0.05, 0.2][i];
+            var lfo = ctx.createOscillator(); lfo.frequency.value = 0.05 + i * 0.03; var lg = ctx.createGain(); lg.gain.value = 0.05; lfo.connect(lg); lg.connect(og.gain);
+            o.connect(og); og.connect(lp); o.start(); lfo.start(); amb.nodes.push(o, lfo);
+        });
+        if (!NB) NB = noiseBuf();
+        var n = ctx.createBufferSource(); n.buffer = NB; n.loop = true;
+        var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 500; bp.Q.value = 0.6;
+        var ng = ctx.createGain(); ng.gain.value = m[2] * 0.25;
+        var wl = ctx.createOscillator(); wl.frequency.value = 0.09; var wg = ctx.createGain(); wg.gain.value = 300; wl.connect(wg); wg.connect(bp.frequency);
+        n.connect(bp); bp.connect(ng); ng.connect(g); n.start(); wl.start(); amb.nodes.push(n, wl);
+        g.gain.setTargetAtTime(1, ctx.currentTime, 1.5);
+    }
+    function tone(f, d, type, v, when, slide) {
+        if (!init()) return; var t = ctx.currentTime + (when || 0);
+        var o = ctx.createOscillator(), g = ctx.createGain(); o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+        if (slide) o.frequency.exponentialRampToValueAtTime(slide, t + d);
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v || 0.3, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        o.connect(g); g.connect(sfx); o.start(t); o.stop(t + d + 0.05);
+    }
+    function hit(v, f) {
+        if (!init()) return; var t = ctx.currentTime;
+        if (!NB) NB = noiseBuf();
+        var n = ctx.createBufferSource(); n.buffer = NB; var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = f || 900;
+        var g = ctx.createGain(); g.gain.setValueAtTime(v || 0.6, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        n.connect(lp); lp.connect(g); g.connect(sfx); n.start(t); n.stop(t + 0.4);
+        tone(90, 0.3, 'sine', (v || 0.6) * 0.8, 0, 40);
+    }
+    var S = {
+        remember: function () { tone(880, 0.6, 'sine', 0.12); tone(1320, 0.9, 'sine', 0.08, 0.08); },
+        choice: function () { tone(220, 0.12, 'triangle', 0.15); },
+        pick: function () { tone(440, 0.15, 'triangle', 0.18); tone(660, 0.2, 'sine', 0.1, 0.05); },
+        tick: function () { tone(1200, 0.05, 'square', 0.04); },
+        qte: function () { tone(150, 0.25, 'sawtooth', 0.25, 0, 300); },
+        good: function () { tone(523, 0.12, 'triangle', 0.2); tone(784, 0.25, 'triangle', 0.18, 0.06); },
+        bad: function () { hit(0.8, 400); tone(110, 0.6, 'sawtooth', 0.2, 0, 55); },
+        tap: function () { tone(700 + Math.random() * 200, 0.06, 'square', 0.06); },
+        look: function () { tone(988, 0.25, 'sine', 0.1); },
+        boom: function () { hit(1, 300); },
+        sting: function () { tone(110, 2.2, 'sawtooth', 0.18, 0, 55); tone(116.5, 2.2, 'sawtooth', 0.12); },
+        bell: function () { [0, 0.35, 0.7].forEach(function (w, i) { tone([392, 330, 262][i], 2, 'sine', 0.15, w); }); },
+        death: function () { tone(73, 3, 'sawtooth', 0.25, 0, 30); hit(1, 200); }
+    };
+    return { init: init, ambience: ambience, s: S, vol: vol, duck: setDuck, hit: hit, tone: tone, get ctx() { return ctx; } };
+})();
+
+/* ---------------------------------------------------------------- voices
+   Piper: the same neural voices as Dungeon Dwellers (same voice model, same cast, same saved download).
+   The phone's own voice speaks whenever Piper is off, still loading, or too slow. */
+var VO = (function () {
+    var GENDER = {"3922":["f",176],"6701":["m",88],"3638":["f",178],"922":["m",94],"2531":["m",105],"1638":["m",97],"8848":["m",95],"6544":["f",208],"3615":["f",175],"318":["f",167],"6104":["f",190],"1382":["f",214],"5400":["f",174],"5712":["f",190],"2769":["m",106],"1463":["f",199],"6458":["m",124],"3274":["m",101],"4356":["f",200],"8498":["m",103],"5570":["f",181],"176":["m",122],"28":["m",133],"5909":["m",78],"4899":["f",206],"64":["f",193],"3368":["m",89],"3307":["m",109],"3370":["m",104],"7704":["m",97],"8410":["f",176],"5655":["f",167],"501":["m",116],"7314":["m",89],"1027":["m",109],"5054":["f",168],"534":["f",178],"2853":["f",184],"5935":["m",100],"2404":["m",108],"7874":["m",81],"816":["m",94],"2053":["m",97],"8066":["m",110],"16":["f",232],"4586":["m",112],"1923":["f",162],"2592":["f",204],"1265":["m",117],"100":["f",227],"6371":["f",197],"4957":["f",163],"3003":["f",168],"7739":["f",179],"1752":["f",181],"5717":["m",120],"5012":["f",192],"5062":["f",178],"7481":["m",120],"4595":["m",119],"2299":["m",129],"7188":["m",113],"93":["f",199],"4145":["f",176],"8684":["f",178],"7594":["f",197],"2598":["f",165],"3540":["m",125],"6426":["f",163],"4148":["m",120],"335":["m",122],"1379":["m",139],"2512":["f",195],"242":["f",176],"8855":["m",90],"369":["m",119],"6575":["m",127],"6694":["m",86],"8080":["f",227],"1283":["m",109],"7434":["f",181],"5290":["f",178],"1731":["f",182],"2401":["f",162],"459":["m",111],"7910":["f",168],"114":["f",206],"5660":["f",188],"1313":["m",120],"203":["f",190],"7460":["m",98],"207":["m",88],"6497":["m",124],"6696":["f",186],"7766":["f",197],"6233":["f",175],"3185":["m",128],"3717":["m",87],"5802":["m",130],"5622":["f",200],"2156":["m",100],"4243":["m",109],"1422":["f",188],"5039":["f",168],"1093":["f",176],"1776":["m",104],"7995":["f",182],"6877":["m",104],"5635":["m",110],"54":["f",170],"288":["f",166],"4592":["f",181],"7276":["f",198],"8152":["m",85],"8194":["f",179],"7000":["m",113],"8527":["m",87],"5126":["m",89],"3923":["m",80],"1054":["f",199],"3927":["m",105],"5029":["f",190],"4098":["f",195],"1789":["m",125],"56":["f",184],"7240":["f",162],"5538":["f",162],"1903":["m",119],"6538":["m",114],"3380":["f",190],"6643":["f",206],"7495":["f",188],"8718":["f",202],"8050":["m",134],"7245":["f",182],"4438":["m",103],"4945":["m",86],"7145":["f",178],"724":["m",138],"6637":["f",184],"6927":["f",204],"6937":["m",120],"8113":["f",182],"5724":["f",171],"6006":["f",202],"3584":["f",186],"2971":["m",101],"2230":["f",170],"7982":["f",187],"1649":["f",184],"3994":["f",187],"7720":["m",118],"6981":["m",96],"781":["m",136],"4973":["m",131],"6206":["f",200],"2481":["f",170],"3157":["f",167],"1509":["f",185],"510":["m",88],"7540":["m",83],"8887":["m",119],"7128":["m",84],"8142":["m",106],"2787":["m",107],"8820":["m",118],"2368":["m",122],"4331":["f",163],"4967":["f",167],"6054":["f",178],"3728":["f",167],"7134":["m",103],"1603":["m",115],"1383":["m",102],"1165":["m",118],"512":["m",109],"5985":["m",99],"7967":["f",188],"7752":["f",210],"7484":["m",132],"8643":["m",119],"3549":["f",179],"5731":["f",184],"7881":["m",113],"667":["f",166],"6828":["f",166],"5740":["f",175],"3483":["m",118],"718":["m",86],"1913":["m",98],"3228":["f",178],"7247":["m",110],"7705":["m",102],"1018":["m",111],"8193":["f",171],"6098":["m",120],"3989":["f",168],"7828":["m",90],"5876":["f",179],"7754":["f",176],"8011":["m",122],"7939":["m",87],"5975":["m",102],"2004":["f",179],"3361":["f",172],"7789":["f",175],"5239":["m",101],"6300":["m",140],"8474":["m",102],"2194":["f",182],"7832":["m",88],"1079":["f",163],"1335":["f",216],"188":["f",166],"1195":["f",174],"5914":["m",114],"1401":["f",171],"7318":["f",165],"5448":["m",112],"1392":["m",109],"3703":["f",162],"2113":["m",104],"8176":["m",108],"7938":["m",106],"7802":["f",193],"6120":["f",172],"224":["f",204],"5656":["m",97],"3032":["m",135],"6965":["m",117],"258":["m",111],"4837":["f",174],"272":["m",115],"7140":["f",163],"2562":["m",84],"1472":["f",163],"79":["f",187],"2775":["f",190],"3046":["f",176],"2532":["f",202],"8266":["m",122],"6099":["f",216],"4425":["m",105],"5293":["m",111],"7981":["m",90],"2045":["m",125],"920":["f",172],"511":["m",117],"7416":["f",162],"835":["m",112],"8195":["m",105],"7833":["m",102],"8772":["m",102],"968":["f",195],"1641":["f",176],"7117":["m",111],"1678":["f",210],"5809":["f",173],"8028":["m",106],"500":["m",96],"6505":["f",197],"7868":["f",177],"14":["f",206],"2238":["m",122],"3733":["f",176],"7515":["f",171],"699":["f",162],"5093":["f",179],"6388":["f",175],"7959":["f",225],"98":["f",179],"3914":["m",119],"5246":["m",112],"2570":["f",162],"8396":["m",122],"3513":["f",174],"882":["f",185],"806":["m",98],"5261":["m",109],"1271":["m",123],"899":["m",116],"3945":["m",112],"8404":["f",171],"249":["m",91],"3008":["m",134],"7139":["m",100],"6395":["m",123],"6080":["m",118],"4054":["m",111],"7825":["m",80],"6683":["f",178],"8725":["m",91],"3230":["m",83],"4138":["f",182],"6160":["f",167],"666":["f",163],"8075":["f",163],"225":["m",133],"7169":["m",113],"1851":["f",216],"5984":["f",163],"2960":["m",132],"8329":["f",175],"175":["f",199],"480":["m",113],"7538":["m",107],"479":["f",225],"5519":["m",105],"8534":["m",128],"4856":["m",119],"101":["m",135],"3521":["m",134],"2256":["m",140],"3083":["f",162],"4278":["m",132],"8713":["m",125],"1226":["m",107],"4222":["f",185],"8494":["m",101],"8776":["f",199],"731":["f",170],"6574":["m",108],"5319":["m",102],"8605":["f",171],"5583":["f",187],"6406":["f",202],"4806":["m",87],"3972":["f",182],"7383":["f",175],"5133":["f",162],"597":["f",174],"1025":["m",102],"7313":["m",99],"8758":["m",103],"1050":["f",172],"6499":["m",133],"770":["m",115],"4108":["m",113],"2774":["m",122],"3864":["m",107],"4490":["f",195],"4848":["m",139],"1826":["m",129],"6294":["m",89],"7949":["m",91],"1446":["m",113],"7867":["m",114],"953":["m",121],"8138":["m",111],"353":["m",109],"7553":["m",124],"8825":["f",202],"5189":["m",83],"2012":["m",94],"1535":["m",92],"8008":["m",114],"1112":["m",119],"7926":["m",98],"4039":["m",138],"716":["m",103],"3967":["f",168],"7932":["f",172],"7525":["f",204],"3448":["m",87],"2393":["m",115],"6788":["f",163],"6550":["m",131],"7011":["m",96],"8791":["m",104],"8119":["m",95],"1777":["m",103],"1046":["m",98],"6269":["m",118],"5266":["f",170],"3490":["m",91],"8786":["m",135],"8824":["m",117],"589":["f",208],"576":["f",163],"1121":["m",133],"1806":["m",130],"7294":["f",185],"3119":["f",192],"2688":["m",111],"1012":["f",197],"4807":["f",192],"7498":["f",200],"3905":["f",202],"7384":["f",171],"2992":["m",89],"30":["f",204],"227":["f",182],"4226":["m",121],"1066":["f",174],"8222":["m",100],"7688":["m",118],"6865":["f",171],"6286":["m",137],"8225":["m",98],"3224":["f",170],"8635":["m",130],"1348":["f",182],"3645":["f",170],"7286":["f",175],"5389":["m",111],"3105":["m",85],"1028":["m",93],"764":["m",126],"7437":["m",103],"6555":["m",117],"8875":["m",94],"7809":["m",106],"2827":["m",107],"5386":["m",93],"6763":["f",182],"3009":["m",119],"1825":["f",193],"7569":["m",107],"359":["m",133],"7956":["m",103],"2137":["m",110],"8677":["f",172],"4434":["f",174],"329":["m",110],"3289":["m",98],"4290":["m",113],"2999":["m",88],"2427":["m",75],"637":["m",87],"2229":["m",94],"1874":["m",116],"3446":["f",184],"9023":["f",184],"3114":["m",119],"6235":["f",187],"4860":["m",105],"70":["m",131],"4800":["m",135],"2294":["m",109],"6115":["m",104],"2582":["f",197],"8464":["m",92],"6918":["f",167],"337":["f",212],"5810":["m",91],"8401":["m",119],"303":["m",97],"5206":["m",112],"2589":["m",100],"7061":["m",89],"2758":["f",199],"3389":["m",128],"4629":["m",104],"707":["m",105],"5606":["f",196],"2473":["m",103],"664":["f",168],"5092":["m",90],"6288":["f",167],"6308":["f",175],"4731":["f",181],"3328":["m",90],"7816":["f",214],"3221":["m",111],"7030":["m",121],"476":["m",88],"4257":["m",130],"5918":["m",102],"6317":["f",195],"204":["m",96],"8006":["m",95],"6895":["f",192],"1264":["m",121],"2494":["m",105],"112":["f",200],"1859":["f",178],"398":["m",87],"1052":["f",195],"3294":["f",162],"1460":["f",167],"8573":["f",204],"5684":["f",175],"8421":["f",179],"5883":["m",98],"7297":["f",192],"246":["f",171],"8057":["f",172],"3835":["m",121],"1748":["m",78],"3816":["f",165],"3357":["f",193],"1053":["f",185],"409":["m",89],"868":["m",101],"3118":["m",135],"7520":["m",97],"6686":["f",174],"1241":["f",167],"5190":["m",114],"166":["f",181],"1482":["m",108],"5604":["f",175],"1212":["f",163],"2741":["f",200],"1259":["f",170],"984":["m",115],"6492":["m",103],"6167":["f",176],"296":["m",119],"6567":["f",199],"6924":["f",192],"2272":["m",110],"7085":["f",182],"345":["m",112],"2388":["m",90],"7241":["m",85],"451":["f",190],"5401":["m",104],"6446":["m",125],"612":["f",184],"594":["m",99],"7555":["f",174],"7069":["m",95],"2577":["f",225],"5333":["m",121],"8742":["m",89],"6727":["m",113],"1571":["m",88],"4734":["m",117],"7258":["m",101],"3977":["m",124],"373":["f",206],"5723":["m",137],"1365":["m",97],"7285":["f",202],"580":["m",90],"836":["m",122],"3654":["m",99],"6258":["m",134],"949":["m",106],"2790":["f",175],"698":["f",199],"6373":["f",178],"2785":["f",181],"1222":["m",102],"2751":["f",175],"3825":["m",79],"1827":["m",91],"3171":["m",115],"119":["m",100],"850":["m",95],"7909":["m",96],"1322":["m",103],"7478":["m",98],"1349":["m",88],"4854":["m",119],"2929":["m",108],"7335":["f",170],"5868":["m",134],"454":["m",88],"2654":["m",104],"3493":["f",179],"1060":["f",182],"6509":["f",170],"5002":["m",106],"3082":["m",127],"1779":["f",190],"2709":["f",176],"7398":["f",172],"8879":["m",108],"639":["m",109],"598":["f",182],"5672":["m",92],"6553":["m",110],"4111":["f",216],"7991":["m",99],"380":["f",165],"8459":["m",140],"8347":["m",102],"1769":["m",114],"2673":["m",95],"7051":["m",109],"1337":["m",133],"4057":["f",181],"4839":["f",165],"6060":["m",105],"7095":["m",106],"278":["f",182],"1445":["m",105],"6518":["f",185],"548":["m",103],"4010":["m",112],"3072":["m",94],"6993":["m",88],"8575":["m",117],"2149":["m",128],"240":["m",127],"5588":["f",172],"1885":["f",216],"9026":["f",176],"340":["m",140],"159":["m",133],"7730":["f",214],"7962":["f",202],"1987":["m",90],"3876":["f",196],"8771":["f",208],"3866":["m",90],"3546":["m",130],"7777":["m",95],"115":["f",190],"5337":["f",183],"475":["m",138],"1724":["f",170],"4260":["f",162],"2110":["m",131],"4335":["m",87],"4133":["m",114],"8479":["m",118],"1448":["f",174],"1160":["m",100],"7647":["m",140],"2618":["m",126],"3630":["f",195],"4013":["m",89],"5242":["m",120],"7957":["m",139],"3852":["f",175],"3889":["m",134],"1387":["m",115],"439":["m",98],"1425":["f",212],"2061":["f",163],"7395":["f",171],"7837":["m",117],"5147":["m",102],"2319":["m",91],"3781":["f",218],"1311":["m",101],"4733":["m",106],"8705":["m",112],"3094":["f",167],"2823":["m",105],"1914":["m",104],"954":["m",118],"4381":["f",178],"4044":["f",206],"593":["m",126],"8300":["f",175],"7558":["m",136],"6494":["m",100],"6330":["m",99],"5940":["m",104],"7126":["m",125],"1061":["f",202],"6352":["f",182],"1944":["f",199],"2285":["m",100],"6673":["f",165],"5746":["m",94],"208":["f",192],"492":["m",134],"216":["m",107],"979":["f",178],"1668":["f",194],"6620":["f",172],"711":["m",104],"8619":["m",88],"5157":["m",109],"829":["f",204],"3180":["m",114],"3979":["f",163],"1556":["m",138],"3379":["f",172],"5727":["m",120],"2127":["m",97],"581":["m",126],"2652":["f",163],"2628":["m",98],"1849":["m",131],"4238":["f",165],"606":["m",97],"1224":["f",195],"1629":["f",165],"1413":["m",116],"957":["m",103],"8592":["m",111],"2254":["f",190],"1323":["m",135],"122":["m",110],"2093":["m",115],"1100":["f",200],"81":["m",111],"323":["f",192],"815":["m",96],"543":["m",126],"6037":["m",78],"2397":["m",107],"5513":["m",114],"4495":["m",108],"5776":["m",106],"17":["m",76],"4590":["m",88],"8228":["f",205],"708":["m",97],"3792":["m",105],"3790":["f",163],"7090":["m",95],"1943":["m",120],"4246":["m",98],"559":["m",122],"3738":["f",167],"2167":["m",132],"2162":["m",107],"549":["f",192],"3025":["f",181],"1182":["m",123],"4358":["m",96],"636":["f",172],"986":["m",105],"8490":["m",114],"3340":["m",107],"90":["m",115],"1487":["m",124],"1639":["m",100],"1547":["f",178],"4152":["m",96],"1498":["f",200],"1740":["f",181],"6157":["m",116],"217":["f",179],"2201":["m",121],"362":["f",200],"2146":["m",90],"1801":["m",106],"5063":["f",200],"7339":["m",95],"663":["m",98],"38":["m",102],"1336":["m",109],"210":["m",95],"6075":["m",98],"55":["m",106],"2411":["f",197],"7445":["f",188],"5767":["m",101],"2812":["m",120],"472":["f",202],"803":["m",96],"4236":["m",106],"7665":["m",105],"1607":["m",122],"1316":["m",90],"7475":["m",87],"1473":["m",122],"3070":["m",86],"1390":["f",172],"2499":["m",134],"154":["m",112],"7518":["m",96],"408":["f",193],"1811":["m",100],"1754":["f",162],"7657":["f",178],"583":["m",94],"830":["f",179],"6690":["m",101],"1552":["m",120],"2498":["f",163],"1296":["f",168],"3686":["m",109],"157":["m",89],"487":["m",125],"6119":["m",115],"4926":["f",188],"4846":["f",172],"1536":["m",102],"2674":["m",98],"1645":["m",118],"3187":["m",118],"1058":["m",116],"2039":["m",108],"4071":["f",166],"1175":["m",90],"434":["f",162],"1001":["m",127],"2816":["m",120],"820":["m",140],"2696":["m",113],"4681":["m",120]};   /* LibriTTS reader id -> [f|m, average pitch in Hz], measured from every speaker */
+    var HF = 'https://huggingface.co/rhasspy/piper-voices/resolve/main/';
+    var CDN = 'https://cdn.jsdelivr.net/gh/Poket-Jony/piper-tts-web@950f1f5c8278296a6698cc11e8b976594dad6687/dist/';
+    var DDCFG = LS.get('dd_piper_cfg', {});              /* the main game's Piper settings: same model + any voices you picked there */
+    var MODEL = DDCFG.model || 'en_US-libritts_r-medium';
+    var M = { cfg: null, url: null, state: 'off', got: 0, total: 0, err: '' }, W = { ph: null, ox: null, ready: null, chain: Promise.resolve(), slow: 0 };
+    var CACHE = {}, onState = null;
+    function setState(s, x) { M.state = s; if (x) Object.assign(M, x); if (onState) try { onState(M); } catch (e) { } }
+    function hfPath(m) { var p = m.split('-'); return HF + p[0].split('_')[0] + '/' + p.join('/') + '/' + m; }
+    function persist() { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) { } }
+    async function cfgLoad() {
+        if (M.cfg) return M.cfg;
+        var c = await caches.open('dd-piper-voices'), u = hfPath(MODEL) + '.onnx.json', hit = await c.match(u);
+        if (!hit) { var res = await fetch(u); if (!res.ok) throw new Error('voice settings ' + res.status); await c.put(u, res.clone()); hit = res; }
+        M.cfg = await hit.json(); return M.cfg;
+    }
+    async function modelLoad() {
+        if (M.url) return;
+        await cfgLoad();
+        var c = await caches.open('dd-piper-voices'), u = hfPath(MODEL) + '.onnx', hit = await c.match(u), blob;
+        if (hit) blob = await hit.blob();
+        else {
+            setState('download', { got: 0, total: 0 });
+            var res = await fetch(u); if (!res.ok) throw new Error('voice download ' + res.status);
+            var total = +res.headers.get('content-length') || 0, rd = res.body.getReader(), parts = [], got = 0;
+            for (;;) { var x = await rd.read(); if (x.done) break; parts.push(x.value); got += x.value.length; if (parts.length % 50 === 0) setState('download', { got: got, total: total }); }
+            blob = new Blob(parts); persist(); await c.put(u, new Response(blob));
+        }
+        M.url = URL.createObjectURL(blob);
+    }
+    var FILES = {};
+    async function file(rel, type) {
+        if (FILES[rel]) return FILES[rel];
+        var c = await caches.open('dd-piper-voices'), bases = [new URL('piper/', location.href).href, CDN], blob = null;
+        for (var i = 0; i < bases.length && !blob; i++) {
+            var u = bases[i] + rel, hit = await c.match(u);
+            if (hit) { blob = await hit.blob(); break; }
+            try { var res = await fetch(u); if (!res.ok) throw new Error(res.status); blob = await res.blob(); try { await c.put(u, new Response(blob)); } catch (e) { } } catch (e) { }
+        }
+        if (!blob) throw new Error('could not get ' + rel);
+        return (FILES[rel] = URL.createObjectURL(new Blob([blob], { type: type })));
+    }
+    function call(w, type, data, ms) {
+        return new Promise(function (ok, no) {
+            var t = setTimeout(function () { W.slow++; try { W.ph.terminate(); W.ox.terminate(); } catch (e) { } W.ph = W.ox = W.ready = null; no(new Error('slow')); }, ms || 60000);
+            w.onmessage = function (e) { clearTimeout(t); ok(e.data); };
+            w.onerror = function (e) { clearTimeout(t); no(new Error((e && e.message) || 'stopped')); };
+            w.postMessage({ type: type, data: data });
+        });
+    }
+    function boot() {
+        if (W.ready) return W.ready;
+        W.ready = (async function () {
+            setState('loading'); await modelLoad(); setState('starting');
+            var F = await Promise.all([file('worker/PhonemizeWebWorker.js', 'text/javascript'), file('piper/piper_phonemize.wasm', 'application/wasm'), file('piper/piper_phonemize.data', 'application/octet-stream'),
+                file('worker/OnnxWebWorker.js', 'text/javascript'), file('onnx/ort-wasm-simd-threaded.wasm', 'application/wasm')]);
+            W.ph = new Worker(F[0], { type: 'module' }); W.ph.postMessage({ type: 'constructor', data: {} });
+            await call(W.ph, 'loadModule', [F[1], F[2]], 180000);
+            W.ox = new Worker(F[3], { type: 'module' });
+            W.ox.postMessage({ type: 'constructor', data: { basePath: { wasm: F[4] }, numThreads: self.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 2) : 1 } });
+            await call(W.ox, 'loadSession', [[M.cfg, M.url]], 180000);
+            setState('ready', { err: '' });
+        })();
+        W.ready.catch(function (e) { W.ready = null; setState('error', { err: (e && e.message) || String(e) }); });
+        return W.ready;
+    }
+    function serial(fn) { var p = W.chain.then(fn, fn); W.chain = p.catch(function () { }); return p; }
+    function synth(text, spk) {
+        var key = spk + '|' + text;
+        if (CACHE[key]) return CACHE[key];
+        if (W.slow >= 2) return Promise.reject(new Error('slow'));
+        var p = boot().then(function () {
+            return serial(async function () {
+                var vd = [M.cfg, M.url];
+                var ph = await call(W.ph, 'phonemize', [text, vd], 30000);
+                var r = await call(W.ox, 'generate', [ph, vd, spk || 0], 45000);
+                return URL.createObjectURL(r.file);
+            });
+        });
+        CACHE[key] = p; p.catch(function () { delete CACHE[key]; });
+        return p;
+    }
+    /* who sounds like whom: the same places in the voice range as the main game */
+    var DEF = { narrator: ['m', 0.33], lyra: ['f', 0.45], bror: ['m', 0.04], mira: ['f', 0.22], wren: ['f', 0.82], harrow: ['m', 0.58], tallyman: ['m', 0.72], king: ['m', 0.01],
+        cobb: ['m', 0.86], ash: ['f', 0.64], you: ['m', 0.4], guard: ['m', 0.2], mother: ['f', 0.12], choir: ['f', 0.95], stranger: ['m', 0.5] };
+    var CASTKEY = { narrator: 'narrator', lyra: 'lyra', bror: 'bror', mira: 'mira', wren: 'wren', harrow: 'collector harrow', tallyman: 'the tallyman', king: 'the hollow king' };
+    var POOLS = null;
+    function pools() {
+        if (POOLS || !M.cfg) return POOLS;
+        var map = M.cfg.speaker_id_map || {}, f = [], m = [];
+        Object.keys(map).forEach(function (r) { var g = GENDER[r]; if (g) (g[0] === 'f' ? f : m).push({ i: map[r], f0: g[1] }); });
+        var by = function (a, b) { return a.f0 - b.f0; }; f.sort(by); m.sort(by);
+        return (POOLS = { f: f, m: m });
+    }
+    function speaker(id) {
+        var ck = CASTKEY[id]; if (ck && DDCFG.cast && DDCFG.cast[ck] != null) return +DDCFG.cast[ck];
+        var p = pools(), d = DEF[id] || DEF.stranger; if (!p) return 0;
+        var pool = p[d[0]]; return pool.length ? pool[Math.min(pool.length - 1, Math.floor(d[1] * pool.length))].i : 0;
+    }
+    /* the phone's own voice, shaped per character */
+    var SHAPE = { narrator: [0.9, 0.95], lyra: [1.15, 1.05], bror: [0.55, 0.92], mira: [1.25, 1.02], wren: [1.4, 0.95], harrow: [0.8, 0.9], tallyman: [1.0, 1.1], king: [0.3, 0.75], cobb: [0.95, 1.08], ash: [1.1, 0.92], guard: [0.7, 1], mother: [1.2, 1], choir: [1.6, 0.8], stranger: [0.9, 1] };
+    var voices = []; function lv() { try { voices = speechSynthesis.getVoices() || []; } catch (e) { } }
+    lv(); try { speechSynthesis.onvoiceschanged = lv; } catch (e) { }
+    function phoneVoice(gender) {
+        var en = voices.filter(function (v) { return /^en/i.test(v.lang); });
+        var f = en.filter(function (v) { return /female|samantha|victoria|karen|zira|susan|serena|moira|tessa|fiona|google uk english female|aria|jenny/i.test(v.name); });
+        var m = en.filter(function (v) { return /male|daniel|alex|fred|david|mark|george|guy|google uk english male|arthur|rishi/i.test(v.name) && !/female/i.test(v.name); });
+        return (gender === 'f' ? f[0] : m[0]) || en[0] || null;
+    }
+    var cur = null, curAudio = null, playTok = 0;
+    function stop() {
+        playTok++;
+        try { speechSynthesis.cancel(); } catch (e) { }
+        if (curAudio) { try { curAudio.pause(); } catch (e) { } curAudio = null; }
+        AU.duck(false);
+    }
+    function clean(t) { return String(t).replace(/<[^>]+>/g, '').replace(/\*/g, '').replace(/[“”]/g, '"').replace(/—/g, ', ').trim(); }
+    /* speak: resolves when the line has finished (or right away if voices are off) */
+    function speak(id, text) {
+        stop(); var tok = playTok; text = clean(text);
+        if (!CFG.voice || !text) return Promise.resolve();
+        AU.duck(true);
+        var done = function () { if (tok === playTok) AU.duck(false); };
+        var phone = function () {
+            return new Promise(function (ok) {
+                if (tok !== playTok || !window.speechSynthesis) return ok();
+                var u = new SpeechSynthesisUtterance(text), sh = SHAPE[id] || SHAPE.stranger, d = DEF[id] || DEF.stranger;
+                u.voice = phoneVoice(d[0]); u.pitch = sh[0]; u.rate = sh[1] * (CFG.speed > 40 ? 1.1 : 1); u.volume = 1;
+                var t = setTimeout(ok, 1500 + text.length * 95);
+                u.onend = u.onerror = function () { clearTimeout(t); ok(); };
+                try { speechSynthesis.speak(u); } catch (e) { ok(); }
+            });
+        };
+        var run;
+        if (CFG.piper && M.state !== 'error') {
+            run = Promise.race([synth(text, speaker(id)), sleep(M.state === 'ready' ? 9000 : 1200).then(function () { throw new Error('late'); })]).then(function (url) {
+                return new Promise(function (ok) {
+                    if (tok !== playTok) return ok();
+                    var a = new Audio(url); curAudio = a; a.volume = 1;
+                    a.onended = a.onerror = function () { ok(); };
+                    a.play().catch(function () { ok(); });
+                });
+            }, function () { return phone(); });
+        } else run = phone();
+        return run.then(done, done);
+    }
+    function warm(id, text) { if (CFG.piper && M.state === 'ready') synth(clean(text), speaker(id)).catch(function () { }); }
+    function enable() { CFG.piper = true; saveCfg(); return boot(); }
+    return { speak: speak, stop: stop, warm: warm, enable: enable, boot: boot, M: M, set onState(f) { onState = f; }, get model() { return MODEL; } };
+})();
+</script>
+<script>
+/* ==========================================================================
+   CHARACTERS - drawn in the game (comic-ink style), with expressions, blinking and talking mouths
+   ========================================================================== */
+var INK = '#160d1c';
+var CH = {
+    lyra: { name: 'Lyra', col: '#e98a5a', skin: '#f0c7a4', hair: '#b8442b', hairS: 'long', eye: '#3f7a4e', outfit: '#2f4a3a', trim: '#7b5a32', hood: '#24382c', acc: 'locket', g: 'f' },
+    bror: { name: 'Bror', col: '#d9a24a', skin: '#e2a982', hair: '#8a5a2b', hairS: 'none', eye: '#5a3a22', outfit: '#5b3d2a', trim: '#9aa3ad', beard: '#8a5a2b', helm: 1, acc: 'shield', wide: 1, g: 'm' },
+    mira: { name: 'Mira', col: '#9fd0ff', skin: '#f6d6bd', hair: '#2a2028', hairS: 'bob', eye: '#5a4632', outfit: '#3d4a6b', trim: '#c9b48a', glasses: 1, acc: 'map', g: 'f' },
+    wren: { name: 'Wren', col: '#c9e9ff', skin: '#e9d2c4', hair: '#c4573d', hairS: 'long', eye: '#3f7a4e', outfit: '#4a5a6a', trim: '#cfe7f5', frost: 1, g: 'f' },
+    harrow: { name: 'Collector Harrow', col: '#b7b7c4', skin: '#e5c3a8', hair: '#55545e', hairS: 'slick', eye: '#3a3c48', outfit: '#3e3e48', trim: '#8c8c98', hat: 1, acc: 'glove', g: 'm', stache: 1 },
+    tallyman: { name: 'The Tallyman', col: '#c9b07a', skin: '#d8c0a8', hair: '#9d9aa0', hairS: 'thin', eye: '#2c2c2c', outfit: '#2d2a26', trim: '#a08a5a', specs: 1, acc: 'quill', thin: 1, g: 'm' },
+    king: { name: 'The Hollow King', col: '#c8a2ff', skin: '#b7b9c9', hair: '#000', hairS: 'none', eye: '#c8a2ff', outfit: '#2a1d3a', trim: '#e9b85a', crown: 1, hollow: 1, g: 'm' },
+    cobb: { name: 'Cobb', col: '#f0d070', skin: '#d9a07a', hair: '#3a2a1e', hairS: 'messy', eye: '#3a2a1e', outfit: '#6a5236', trim: '#c9a35a', cap: 1, acc: 'lantern', stubble: 1, g: 'm' },
+    ash: { name: 'Sister Ash', col: '#e7e1f7', skin: '#c99a7a', hair: '#1a1416', hairS: 'none', eye: '#6b5a8a', outfit: '#d9d4e4', trim: '#7d6aa3', veil: 1, acc: 'book', g: 'f' },
+    mother: { name: 'Hessa Vane', col: '#e7c6a4', skin: '#e6bf9e', hair: '#5a4a3e', hairS: 'bun', eye: '#4a3a2a', outfit: '#5a4a52', trim: '#8a7a6a', shawl: 1, g: 'f' },
+    guard: { name: 'Gate Guard', col: '#c9b07a', skin: '#d6a585', hair: '#3a2e26', hairS: 'none', eye: '#2c2c2c', outfit: '#6b6152', trim: '#c9a35a', helmG: 1, g: 'm', stubble: 1 }
+};
+function shade(hex, f) { var n = parseInt(hex.slice(1), 16), r = n >> 16, g = n >> 8 & 255, b = n & 255; var m = function (v) { return Math.round(clamp(f < 0 ? v * (1 + f) : v + (255 - v) * f, 0, 255)); }; return '#' + ((1 << 24) + (m(r) << 16) + (m(g) << 8) + m(b)).toString(16).slice(1); }
+var EXPR = {
+    /* brows: [innerY, outerY] offsets ; mouth closed / open ; eyes squint 0..1 */
+    neutral: { b: [0, 0], mc: 'M88 136 Q100 138 112 136', mo: 'M88 134 Q100 132 112 134 Q106 146 100 146 Q94 146 88 134Z', sq: 0 },
+    smile: { b: [-2, -1], mc: 'M85 132 Q100 145 115 132', mo: 'M85 132 Q100 130 115 132 Q110 148 100 148 Q90 148 85 132Z', sq: 0.25 },
+    smirk: { b: [-1, 1], mc: 'M89 137 Q103 139 114 130', mo: 'M89 136 Q103 132 114 130 Q110 144 100 144 Q93 143 89 136Z', sq: 0.2 },
+    angry: { b: [7, -4], mc: 'M87 140 Q100 133 113 140', mo: 'M86 136 L114 136 L111 146 L89 146Z', sq: 0.35, teeth: 1 },
+    sad: { b: [-6, 4], mc: 'M89 141 Q100 133 111 141', mo: 'M89 140 Q100 132 111 140 Q106 146 100 146 Q94 146 89 140Z', sq: 0.3 },
+    shock: { b: [-8, -6], mc: 'M95 138 Q100 134 105 138 Q100 142 95 138Z', mo: 'M93 134 Q100 126 107 134 Q107 150 100 150 Q93 150 93 134Z', sq: -0.25 },
+    hurt: { b: [6, 2], mc: 'M86 139 Q92 134 98 139 Q104 134 114 138', mo: 'M86 135 L114 135 L112 146 L88 146Z', sq: 0.55, teeth: 1 },
+    cold: { b: [2, 2], mc: 'M90 137 L110 137', mo: 'M90 136 Q100 134 110 136 Q104 142 100 142 Q96 142 90 136Z', sq: 0.4 }
+};
+function charSVG(id, ex, opt) {
+    var c = CH[id] || CH.guard, E = EXPR[ex] || EXPR.neutral, o = [], sk = c.skin, sk2 = shade(sk, -0.18), ink = INK, sw = 3.2;
+    opt = opt || {};
+    var hurt = opt.hurt, hw = c.wide ? 44 : c.thin ? 33 : 38, cx = 100;
+    o.push('<svg viewBox="0 0 200 290" xmlns="http://www.w3.org/2000/svg">');
+    o.push('<defs><clipPath id="hc' + id + '"><ellipse cx="100" cy="108" rx="' + hw + '" ry="48"/></clipPath><linearGradient id="og' + id + '" x1="0" x2="1"><stop offset="0" stop-color="' + shade(c.outfit, 0.12) + '"/><stop offset=".62" stop-color="' + c.outfit + '"/><stop offset="1" stop-color="' + shade(c.outfit, -0.4) + '"/></linearGradient></defs>');
+    /* hair behind */
+    if (c.hairS === 'long') o.push('<path d="M58 95 Q52 170 66 222 L134 222 Q148 170 142 95 Q100 55 58 95Z" fill="' + shade(c.hair, -0.25) + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (c.hood) o.push('<path d="M46 118 Q42 50 100 42 Q158 50 154 118 L160 210 L40 210Z" fill="' + c.hood + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (c.veil) o.push('<path d="M50 100 Q48 48 100 44 Q152 48 150 100 L166 236 L34 236Z" fill="#f3f0f8" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M150 100 L166 236 L120 236 Q140 160 132 96Z" fill="#cfc8de"/>');
+    if (c.shawl) o.push('<path d="M40 200 Q100 168 160 200 L168 290 L32 290Z" fill="#7a5a5a" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    /* body */
+    var bw = c.wide ? 90 : c.thin ? 66 : 76;
+    o.push('<path d="M' + (cx - bw - 6) + ' 290 Q' + (cx - bw) + ' 210 ' + (cx - 30) + ' 196 L' + (cx + 30) + ' 196 Q' + (cx + bw) + ' 210 ' + (cx + bw + 6) + ' 290Z" fill="url(#og' + id + ')" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    o.push('<path d="M' + (cx - 22) + ' 198 L' + cx + ' 236 L' + (cx + 22) + ' 198" fill="none" stroke="' + c.trim + '" stroke-width="5"/>');
+    if (c.helm || c.helmG) o.push('<path d="M' + (cx - bw + 4) + ' 230 Q' + (cx - bw + 10) + ' 206 ' + (cx - 34) + ' 202 L' + (cx - 30) + ' 226Z M' + (cx + bw - 4) + ' 230 Q' + (cx + bw - 10) + ' 206 ' + (cx + 34) + ' 202 L' + (cx + 30) + ' 226Z" fill="' + c.trim + '" stroke="' + ink + '" stroke-width="2.5"/>');
+    /* neck */
+    o.push('<path d="M86 150 L86 200 Q100 208 114 200 L114 150Z" fill="' + sk2 + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    /* ears */
+    if (!c.veil && !c.hood) o.push('<ellipse cx="' + (cx - hw + 2) + '" cy="114" rx="7" ry="11" fill="' + sk + '" stroke="' + ink + '" stroke-width="2.5"/><ellipse cx="' + (cx + hw - 2) + '" cy="114" rx="7" ry="11" fill="' + sk2 + '" stroke="' + ink + '" stroke-width="2.5"/>');
+    /* head */
+    o.push('<path d="M' + (cx - hw) + ' 100 Q' + (cx - hw) + ' 58 100 58 Q' + (cx + hw) + ' 58 ' + (cx + hw) + ' 100 Q' + (cx + hw - 2) + ' 140 ' + (cx + 14) + ' 154 Q100 160 ' + (cx - 14) + ' 154 Q' + (cx - hw + 2) + ' 140 ' + (cx - hw) + ' 100Z" fill="' + sk + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    o.push('<path d="M' + (cx + 8) + ' 60 Q' + (cx + hw) + ' 62 ' + (cx + hw) + ' 100 Q' + (cx + hw - 2) + ' 140 ' + (cx + 14) + ' 154 Q' + (cx + 26) + ' 120 ' + (cx + 8) + ' 60Z" fill="' + sk2 + '" opacity=".55"/>');
+    if (c.hollow) o.push('<path d="M82 146 L82 156 M90 148 L90 158 M98 149 L98 159 M106 148 L106 158 M114 146 L114 156" stroke="' + ink + '" stroke-width="2"/><path d="M70 72 L80 92 L74 104" fill="none" stroke="#5a5a6a" stroke-width="2"/>');
+    /* cheeks */
+    if (!c.hollow && (ex === 'smile' || ex === 'smirk' || c.g === 'f')) o.push('<ellipse cx="78" cy="128" rx="8" ry="4" fill="#e0675a" opacity=".22"/><ellipse cx="122" cy="128" rx="8" ry="4" fill="#e0675a" opacity=".22"/>');
+    if (c.stubble) o.push('<path d="M72 128 Q76 150 100 156 Q124 150 128 128 Q118 146 100 148 Q82 146 72 128Z" fill="' + ink + '" opacity=".14"/>');
+    /* eyes */
+    var ey = 112, sq = E.sq, eh = 7 * (1 - sq * 0.6);
+    [[84, -1], [116, 1]].forEach(function (p) {
+        var x = p[0];
+        if (c.hollow) { o.push('<ellipse cx="' + x + '" cy="' + ey + '" rx="10" ry="9" fill="#05030a" stroke="' + ink + '" stroke-width="2"/><circle cx="' + x + '" cy="' + (ey + 1) + '" r="2.6" fill="' + c.eye + '"><animate attributeName="r" values="2.2;3.4;2.2" dur="2.4s" repeatCount="indefinite"/></circle>'); return; }
+        o.push('<ellipse cx="' + x + '" cy="' + ey + '" rx="9" ry="' + eh + '" fill="#fbf6ee" stroke="' + ink + '" stroke-width="2.4"/>');
+        o.push('<circle cx="' + (x + (ex === 'smirk' ? 2 : 0)) + '" cy="' + (ey + 0.5) + '" r="' + (ex === 'shock' ? 3.6 : 4.6) + '" fill="' + (c.frost && opt.choir ? '#bfefff' : c.eye) + '"/><circle cx="' + (x + 0.5) + '" cy="' + (ey + 0.5) + '" r="2.1" fill="' + ink + '"/><circle cx="' + (x - 1.6) + '" cy="' + (ey - 1.6) + '" r="1.3" fill="#fff"/>');
+        o.push('<rect class="eyelid" x="' + (x - 10) + '" y="' + (ey - 9) + '" width="20" height="18" rx="9" fill="' + sk + '" style="transform:scaleY(0);transform-origin:' + x + 'px ' + (ey - 9) + 'px;transform-box:view-box"/>');
+        if (sq > 0.2) o.push('<path d="M' + (x - 10) + ' ' + (ey - eh + 1) + ' Q' + x + ' ' + (ey - eh - 1 + sq * 4) + ' ' + (x + 10) + ' ' + (ey - eh + 1) + '" stroke="' + ink + '" stroke-width="2.6" fill="' + sk + '"/>');
+    });
+    /* brows */
+    var bc = c.hollow ? '#3a3a48' : shade(c.hair === '#000' ? '#444' : c.hair, -0.35), bi = E.b[0], bo = E.b[1];
+    if (c.veil) bc = '#2a2026';
+    o.push('<path d="M74 ' + (98 + bo) + ' Q82 ' + (95 + (bo + bi) / 2) + ' 92 ' + (99 + bi) + '" stroke="' + bc + '" stroke-width="' + (c.wide ? 6 : 4.4) + '" stroke-linecap="round" fill="none"/>');
+    o.push('<path d="M108 ' + (99 + bi) + ' Q118 ' + (95 + (bo + bi) / 2) + ' 126 ' + (98 + bo) + '" stroke="' + bc + '" stroke-width="' + (c.wide ? 6 : 4.4) + '" stroke-linecap="round" fill="none"/>');
+    /* nose */
+    if (c.hollow) o.push('<path d="M96 124 L100 116 L104 124Z" fill="#05030a"/>');
+    else o.push('<path d="M100 112 Q97 124 94 128 Q100 131 105 128" fill="none" stroke="' + shade(sk, -0.4) + '" stroke-width="2.4" stroke-linecap="round"/>');
+    /* beard (under the mouth) */
+    if (c.beard) o.push('<path d="M60 112 Q62 160 82 196 Q90 228 100 244 Q110 228 118 196 Q138 160 140 112 Q130 140 116 140 Q100 150 84 140 Q70 140 60 112Z" fill="' + c.beard + '" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M92 196 Q100 232 100 244 M108 196 Q102 230 100 244" stroke="' + shade(c.beard, -0.35) + '" stroke-width="2.4" fill="none"/><circle cx="100" cy="246" r="5" fill="#c9a35a" stroke="' + ink + '" stroke-width="2"/><path d="M76 132 Q100 124 124 132 Q110 128 100 134 Q90 128 76 132Z" fill="' + shade(c.beard, 0.1) + '" stroke="' + ink + '" stroke-width="2"/>');
+    if (c.stache) o.push('<path d="M84 131 Q92 126 100 130 Q108 126 116 131 Q108 134 100 132 Q92 134 84 131Z" fill="' + c.hair + '" stroke="' + ink + '" stroke-width="1.6"/>');
+    /* mouth */
+    var mfill = c.hollow ? '#05030a' : '#5a1f24';
+    o.push('<g class="mo-c"><path d="' + E.mc + '" fill="' + (/Z$/.test(E.mc) ? mfill : 'none') + '" stroke="' + ink + '" stroke-width="2.8" stroke-linecap="round"/></g>');
+    o.push('<g class="mo-o"><path d="' + E.mo + '" fill="' + mfill + '" stroke="' + ink + '" stroke-width="2.6" stroke-linejoin="round"/>' + (E.teeth ? '<path d="M88 137 L112 137" stroke="#fff" stroke-width="3"/>' : '<path d="M92 135 Q100 133 108 135" stroke="#fff" stroke-width="2.2" fill="none"/>') + '</g>');
+    /* hair in front */
+    var h = c.hair, hs = c.hairS;
+    if (hs === 'long') o.push('<path d="M58 104 Q54 54 100 50 Q148 54 142 104 Q132 76 112 70 Q118 86 108 92 Q102 74 86 72 Q72 82 58 104Z" fill="' + h + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (hs === 'bob') o.push('<path d="M58 132 Q48 56 100 52 Q152 56 142 132 Q138 102 130 90 Q100 96 74 84 Q64 100 58 132Z" fill="' + h + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (hs === 'slick') o.push('<path d="M62 96 Q60 56 100 54 Q140 56 138 96 Q128 70 100 70 Q78 70 62 96Z" fill="' + h + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (hs === 'thin') o.push('<path d="M66 100 Q62 66 80 62 M134 100 Q138 66 120 62" stroke="' + h + '" stroke-width="6" fill="none"/>');
+    if (hs === 'messy') o.push('<path d="M60 100 Q56 58 100 54 Q146 58 140 100 L132 84 L124 94 L116 78 L104 90 L94 76 L84 90 L74 80 Z" fill="' + h + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (hs === 'bun') o.push('<circle cx="100" cy="50" r="16" fill="' + h + '" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M60 102 Q58 58 100 56 Q142 58 140 102 Q130 72 100 74 Q70 72 60 102Z" fill="' + h + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (c.frost) o.push('<path d="M70 70 l4 6 l-6 2 M128 72 l-3 7 l6 1 M110 60 l2 6" stroke="#dff6ff" stroke-width="2.4" fill="none"/>');
+    /* headwear */
+    if (c.hood) o.push('<path d="M46 118 Q40 46 100 40 Q160 46 154 118 Q150 80 132 64 Q100 52 68 64 Q50 80 46 118Z" fill="' + shade(c.hood, 0.12) + '" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (c.helm) o.push('<path d="M52 98 Q52 44 100 42 Q148 44 148 98 L138 98 Q132 66 100 64 Q68 66 62 98Z" fill="#8d96a0" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M52 98 L148 98 L148 108 L52 108Z" fill="#c9a35a" stroke="' + ink + '" stroke-width="2.6"/><path d="M96 66 L104 66 L104 120 L100 126 L96 120Z" fill="#a9b2bc" stroke="' + ink + '" stroke-width="2.4"/><circle cx="66" cy="103" r="2.4" fill="' + ink + '"/><circle cx="134" cy="103" r="2.4" fill="' + ink + '"/>');
+    if (c.helmG) o.push('<path d="M56 96 Q56 50 100 48 Q144 50 144 96Z" fill="#6c7078" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M50 96 L150 96 L146 104 L54 104Z" fill="#8a8f98" stroke="' + ink + '" stroke-width="2.5"/>');
+    if (c.hat) o.push('<path d="M54 82 L146 82 L150 90 L50 90Z" fill="#2a2a32" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M68 84 L72 26 L128 26 L132 84Z" fill="#33333d" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M70 70 L130 70 L131 80 L69 80Z" fill="#8c8c98"/>');
+    if (c.cap) o.push('<path d="M58 92 Q56 52 100 50 Q144 52 142 92 Q120 78 100 80 Q80 78 58 92Z" fill="#5a4630" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M58 92 Q40 96 36 104 Q60 100 80 96Z" fill="#4a3a26" stroke="' + ink + '" stroke-width="2.4"/>');
+    if (c.veil) o.push('<path d="M58 100 Q58 60 100 58 Q142 60 142 100 Q136 74 100 72 Q64 74 58 100Z" fill="#1a1416"/><path d="M52 104 Q50 50 100 46 Q150 50 148 104 Q146 66 100 62 Q54 66 52 104Z" fill="#fff" stroke="' + ink + '" stroke-width="' + sw + '"/>');
+    if (c.crown) o.push('<path d="M58 70 L64 30 L78 54 L90 20 L100 48 L110 20 L122 54 L136 30 L142 70Z" fill="#c9a35a" stroke="' + ink + '" stroke-width="' + sw + '"/><path d="M58 70 L142 70 L140 80 L60 80Z" fill="#8a6a2a" stroke="' + ink + '" stroke-width="2.4"/><circle cx="100" cy="64" r="5" fill="#c8a2ff"><animate attributeName="opacity" values=".6;1;.6" dur="2s" repeatCount="indefinite"/></circle><path d="M86 22 L92 52" stroke="#3a2a10" stroke-width="2"/>');
+    if (c.glasses) o.push('<g fill="none" stroke="' + ink + '" stroke-width="2.6"><circle cx="84" cy="112" r="12"/><circle cx="116" cy="112" r="12"/><path d="M96 111 L104 111 M72 108 L60 104 M128 108 L140 104"/></g><path d="M76 104 L82 100" stroke="#fff" stroke-width="2" opacity=".7"/>');
+    if (c.specs) o.push('<g fill="none" stroke="#c9a35a" stroke-width="2"><rect x="74" y="105" width="20" height="13" rx="3"/><rect x="106" y="105" width="20" height="13" rx="3"/><path d="M94 110 L106 110"/></g>');
+    /* accessories */
+    if (c.acc === 'locket') o.push('<path d="M84 200 Q100 226 116 200" fill="none" stroke="#c9a35a" stroke-width="2"/><ellipse cx="100" cy="230" rx="9" ry="11" fill="#e9b85a" stroke="' + ink + '" stroke-width="2.4"/><path d="M96 228 Q100 224 104 228 Q100 236 96 228Z" fill="#a8452f"/>');
+    if (c.acc === 'shield') o.push('<path d="M150 214 Q186 220 196 250 Q190 284 160 290 L140 290 Q142 240 150 214Z" fill="#7a4a2a" stroke="' + ink + '" stroke-width="' + sw + '"/><circle cx="170" cy="252" r="10" fill="#c9a35a" stroke="' + ink + '" stroke-width="2.4"/>');
+    if (c.acc === 'map') o.push('<g transform="rotate(-12 60 250)"><rect x="34" y="232" width="56" height="40" fill="#e9dcb8" stroke="' + ink + '" stroke-width="2.6"/><path d="M40 244 Q54 238 62 250 T84 252 M44 262 L60 258" stroke="#8a5a2b" stroke-width="2" fill="none"/></g><path d="M134 236 L160 280" stroke="#e9b85a" stroke-width="5"/><path d="M160 280 L163 288" stroke="' + ink + '" stroke-width="3"/>');
+    if (c.acc === 'glove') o.push('<path d="M136 290 L140 248 Q138 226 150 222 L152 206 Q156 200 160 206 L160 220 L166 202 Q171 198 173 204 L170 222 L178 210 Q183 207 184 213 L176 236 Q172 260 160 290Z" fill="#7d7d88" stroke="' + ink + '" stroke-width="2.8"/>');
+    if (c.acc === 'quill') o.push('<path d="M150 290 L176 196 Q190 206 168 290Z" fill="#f2efe6" stroke="' + ink + '" stroke-width="2.4"/>');
+    if (c.acc === 'lantern') o.push('<g><path d="M40 290 L40 240" stroke="' + ink + '" stroke-width="3"/><rect x="26" y="240" width="28" height="36" rx="4" fill="#ffd27a" stroke="' + ink + '" stroke-width="2.6" opacity=".95"><animate attributeName="opacity" values=".8;1;.85;1" dur="1.3s" repeatCount="indefinite"/></rect><circle cx="40" cy="258" r="26" fill="#ffd27a" opacity=".18"/></g>');
+    if (c.acc === 'book') o.push('<rect x="116" y="236" width="44" height="34" rx="3" fill="#4a2a52" stroke="' + ink + '" stroke-width="2.6"/><path d="M138 240 L138 266 M130 252 L146 252" stroke="#e9b85a" stroke-width="2.4"/>');
+    /* wounds & frost */
+    if (hurt) o.push('<path d="M70 92 Q76 100 72 110" stroke="#a8232a" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M118 140 l10 -3" stroke="#a8232a" stroke-width="3" stroke-linecap="round"/>');
+    if (opt.choir) o.push('<ellipse cx="100" cy="150" rx="70" ry="120" fill="#bfefff" opacity=".12"/>');
+    o.push('</svg>');
+    return o.join('');
+}
+</script>
+<script>
+/* ==========================================================================
+   SCENES - every place is painted live: moving camera, weather, fire, water, light
+   (works like a looping video behind the characters)
+   ========================================================================== */
+var SC = (function () {
+    var cv = $('#scene'), cx = cv.getContext('2d'), W = 0, H = 0, DPR = Math.min(2, window.devicePixelRatio || 1);
+    var cur = null, prev = null, fadeT = 1, base = {}, parts = [], t0 = performance.now();
+    var cam = { z: 1.06, x: 0, y: 0, tz: 1.06, tx: 0, ty: 0, sp: 0.02, drift: 1 }, shake = 0, variant = {};
+    function resize() { W = innerWidth; H = innerHeight; cv.width = W * DPR; cv.height = H * DPR; base = {}; }
+    addEventListener('resize', resize); resize();
+    function lrng(s) { var a = 0; for (var i = 0; i < s.length; i++) a = a * 31 + s.charCodeAt(i) | 0; return mulberry(a); }
+    function lg(c, x0, y0, x1, y1, st) { var g = c.createLinearGradient(x0, y0, x1, y1); st.forEach(function (s) { g.addColorStop(s[0], s[1]); }); return g; }
+    function glow(c, x, y, r, col, a) { var g = c.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, col); g.addColorStop(1, 'rgba(0,0,0,0)'); c.globalAlpha = a == null ? 1 : a; c.fillStyle = g; c.fillRect(x - r, y - r, r * 2, r * 2); c.globalAlpha = 1; }
+    function ridge(c, w, y, amp, step, col, r, top) {
+        c.fillStyle = col; c.beginPath(); c.moveTo(0, top ? 0 : H2(c)); var x = 0; c.lineTo(0, y);
+        while (x <= w) { x += step * (0.5 + r()); c.lineTo(x, y + (r() - 0.5) * amp * 2); }
+        c.lineTo(w, top ? 0 : H2(c)); c.closePath(); c.fill();
+    }
+    function H2(c) { return c.canvas.height; }
+    function stones(c, x, y, w, h, col, r, n) {
+        var rowH = Math.max(18, h / 22);
+        for (var yy = y, row = 0; yy < y + h; yy += rowH, row++) {
+            for (var xx = x - (row % 2) * rowH; xx < x + w; ) {
+                var sw = rowH * (1.2 + r() * 1.6);
+                c.fillStyle = shade(col, (r() - 0.5) * 0.22); c.beginPath();
+                if (c.roundRect) c.roundRect(xx + 2, yy + 2, sw - 4, rowH - 4, rowH * 0.25); else c.rect(xx + 2, yy + 2, sw - 4, rowH - 4);
+                c.fill(); c.fillStyle = 'rgba(255,255,255,.035)'; c.fillRect(xx + 3, yy + 3, sw - 6, 2);
+                xx += sw;
+            }
+        }
+        var g = c.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, 'rgba(0,0,0,.45)'); g.addColorStop(0.5, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.35)'); c.fillStyle = g; c.fillRect(x, y, w, h);
+    }
+    function arch(c, x, y, w, h, col, edge) { c.fillStyle = col; c.beginPath(); c.moveTo(x, y + h); c.lineTo(x, y + w / 2); c.arc(x + w / 2, y + w / 2, w / 2, Math.PI, 0); c.lineTo(x + w, y + h); c.closePath(); c.fill(); if (edge) { c.strokeStyle = edge; c.lineWidth = Math.max(2, w * 0.05); c.stroke(); } }
+    /* each painter draws the still parts once (big canvas) and returns live() for the moving parts */
+    function palm(c, x, y, s, col) { c.save(); c.translate(x, y); c.scale(s / 100, s / 100); c.fillStyle = col; c.beginPath(); c.moveTo(-30, 50); c.lineTo(-32, 0); c.quadraticCurveTo(-34, -14, -24, -16); c.lineTo(-24, -50); c.quadraticCurveTo(-18, -58, -12, -50); c.lineTo(-10, -20); c.lineTo(-8, -62); c.quadraticCurveTo(-1, -70, 6, -62); c.lineTo(6, -20); c.lineTo(10, -56); c.quadraticCurveTo(17, -63, 23, -55); c.lineTo(20, -14); c.lineTo(30, -36); c.quadraticCurveTo(38, -40, 40, -32); c.lineTo(28, 10); c.quadraticCurveTo(24, 40, 18, 50); c.closePath(); c.fill(); c.restore(); }
+    var P = {};
+    P.gate = function (c, w, h, r) {
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#0b0c22'], [0.55, '#2b1d3e'], [1, '#4a3550']]); c.fillRect(0, 0, w, h);
+        for (var i = 0; i < 140; i++) { c.fillStyle = 'rgba(255,255,255,' + (r() * 0.7) + ')'; c.fillRect(r() * w, r() * h * 0.5, 1.5, 1.5); }
+        glow(c, w * 0.78, h * 0.14, h * 0.18, 'rgba(230,230,255,.35)'); c.fillStyle = '#e8e6f4'; c.beginPath(); c.arc(w * 0.78, h * 0.14, h * 0.045, 0, 7); c.fill();
+        ridge(c, w, h * 0.42, h * 0.05, w * 0.06, '#1d1830', r);
+        c.fillStyle = '#120e1c'; c.beginPath(); c.moveTo(0, h); c.lineTo(0, h * 0.2); c.lineTo(w * 0.28, h * 0.3); c.lineTo(w * 0.33, h); c.fill(); c.beginPath(); c.moveTo(w, h); c.lineTo(w, h * 0.18); c.lineTo(w * 0.7, h * 0.32); c.lineTo(w * 0.66, h); c.fill();
+        var gx = w * 0.34, gy = h * 0.3, gw = w * 0.32, gh = h * 0.42;
+        arch(c, gx - gw * 0.06, gy - gw * 0.08, gw * 1.12, gh * 1.12, '#2a2232', '#120e1c');
+        c.fillStyle = lg(c, gx, 0, gx + gw, 0, [[0, '#6d4b1f'], [0.25, '#d9a24a'], [0.5, '#8a5f22'], [0.75, '#e2b35a'], [1, '#5a3c18']]);
+        arch(c, gx, gy, gw, gh, c.fillStyle, '#2a1a08');
+        c.strokeStyle = '#3a240c'; c.lineWidth = 3; c.beginPath(); c.moveTo(gx + gw / 2, gy + 4); c.lineTo(gx + gw / 2, gy + gh); c.stroke();
+        for (var yy = gy + gw * 0.4; yy < gy + gh; yy += gh * 0.12) for (var xx = gx + gw * 0.08; xx < gx + gw; xx += gw * 0.12) { c.fillStyle = '#f2cf7a'; c.beginPath(); c.arc(xx, yy, 2.4, 0, 7); c.fill(); }
+        c.fillStyle = '#8c8c98'; c.beginPath(); c.arc(gx + gw / 2, gy + gh * 0.45, gw * 0.12, 0, 7); c.fill(); palm(c, gx + gw / 2, gy + gh * 0.45, gw * 0.17, '#4a4a56');
+        for (var k = 0; k < 2; k++) { var hx = k ? w * 0.06 : w * 0.72, hw2 = w * 0.22; for (var j = 0; j < 4; j++) { var bx = hx + j * hw2 / 4, bh = h * (0.1 + r() * 0.08); c.fillStyle = '#0d0a14'; c.beginPath(); c.moveTo(bx, h * 0.86); c.lineTo(bx, h * 0.86 - bh); c.lineTo(bx + hw2 / 8, h * 0.86 - bh - h * 0.05); c.lineTo(bx + hw2 / 4, h * 0.86 - bh); c.lineTo(bx + hw2 / 4, h * 0.86); c.fill(); c.fillStyle = '#ffcf6a'; if (r() > 0.3) c.fillRect(bx + hw2 / 12, h * 0.86 - bh * 0.6, 6, 8); } }
+        c.fillStyle = lg(c, 0, h * 0.82, 0, h, [[0, '#9aa0bd'], [1, '#d8dbe9']]); c.fillRect(0, h * 0.84, w, h * 0.16);
+        return function (c, w, h, t) {
+            [[0.3, 0.62], [0.7, 0.62]].forEach(function (p, i) { glow(c, w * p[0], h * p[1], h * 0.09, 'rgba(255,190,90,.8)', 0.45 + 0.15 * Math.sin(t * 7 + i * 2)); c.fillStyle = '#ffd27a'; c.fillRect(w * p[0] - 4, h * p[1] - 6, 8, 12); });
+            snow(c, w, h, t, 1);
+        };
+    };
+    P.office = function (c, w, h, r) {
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#2a1a12'], [1, '#140c08']]); c.fillRect(0, 0, w, h);
+        for (var x = 0; x < w; x += w / 9) { c.fillStyle = 'rgba(0,0,0,.25)'; c.fillRect(x, 0, 3, h * 0.7); }
+        c.fillStyle = '#3a2416'; c.fillRect(0, h * 0.55, w, h * 0.06);
+        var wx = w * 0.56, wy = h * 0.12, ww = w * 0.3, wh = h * 0.3; c.fillStyle = '#0b1028'; c.fillRect(wx, wy, ww, wh); glow(c, wx + ww * 0.7, wy + wh * 0.3, ww * 0.4, 'rgba(200,210,255,.35)'); c.strokeStyle = '#5a3a22'; c.lineWidth = 8; c.strokeRect(wx, wy, ww, wh); c.lineWidth = 4; c.beginPath(); c.moveTo(wx + ww / 2, wy); c.lineTo(wx + ww / 2, wy + wh); c.moveTo(wx, wy + wh / 2); c.lineTo(wx + ww, wy + wh / 2); c.stroke();
+        variant.win = [wx, wy, ww, wh];
+        for (var s = 0; s < 4; s++) { var sy = h * 0.14 + s * h * 0.09; c.fillStyle = '#4a2e1a'; c.fillRect(w * 0.06, sy + h * 0.07, w * 0.36, 8); for (var b = 0; b < 9; b++) { c.fillStyle = ['#5a2a22', '#2a3a4a', '#4a4a2a', '#3a2a3a', '#6a5a3a'][Math.floor(r() * 5)]; var bw = w * 0.03 + r() * w * 0.012; c.fillRect(w * 0.07 + b * w * 0.038, sy + h * 0.07 - h * (0.05 + r() * 0.02), bw, h * (0.05 + r() * 0.02)); } }
+        c.fillStyle = '#7d7d88'; c.fillRect(w * 0.46, h * 0.08, w * 0.06, h * 0.22); palm(c, w * 0.49, h * 0.19, w * 0.045, '#4a4a56');
+        c.fillStyle = lg(c, 0, h * 0.66, 0, h, [[0, '#5a3820'], [1, '#2a180c']]); c.fillRect(0, h * 0.66, w, h * 0.34);
+        c.fillStyle = '#e9dcb8'; c.save(); c.translate(w * 0.42, h * 0.72); c.rotate(-0.05); c.fillRect(-w * 0.12, -h * 0.03, w * 0.24, h * 0.06); c.strokeStyle = '#6a4a2a'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -h * 0.03); c.lineTo(0, h * 0.03); c.stroke(); for (var l = 0; l < 4; l++) { c.fillStyle = '#6a5a4a'; c.fillRect(-w * 0.1, -h * 0.02 + l * h * 0.012, w * 0.08, 2); c.fillRect(w * 0.02, -h * 0.02 + l * h * 0.012, w * 0.08, 2); } c.restore();
+        c.fillStyle = 'rgba(200,220,230,.35)'; c.fillRect(w * 0.72, h * 0.62, w * 0.07, h * 0.08); c.strokeStyle = '#ccd'; c.strokeRect(w * 0.72, h * 0.62, w * 0.07, h * 0.08); for (var tt = 0; tt < 6; tt++) { c.fillStyle = '#eee8d0'; c.fillRect(w * 0.73 + r() * w * 0.05, h * 0.66 + r() * h * 0.03, 4, 6); }
+        c.fillStyle = '#e8e0c8'; c.fillRect(w * 0.18, h * 0.66, w * 0.025, -h * 0.06);
+        return function (c, w, h, t) {
+            var v = variant.win; c.save(); c.beginPath(); c.rect(v[0], v[1], v[2], v[3]); c.clip(); snow(c, w, h, t, 0.6); c.restore();
+            var fx = w * 0.192, fy = h * 0.6 - 4, f = Math.sin(t * 9) * 2 + Math.sin(t * 13) * 1.5;
+            glow(c, fx, fy, h * 0.25, 'rgba(255,170,80,.5)', 0.55 + 0.08 * Math.sin(t * 8)); c.fillStyle = '#ffd27a'; c.beginPath(); c.ellipse(fx + f * 0.3, fy, 5, 11 + f, 0, 0, 7); c.fill(); c.fillStyle = '#fff6d0'; c.beginPath(); c.ellipse(fx, fy + 3, 2.5, 5, 0, 0, 7); c.fill();
+            dust(c, w, h, t, 'rgba(255,210,150,.5)', 30);
+        };
+    };
+    P.lift = function (c, w, h, r) {
+        c.fillStyle = '#0b0910'; c.fillRect(0, 0, w, h);
+        stones(c, 0, 0, w * 0.26, h, '#2a2430', r); stones(c, w * 0.74, 0, w * 0.26, h, '#2a2430', r);
+        c.fillStyle = lg(c, 0, h * 0.78, 0, h, [[0, '#4a3220'], [1, '#22160c']]); c.fillRect(w * 0.14, h * 0.8, w * 0.72, h * 0.06); c.strokeStyle = '#120a06'; c.lineWidth = 3; for (var p = 0; p < 7; p++) { c.beginPath(); c.moveTo(w * 0.14 + p * w * 0.12, h * 0.8); c.lineTo(w * 0.14 + p * w * 0.12, h * 0.86); c.stroke(); }
+        return function (c, w, h, t) {
+            var off = (t * 120) % 40;
+            [0.2, 0.8].forEach(function (cxp) { c.strokeStyle = '#8a8f98'; c.lineWidth = 4; for (var y = -40 + off; y < h * 0.8; y += 40) { c.beginPath(); c.ellipse(w * cxp, y, 7, 16, 0, 0, 7); c.stroke(); } });
+            for (var i = 0; i < 40; i++) { var px = (i * 97.3) % w, py = h - ((t * 160 + i * 53) % h); c.fillStyle = 'rgba(200,180,150,.35)'; c.fillRect(px, py, 2, 6); }
+            glow(c, w * 0.5, h * 0.74, h * 0.3, 'rgba(255,190,90,.55)', 0.5 + 0.1 * Math.sin(t * 6)); c.fillStyle = '#ffd27a'; c.fillRect(w * 0.5 - 7, h * 0.72, 14, 18);
+        };
+    };
+    P.crypt = function (c, w, h, r) {
+        var v = variant.crypt || 'bone';
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#120f18'], [1, '#26202a']]); c.fillRect(0, 0, w, h);
+        stones(c, 0, 0, w, h * 0.7, '#2a2430', r, 260);
+        for (var row = 0; row < 3; row++) for (var col = 0; col < 7; col++) { var nx = w * 0.06 + col * w * 0.135, ny = h * 0.12 + row * h * 0.15; arch(c, nx, ny, w * 0.08, h * 0.11, '#0b080e'); if (r() > 0.35) { c.fillStyle = '#d8ceb8'; c.beginPath(); c.arc(nx + w * 0.04, ny + h * 0.08, w * 0.016, 0, 7); c.fill(); c.fillStyle = '#0b080e'; c.fillRect(nx + w * 0.033, ny + h * 0.078, 3, 3); c.fillRect(nx + w * 0.043, ny + h * 0.078, 3, 3); } c.fillStyle = 'rgba(220,200,170,.45)'; c.fillRect(nx + w * 0.01, ny + h * 0.115, w * 0.06, 2); }
+        arch(c, w * 0.38, h * 0.3, w * 0.24, h * 0.42, '#060408', '#3a3240');
+        c.fillStyle = lg(c, 0, h * 0.7, 0, h, [[0, '#2c2630'], [1, '#141016']]); c.fillRect(0, h * 0.7, w, h * 0.3);
+        if (v === 'bone') for (var b = 0; b < 70; b++) { c.strokeStyle = '#cfc4ae'; c.lineWidth = 3; var bx = r() < 0.5 ? r() * w * 0.3 : w - r() * w * 0.3, by = h * 0.76 + r() * h * 0.2, a = r() * 3; c.beginPath(); c.moveTo(bx, by); c.lineTo(bx + Math.cos(a) * 18, by + Math.sin(a) * 6); c.stroke(); }
+        if (v === 'collapsed') { for (var k = 0; k < 40; k++) { c.fillStyle = shade('#3a3440', (r() - 0.5) * 0.4); c.beginPath(); var rx = w * 0.55 + r() * w * 0.45, ry = h * 0.6 + r() * h * 0.35, rs = 10 + r() * 40; c.moveTo(rx, ry); c.lineTo(rx + rs, ry + rs * 0.3); c.lineTo(rx + rs * 0.6, ry - rs * 0.6); c.fill(); } }
+        return function (c, w, h, t) {
+            if (v === 'flooded') { c.fillStyle = 'rgba(20,40,60,.75)'; c.fillRect(0, h * 0.74, w, h * 0.26); for (var i = 0; i < 18; i++) { c.strokeStyle = 'rgba(160,200,230,' + (0.12 + 0.1 * Math.sin(t * 2 + i)) + ')'; c.lineWidth = 2; var yy = h * 0.76 + i * h * 0.013, xs = (Math.sin(t + i) * 0.5 + 0.5) * w * 0.3; c.beginPath(); c.moveTo(xs, yy); c.lineTo(xs + w * 0.4, yy); c.stroke(); } }
+            [[0.2, 0.6], [0.8, 0.6], [0.5, 0.26]].forEach(function (p, i) { glow(c, w * p[0], h * p[1], h * 0.12, 'rgba(255,170,80,.7)', 0.35 + 0.12 * Math.sin(t * 8 + i * 3)); c.fillStyle = '#ffdc8a'; c.beginPath(); c.ellipse(w * p[0], h * p[1], 3, 7 + Math.sin(t * 11 + i), 0, 0, 7); c.fill(); });
+            if (v === 'collapsed') for (var d = 0; d < 3; d++) { c.fillStyle = 'rgba(200,190,170,.06)'; c.beginPath(); c.moveTo(w * (0.6 + d * 0.1), 0); c.lineTo(w * (0.55 + d * 0.1), h); c.lineTo(w * (0.62 + d * 0.1), h); c.lineTo(w * (0.64 + d * 0.1), 0); c.fill(); }
+            dust(c, w, h, t, 'rgba(220,210,190,.5)', 40);
+        };
+    };
+    P.cage = function (c, w, h, r) {
+        c.fillStyle = '#0a080d'; c.fillRect(0, 0, w, h); stones(c, 0, 0, w * 0.28, h, '#26202a', r, 90); stones(c, w * 0.72, 0, w * 0.28, h, '#26202a', r, 90);
+        c.fillStyle = lg(c, 0, h * 0.5, 0, h, [[0, '#0a080d'], [1, '#000']]); c.fillRect(w * 0.28, h * 0.5, w * 0.44, h * 0.5);
+        c.fillStyle = '#2c2630'; c.fillRect(0, h * 0.7, w * 0.3, h * 0.3); c.fillRect(w * 0.7, h * 0.7, w * 0.3, h * 0.3);
+        return function (c, w, h, t) {
+            var sw = Math.sin(t * 0.9) * 0.05, ax = w * 0.5, ay = 0; c.save(); c.translate(ax, ay); c.rotate(sw);
+            c.strokeStyle = '#6a6f78'; c.lineWidth = 4; c.beginPath(); c.moveTo(0, 0); c.lineTo(0, h * 0.2); c.stroke();
+            var cw = w * 0.2, ch = h * 0.3, cy = h * 0.2; c.fillStyle = 'rgba(40,30,40,.6)'; c.fillRect(-cw / 2, cy, cw, ch);
+            c.strokeStyle = '#8a8f98'; c.lineWidth = 3.5; for (var i = 0; i <= 6; i++) { c.beginPath(); c.moveTo(-cw / 2 + i * cw / 6, cy); c.lineTo(-cw / 2 + i * cw / 6, cy + ch); c.stroke(); } c.lineWidth = 6; c.strokeRect(-cw / 2, cy, cw, ch); c.restore();
+            glow(c, w * 0.12, h * 0.55, h * 0.14, 'rgba(255,170,80,.6)', 0.4 + 0.1 * Math.sin(t * 7));
+            dust(c, w, h, t, 'rgba(220,210,190,.45)', 25);
+        };
+    };
+    P.camp = function (c, w, h, r) {
+        c.fillStyle = '#0c0807'; c.fillRect(0, 0, w, h); stones(c, 0, 0, w, h * 0.75, '#2a1e18', r, 200);
+        ridge(c, w, h * 0.12, h * 0.05, w * 0.05, '#050304', r, true);
+        c.fillStyle = lg(c, 0, h * 0.7, 0, h, [[0, '#2a1c14'], [1, '#100a08']]); c.fillRect(0, h * 0.72, w, h * 0.28);
+        c.fillStyle = '#3a2a3a'; c.fillRect(w * 0.08, h * 0.84, w * 0.2, h * 0.04); c.fillStyle = '#2a3a3a'; c.fillRect(w * 0.72, h * 0.83, w * 0.2, h * 0.04);
+        for (var s = 0; s < 9; s++) { var a = s / 9 * 6.28; c.fillStyle = '#3a3036'; c.beginPath(); c.ellipse(w * 0.5 + Math.cos(a) * w * 0.07, h * 0.86 + Math.sin(a) * h * 0.02, 10, 7, 0, 0, 7); c.fill(); }
+        return function (c, w, h, t) {
+            var fx = w * 0.5, fy = h * 0.85; glow(c, fx, fy - 20, h * 0.55, 'rgba(255,140,50,.55)', 0.6 + 0.12 * Math.sin(t * 6) + 0.06 * Math.sin(t * 17));
+            for (var i = 0; i < 5; i++) { var ph = t * (6 + i) + i; c.fillStyle = ['#ff6a2a', '#ff9a3a', '#ffd27a', '#ffb14a', '#fff2c0'][i]; c.beginPath(); c.moveTo(fx - 22 + i * 6, fy); c.quadraticCurveTo(fx - 18 + i * 8 + Math.sin(ph) * 6, fy - 40 - i * 6 - Math.sin(ph * 1.3) * 10, fx - 6 + i * 6, fy - 70 + i * 10 + Math.sin(ph) * 8); c.quadraticCurveTo(fx + 6 + i * 3, fy - 30, fx + 18 - i * 4, fy); c.fill(); }
+            for (var k = 0; k < 24; k++) { var life = ((t * 0.6 + k * 0.137) % 1), x = fx + Math.sin(k * 7 + t * 2) * 30 * life, y = fy - 40 - life * h * 0.5; c.fillStyle = 'rgba(255,190,90,' + (1 - life) + ')'; c.fillRect(x, y, 2.5, 2.5); }
+        };
+    };
+    P.ice = function (c, w, h, r) {
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#06121e'], [0.6, '#0d2c40'], [1, '#1d4a5c']]); c.fillRect(0, 0, w, h);
+        for (var i = 0; i < 26; i++) { var x = r() * w, hh = h * (0.1 + r() * 0.3); c.fillStyle = 'rgba(' + (120 + r() * 80) + ',' + (200 + r() * 55) + ',255,' + (0.15 + r() * 0.3) + ')'; c.beginPath(); c.moveTo(x - 12 - r() * 20, 0); c.lineTo(x + 12 + r() * 20, 0); c.lineTo(x, hh); c.fill(); }
+        for (var k = 0; k < 22; k++) { var x2 = r() * w, hh2 = h * (0.08 + r() * 0.22); c.fillStyle = 'rgba(' + (150 + r() * 80) + ',230,255,' + (0.25 + r() * 0.35) + ')'; c.beginPath(); c.moveTo(x2 - 14 - r() * 18, h * 0.8); c.lineTo(x2, h * 0.8 - hh2); c.lineTo(x2 + 14 + r() * 18, h * 0.8); c.fill(); c.strokeStyle = 'rgba(255,255,255,.4)'; c.beginPath(); c.moveTo(x2, h * 0.8 - hh2); c.lineTo(x2 - 4, h * 0.8); c.stroke(); }
+        c.fillStyle = lg(c, 0, h * 0.78, 0, h, [[0, '#9fd8ee'], [1, '#4a8aa8']]); c.fillRect(0, h * 0.8, w, h * 0.2);
+        return function (c, w, h, t) {
+            for (var i = 0; i < 4; i++) { c.fillStyle = 'rgba(160,255,230,' + (0.04 + 0.03 * Math.sin(t * 0.7 + i)) + ')'; c.beginPath(); c.moveTo(0, h * (0.2 + i * 0.06)); for (var x = 0; x <= w; x += w / 10) c.lineTo(x, h * (0.2 + i * 0.06) + Math.sin(x / w * 6 + t * 0.8 + i) * h * 0.04); c.lineTo(w, 0); c.lineTo(0, 0); c.fill(); }
+            for (var k = 0; k < 30; k++) { var a = Math.sin(t * 3 + k * 1.7); if (a > 0.85) { var sx = (k * 137.1) % w, sy = (k * 71.3) % (h * 0.8); c.fillStyle = 'rgba(255,255,255,' + (a - 0.85) * 6 + ')'; c.fillRect(sx - 1, sy - 5, 2, 10); c.fillRect(sx - 5, sy - 1, 10, 2); } }
+            snow(c, w, h, t, 0.5);
+        };
+    };
+    P.chapel = function (c, w, h, r) {
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#0a1622'], [1, '#203848']]); c.fillRect(0, 0, w, h);
+        arch(c, w * 0.3, h * 0.05, w * 0.4, h * 0.5, 'rgba(160,220,255,.08)', 'rgba(200,240,255,.3)');
+        for (var row = 0; row < 3; row++) for (var i = 0; i < 7; i++) { var x = w * 0.08 + i * w * 0.14 + (row % 2) * w * 0.07, y = h * (0.42 + row * 0.12), s = 0.7 + row * 0.15; if (Math.abs(x - w / 2) < w * 0.08 && row < 2) continue; c.fillStyle = 'rgba(30,50,70,.9)'; c.beginPath(); c.moveTo(x - 16 * s, y + 60 * s); c.lineTo(x - 10 * s, y + 10 * s); c.arc(x, y, 11 * s, Math.PI, 0); c.lineTo(x + 16 * s, y + 60 * s); c.fill(); c.fillStyle = 'rgba(170,230,255,.22)'; c.fillRect(x - 20 * s, y - 16 * s, 40 * s, 80 * s); c.strokeStyle = 'rgba(220,250,255,.35)'; c.strokeRect(x - 20 * s, y - 16 * s, 40 * s, 80 * s); c.fillStyle = '#05080c'; c.beginPath(); c.ellipse(x, y + 3 * s, 3 * s, 4 * s, 0, 0, 7); c.fill(); }
+        c.fillStyle = '#cfeaf5'; c.fillRect(w * 0.42, h * 0.68, w * 0.16, h * 0.06); c.fillStyle = '#7aa8c0'; c.fillRect(w * 0.44, h * 0.74, w * 0.12, h * 0.1);
+        c.fillStyle = lg(c, 0, h * 0.82, 0, h, [[0, '#8fc4dc'], [1, '#3a6a84']]); c.fillRect(0, h * 0.84, w, h * 0.16);
+        return function (c, w, h, t) {
+            var p = 0.5 + 0.5 * Math.sin(t * 1.4); glow(c, w * 0.5, h * 0.25, h * 0.5, 'rgba(180,240,255,.5)', 0.18 + p * 0.22);
+            c.fillStyle = 'rgba(200,240,255,' + (0.05 + p * 0.06) + ')'; c.beginPath(); c.moveTo(w * 0.4, 0); c.lineTo(w * 0.3, h); c.lineTo(w * 0.7, h); c.lineTo(w * 0.6, 0); c.fill();
+            for (var i = 0; i < 16; i++) { var life = (t * 0.15 + i / 16) % 1, x = w * (0.1 + (i * 0.37) % 0.8), y = h * 0.5 - life * h * 0.4; c.fillStyle = 'rgba(220,250,255,' + (0.5 * (1 - life)) + ')'; c.font = (10 + 6 * (1 - life)) + 'px serif'; c.fillText('♪', x + Math.sin(t + i) * 10, y); }
+            snow(c, w, h, t, 0.3);
+        };
+    };
+    P.forge = function (c, w, h, r) {
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#120806'], [1, '#2a120a']]); c.fillRect(0, 0, w, h);
+        for (var i = 0; i < 5; i++) { var x = w * (0.04 + i * 0.23); c.fillStyle = lg(c, x, 0, x + w * 0.08, 0, [[0, '#2a1a14'], [0.5, '#4a2e22'], [1, '#1a0e0a']]); c.fillRect(x, 0, w * 0.08, h * 0.72); c.fillStyle = '#c9a35a'; c.fillRect(x - 4, h * 0.1, w * 0.08 + 8, 6); c.fillRect(x - 4, h * 0.64, w * 0.08 + 8, 8); }
+        arch(c, w * 0.36, h * 0.18, w * 0.28, h * 0.48, '#0a0504', '#c9a35a'); c.fillStyle = 'rgba(233,184,90,.6)'; c.font = (w * 0.04) + 'px serif'; c.textAlign = 'center'; c.fillText('ᚱ ᚢ ᚾ ᛖ', w * 0.5, h * 0.3);
+        c.fillStyle = lg(c, 0, h * 0.7, 0, h, [[0, '#3a2218'], [1, '#160a06']]); c.fillRect(0, h * 0.72, w, h * 0.28);
+        c.fillStyle = '#2a2a30'; c.beginPath(); c.moveTo(w * 0.4, h * 0.82); c.lineTo(w * 0.6, h * 0.82); c.lineTo(w * 0.56, h * 0.88); c.lineTo(w * 0.58, h * 0.95); c.lineTo(w * 0.42, h * 0.95); c.lineTo(w * 0.44, h * 0.88); c.fill(); c.fillStyle = '#4a4a52'; c.fillRect(w * 0.38, h * 0.8, w * 0.26, h * 0.025);
+        return function (c, w, h, t) {
+            [0.16, 0.84].forEach(function (lx, i) { var g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, 'rgba(255,90,20,0)'); g.addColorStop(1, 'rgba(255,120,30,.9)'); c.fillStyle = '#ff6a1a'; c.fillRect(w * lx - 14, h * 0.72, 28, h * 0.28); for (var y = 0; y < 8; y++) { c.fillStyle = 'rgba(255,220,120,' + (0.4 + 0.3 * Math.sin(t * 3 + y + i)) + ')'; c.fillRect(w * lx - 10 + Math.sin(t * 2 + y) * 4, h * 0.72 + ((y * h * 0.04 + t * 40) % (h * 0.28)), 20, 6); } glow(c, w * lx, h * 0.85, h * 0.3, 'rgba(255,100,30,.6)', 0.5 + 0.1 * Math.sin(t * 4 + i)); });
+            for (var k = 0; k < 30; k++) { var life = ((t * 0.35 + k * 0.071) % 1), x = (k * 61.7) % w + Math.sin(t + k) * 20, y = h - life * h; c.fillStyle = 'rgba(255,' + (140 + k * 3) + ',60,' + (1 - life) + ')'; c.fillRect(x, y, 2.5, 2.5); }
+        };
+    };
+    P.throne = function (c, w, h, r) {
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#05020a'], [0.6, '#1a0a2a'], [1, '#2a1240']]); c.fillRect(0, 0, w, h);
+        for (var i = 0; i < 90; i++) { c.fillStyle = 'rgba(200,160,255,' + r() * 0.5 + ')'; c.fillRect(r() * w, r() * h, 1.5, 1.5); }
+        c.fillStyle = '#120a1a'; c.beginPath(); c.moveTo(w * 0.1, h * 0.8); c.lineTo(w * 0.9, h * 0.8); c.lineTo(w * 0.7, h); c.lineTo(w * 0.3, h); c.fill();
+        c.fillStyle = '#1e1428'; c.beginPath(); c.moveTo(w * 0.38, h * 0.78); c.lineTo(w * 0.36, h * 0.3); c.lineTo(w * 0.42, h * 0.18); c.lineTo(w * 0.5, h * 0.1); c.lineTo(w * 0.58, h * 0.18); c.lineTo(w * 0.64, h * 0.3); c.lineTo(w * 0.62, h * 0.78); c.fill(); c.strokeStyle = '#3a2a50'; c.lineWidth = 3; c.stroke();
+        for (var b = 0; b < 30; b++) { c.fillStyle = '#cfc4ae'; c.beginPath(); c.arc(w * (0.36 + r() * 0.28), h * (0.2 + r() * 0.55), 3 + r() * 5, 0, 7); c.fill(); }
+        return function (c, w, h, t) {
+            for (var i = 0; i < 50; i++) { var a = t * 0.3 + i * 0.4, rr = h * (0.2 + (i % 7) * 0.06); c.fillStyle = 'rgba(190,140,255,' + (0.2 + 0.2 * Math.sin(t + i)) + ')'; c.fillRect(w * 0.5 + Math.cos(a) * rr * 1.2, h * 0.45 + Math.sin(a) * rr * 0.4, 2, 2); }
+            if (!variant.noCrown) { glow(c, w * 0.5, h * 0.22, h * 0.2, 'rgba(255,210,110,.9)', 0.4 + 0.25 * Math.sin(t * 2)); }
+            if (Math.sin(t * 0.7) > 0.985) { c.fillStyle = 'rgba(200,160,255,.15)'; c.fillRect(0, 0, w, h); }
+        };
+    };
+    P.surface = function (c, w, h, r) {
+        c.fillStyle = lg(c, 0, 0, 0, h, [[0, '#2a3a6a'], [0.45, '#e98a5a'], [0.7, '#ffd08a'], [1, '#c9a07a']]); c.fillRect(0, 0, w, h);
+        glow(c, w * 0.5, h * 0.62, h * 0.4, 'rgba(255,230,160,.9)'); c.fillStyle = '#fff2c0'; c.beginPath(); c.arc(w * 0.5, h * 0.62, h * 0.06, 0, 7); c.fill();
+        ridge(c, w, h * 0.6, h * 0.04, w * 0.07, '#5a3a4a', r);
+        for (var j = 0; j < 12; j++) { var bx = j * w / 12, bh = h * (0.06 + r() * 0.1); c.fillStyle = '#2a1a2a'; c.beginPath(); c.moveTo(bx, h * 0.8); c.lineTo(bx, h * 0.8 - bh); c.lineTo(bx + w / 24, h * 0.8 - bh - h * 0.04); c.lineTo(bx + w / 12, h * 0.8 - bh); c.lineTo(bx + w / 12, h * 0.8); c.fill(); }
+        c.fillStyle = lg(c, 0, h * 0.8, 0, h, [[0, '#d9c4b8'], [1, '#f2e6dc']]); c.fillRect(0, h * 0.8, w, h * 0.2);
+        return function (c, w, h, t) {
+            for (var i = 0; i < 6; i++) { var x = ((t * 30 + i * 140) % (w + 100)) - 50, y = h * (0.2 + (i % 3) * 0.06) + Math.sin(t * 2 + i) * 6; c.strokeStyle = '#2a1a2a'; c.lineWidth = 2; c.beginPath(); c.moveTo(x - 7, y - 3 * Math.abs(Math.sin(t * 6 + i))); c.lineTo(x, y); c.lineTo(x + 7, y - 3 * Math.abs(Math.sin(t * 6 + i))); c.stroke(); }
+            snow(c, w, h, t, 0.25);
+        };
+    };
+    P.black = function (c, w, h) { c.fillStyle = '#050307'; c.fillRect(0, 0, w, h); return function (c, w, h, t) { dust(c, w, h, t, 'rgba(255,255,255,.25)', 20); }; };
+    /* weather */
+    function snow(c, w, h, t, d) { var n = Math.round(90 * d); for (var i = 0; i < n; i++) { var sp = 30 + (i % 7) * 12, x = ((i * 89.7) + Math.sin(t * 0.8 + i) * 30 + t * 12) % w, y = ((i * 53.1) + t * sp) % h, s = 1 + (i % 3); c.fillStyle = 'rgba(255,255,255,' + (0.4 + (i % 4) * 0.15) + ')'; c.fillRect(x, y, s, s); } }
+    function dust(c, w, h, t, col, n) { c.fillStyle = col; for (var i = 0; i < n; i++) { var x = ((i * 113.3) + Math.sin(t * 0.3 + i) * 40) % w, y = ((i * 71.9) + Math.cos(t * 0.2 + i * 2) * 30 + h) % h, a = 0.3 + 0.7 * Math.abs(Math.sin(t * 0.5 + i)); c.globalAlpha = a * 0.6; c.fillRect(x, y, 1.6, 1.6); } c.globalAlpha = 1; }
+    function build(name) {
+        var key = name + '|' + (variant.crypt || '') + '|' + W + 'x' + H;
+        if (base[key]) return base[key];
+        var oc = document.createElement('canvas'), w = Math.round(W * 1.2 * DPR), h = Math.round(H * 1.2 * DPR); oc.width = w; oc.height = h;
+        var c = oc.getContext('2d'), live = (P[name] || P.black)(c, w, h, lrng(name));
+        return (base[key] = { cv: oc, live: live, w: w, h: h });
+    }
+    function draw(sc, alpha, t) {
+        var b = build(sc), w = cv.width, h = cv.height;
+        var z = cam.z, ox = (b.w - w / z) / 2 + cam.x * w * 0.08 + Math.sin(t * 0.05) * w * 0.012 * cam.drift, oy = (b.h - h / z) / 2 + cam.y * h * 0.08 + Math.cos(t * 0.04) * h * 0.008 * cam.drift;
+        if (shake > 0) { ox += (Math.random() - 0.5) * shake * 30; oy += (Math.random() - 0.5) * shake * 30; }
+        cx.globalAlpha = alpha; cx.save(); cx.scale(z, z); cx.translate(-ox, -oy); cx.drawImage(b.cv, 0, 0); b.live(cx, b.w, b.h, t); cx.restore(); cx.globalAlpha = 1;
+    }
+    var tint = null;
+    function frame(now) {
+        var t = (now - t0) / 1000;
+        cam.z += (cam.tz - cam.z) * cam.sp; cam.x += (cam.tx - cam.x) * cam.sp; cam.y += (cam.ty - cam.y) * cam.sp; shake *= 0.9;
+        if (cur) {
+            if (prev && fadeT < 1) { draw(prev, 1, t); fadeT = Math.min(1, fadeT + 0.03); draw(cur, fadeT, t); } else draw(cur, 1, t);
+            if (tint) { cx.fillStyle = tint; cx.fillRect(0, 0, cv.width, cv.height); }
+        }
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+    return {
+        set: function (name, o) { o = o || {}; if (o.variant) Object.assign(variant, o.variant); if (name !== cur) { prev = cur; cur = name; fadeT = o.cut ? 1 : 0; } cam.tz = o.z || 1.06; cam.tx = o.x || 0; cam.ty = o.y || 0; if (o.snap) { cam.z = cam.tz; cam.x = cam.tx; cam.y = cam.ty; } tint = o.tint || null; AU.ambience(name); },
+        cam: function (z, x, y, sp) { cam.tz = z; cam.tx = x || 0; cam.ty = y || 0; cam.sp = sp || 0.02; },
+        shake: function (v) { shake = v || 0.6; },
+        tint: function (t) { tint = t; },
+        variant: variant, get cur() { return cur; }
+    };
+})();
+</script>
+<script>
+/* ==========================================================================
+   ENGINE - lines, choices, "they will remember that", quick-time events, looking around,
+            chapters with checkpoints, deaths that rewind, endings
+   ========================================================================== */
+var ABORT = { abort: 1 }, DEATH = { death: 1 };
+var RUN = { tok: 0, pend: [] };
+function guard(p) {
+    var tok = RUN.tok;
+    return new Promise(function (ok, no) {
+        var e = { no: no }; RUN.pend.push(e);
+        p.then(function (v) { RUN.pend.splice(RUN.pend.indexOf(e), 1); if (tok !== RUN.tok) no(ABORT); else ok(v); }, function (x) { RUN.pend.splice(RUN.pend.indexOf(e), 1); no(x); });
+    });
+}
+function abortAll() { cine(false); RUN.tok++; var p = RUN.pend.slice(); RUN.pend = []; p.forEach(function (e) { e.no(ABORT); }); VO.stop(); hideAll(); }
+function hideAll() { ['#dlg', '#choices', '#qte', '#insp', '#look', '#card'].forEach(function (s) { $(s).classList.remove('show'); }); $('#qte').innerHTML = ''; }
+
+/* ---------------------------------------------------------------- state */
+var S = null;
+function freshState(seed) {
+    return { seed: seed, rn: 0, ch: 0, sc: 0, flags: {}, rel: { lyra: 0, bror: 0, mira: 0, cobb: 0, ash: 0, wren: 0 }, alive: { lyra: 1, bror: 1, mira: 1, cobb: 1, ash: 1, wren: 1, harrow: 1 },
+        items: {}, clues: {}, log: [], R: {}, deaths: 0, started: Date.now() };
+}
+var F = function (k, v) { if (v === undefined) return S.flags[k]; S.flags[k] = v; };
+function alive(id) { return !!S.alive[id]; }
+function kill(id) { S.alive[id] = 0; }
+function rel(id, n) { S.rel[id] = (S.rel[id] || 0) + n; }
+function logChoice(q, a) { S.log.push({ ch: S.ch, q: q, a: a }); }
+
+/* ---------------------------------------------------------------- stage: who is standing in the scene */
+var STAGE = { on: {}, order: [] };
+function placeActors() {
+    var ids = STAGE.order, n = ids.length, wv = innerWidth, aw = Math.min(wv * 0.46, 300);
+    ids.forEach(function (id, i) {
+        var el = STAGE.on[id].el, slot = n === 1 ? 0.5 : n === 2 ? [0.27, 0.73][i] : n === 3 ? [0.17, 0.5, 0.83][i] : (0.12 + i * 0.76 / (n - 1));
+        el.style.left = (slot * wv - aw / 2) + 'px'; el.style.zIndex = 10 - Math.abs(i - (n - 1) / 2);
+        el.style.transform = 'scale(' + (n > 3 ? 0.82 : 1) + ')';
+    });
+}
+function cast(ids, o) {
+    o = o || {};
+    ids = ids.filter(function (id) { return id && (!(id in S.alive) || S.alive[id]); });
+    Object.keys(STAGE.on).forEach(function (id) { if (ids.indexOf(id) < 0) { var el = STAGE.on[id].el; el.style.opacity = 0; setTimeout(function () { el.remove(); }, 500); delete STAGE.on[id]; } });
+    ids.forEach(function (id) {
+        if (STAGE.on[id]) return;
+        var el = document.createElement('div'); el.className = 'actor'; el.style.opacity = 0; $('#stage').appendChild(el);
+        STAGE.on[id] = { el: el, ex: 'neutral', o: {} }; renderActor(id, (o.ex && o.ex[id]) || 'neutral');
+        requestAnimationFrame(function () { el.style.opacity = 1; });
+    });
+    STAGE.order = ids; placeActors();
+}
+function renderActor(id, ex, opt) {
+    var a = STAGE.on[id]; if (!a) return;
+    if (opt) a.o = Object.assign({}, a.o, opt);
+    var o = Object.assign({}, a.o); if (id in S.alive && S.flags[id + 'Hurt']) o.hurt = 1; if (id === 'wren' && F('wrenChoir') && !F('wrenFreed')) o.choir = 1;
+    a.ex = ex; a.el.innerHTML = charSVG(id, ex, o);
+}
+function expr(id, ex) { if (STAGE.on[id] && STAGE.on[id].ex !== ex) renderActor(id, ex); }
+addEventListener('resize', placeActors);
+var flapI = null;
+function talking(id) {
+    Object.keys(STAGE.on).forEach(function (k) { var el = STAGE.on[k].el; el.classList.toggle('on', !id || k === id || id === 'narrator'); el.classList.toggle('talk', k === id); });
+    clearInterval(flapI);
+    if (id && STAGE.on[id]) { var el = STAGE.on[id].el, f = 0; flapI = setInterval(function () { f = !f; el.classList.toggle('flap', f && Math.random() > 0.25); }, 120); }
+}
+
+/* ---------------------------------------------------------------- a spoken line */
+var SPEAKERS = { narrator: ['', '#e7dcc8'], you: ['You', '#e9b85a'] };
+function nameOf(id) { if (SPEAKERS[id]) return SPEAKERS[id][0]; return (CH[id] && CH[id].name) || id; }
+function colOf(id) { if (SPEAKERS[id]) return SPEAKERS[id][1]; return (CH[id] && CH[id].col) || '#fff'; }
+function fill(t) {
+    if (Array.isArray(t)) t = pick(t);
+    return String(t).replace(/\{(\w+)\}/g, function (_, k) { return S.R[k] != null ? S.R[k] : _; });
+}
+var SKIP = { req: false };
+async function say(id, text, ex, o) {
+    text = fill(text);
+    if (text.indexOf('*') < 0) return sayRaw(id, text, ex, o);
+    var parts = text.split(/\*([^*]+)\*/);
+    if (ex && STAGE.on[id]) expr(id, ex);
+    for (var i = 0; i < parts.length; i++) { var p = parts[i].trim(); if (!p) continue; await sayRaw(i % 2 ? 'narrator' : id, p, i % 2 ? null : ex, o); }
+}
+function sayRaw(id, text, ex, o) {
+    o = o || {};
+    if (ex && STAGE.on[id]) expr(id, ex);
+    var dlg = $('#dlg'), who = $('#who'), line = $('#line');
+    dlg.classList.add('show'); dlg.classList.remove('done');
+    who.textContent = nameOf(id); who.style.color = colOf(id);
+    line.className = id === 'narrator' ? 'narr' : ''; line.textContent = '';
+    talking(id === 'narrator' || id === 'you' ? null : id);
+    var tok = RUN.tok;
+    return guard(new Promise(function (ok) {
+        var i = 0, typed = false, voiced = !CFG.voice, finished = false, sp = CFG.speed;
+        var vp = VO.speak(id, text).then(function () { voiced = true; if (STAGE.on[id]) STAGE.on[id].el.classList.remove('talk'); clearInterval(flapI); maybeAuto(); });
+        function typeOn() {
+            if (tok !== RUN.tok) return;
+            if (i >= text.length) { typed = true; dlg.classList.add('done'); if (!CFG.voice) setTimeout(function () { if (STAGE.on[id]) STAGE.on[id].el.classList.remove('talk'); clearInterval(flapI); }, 200); maybeAuto(); return; }
+            i += sp > 60 ? 3 : 1; line.textContent = text.slice(0, i); setTimeout(typeOn, sp > 60 ? 10 : 1000 / sp);
+        }
+        typeOn();
+        function maybeAuto() { if ((CFG.auto || o.auto) && typed && voiced && !finished) setTimeout(function () { if (!finished) done(); }, o.hold || 650); }
+        function done() { if (finished) return; finished = true; dlg.removeEventListener('pointerdown', tap); $('#scene').removeEventListener('pointerdown', tap); $('#stage').removeEventListener('pointerdown', tap); ok(); }
+        function tap(e) {
+            if (!typed) { i = text.length; line.textContent = text; typed = true; dlg.classList.add('done'); return; }
+            VO.stop(); done();
+        }
+        setTimeout(function () { dlg.addEventListener('pointerdown', tap); $('#scene').addEventListener('pointerdown', tap); }, 150);
+    })).then(function () { talking(null); });
+}
+var N = function (t, o) { return say('narrator', t, null, o); };
+
+/* ---------------------------------------------------------------- choices (with the Telltale timer) */
+function choose(q, opts, o) {
+    o = o || {};
+    opts = opts.filter(function (x) { return !x.if || x.if(); });
+    var box = $('#choices'), list = $('#copts'), tm = $('#ctimer');
+    $('#dlg').classList.remove('show');
+    $('#cq').textContent = q ? fill(q) : '';
+    list.innerHTML = ''; list.className = opts.length === 1 ? 'one' : '';
+    var timer = o.timer && CFG.timers ? o.timer * (CFG.qte === 'easy' ? 1.6 : 1) : 0;
+    AU.s.choice();
+    return guard(new Promise(function (ok) {
+        var done = false, t0 = performance.now(), raf;
+        function fin(x) {
+            if (done) return; done = true; cancelAnimationFrame(raf); box.classList.remove('show');
+            AU.s.pick(); logChoice(o.log || q || '', x.t || '...'); ok(x.id != null ? x.id : x.t);
+        }
+        opts.forEach(function (x, i) {
+            var b = document.createElement('button'); b.className = 'copt' + (x.big ? ' big' : '');
+            b.innerHTML = (x.tag ? '<span class="k">' + x.tag + '</span>' : '') + fill(x.t);
+            b.onclick = function () { fin(x); }; list.appendChild(b);
+        });
+        tm.style.display = timer ? 'block' : 'none';
+        if (timer) {
+            var bar = tm.firstChild, lastS = -1;
+            (function tick() {
+                var e = (performance.now() - t0) / 1000, f = 1 - e / timer; bar.style.transform = 'scaleX(' + clamp(f, 0, 1) + ')';
+                if (Math.ceil(timer - e) !== lastS && f < 0.4) { lastS = Math.ceil(timer - e); AU.s.tick(); }
+                if (f <= 0) return fin({ id: o.silence || '...', t: '[ Say nothing ]' });
+                raf = requestAnimationFrame(tick);
+            })();
+        }
+        box.classList.add('show');
+    }));
+}
+/* "Lyra will remember that." */
+function remember(id, text, n) {
+    if (n) rel(id, n);
+    var el = document.createElement('div'); el.className = 'rem';
+    el.textContent = text || (nameOf(id) + ' will remember that.');
+    $('#remember').appendChild(el); AU.s.remember(); setTimeout(function () { el.remove(); }, 4300);
+}
+function toast(t, ms) { var el = $('#toast'); el.textContent = t; el.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(function () { el.style.display = 'none'; }, ms || 2200); }
+
+/* ---------------------------------------------------------------- quick-time events
+   tap: hit the circle before it closes      mash: tap fast to fill the bar
+   hold: hold, let go inside the blue zone    swipe: swipe (or arrow keys) the way the arrow points
+   seq: a run of taps in different places */
+function qte(type, o) {
+    o = o || {};
+    var easy = CFG.qte === 'easy' ? 1.5 : CFG.qte === 'hard' ? 0.8 : 1;
+    var box = $('#qte'); box.innerHTML = ''; box.classList.add('show'); $('#dlg').classList.remove('show');
+    AU.s.qte(); SC.cam(1.14, 0, 0, 0.06);
+    var lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = o.label || ({ tap: 'TAP!', mash: 'TAP FAST!', hold: 'HOLD... RELEASE IN THE BLUE', swipe: 'SWIPE!', seq: 'TAP!' })[type]; box.appendChild(lbl);
+    return guard(new Promise(function (ok) {
+        var done = false, timers = [];
+        function end(win) {
+            if (done) return; done = true; timers.forEach(clearTimeout); removeEventListener('keydown', key);
+            (win ? AU.s.good : AU.s.bad)(); if (!win) { flash('rgba(200,30,30,.45)'); SC.shake(0.7); }
+            setTimeout(function () { box.classList.remove('show'); box.innerHTML = ''; SC.cam(1.06, 0, 0, 0.02); ok(win); }, win ? 350 : 650);
+        }
+        function ring(x, y, ms, onHit) {
+            var r = document.createElement('div'); r.className = 'ring'; r.style.left = x + '%'; r.style.top = y + '%';
+            var s = document.createElement('div'); s.className = 'shrink'; r.appendChild(s);
+            s.animate([{ transform: 'scale(2.2)', opacity: 0.3 }, { transform: 'scale(1)', opacity: 1 }], { duration: ms, fill: 'forwards' });
+            r.onpointerdown = function (e) { e.stopPropagation(); r.classList.add('ok'); AU.s.tap(); onHit(r); };
+            box.appendChild(r); return r;
+        }
+        var key = function () { };
+        if (type === 'tap') {
+            var ms = (o.ms || 1500) * easy, r = ring(o.x || (30 + rnd() * 40), o.y || (42 + rnd() * 22), ms, function () { end(true); });
+            timers.push(setTimeout(function () { r.classList.add('bad'); end(false); }, ms));
+            key = function (e) { if (e.key === ' ' || e.key === 'Enter') end(true); };
+        }
+        if (type === 'seq') {
+            var n = o.n || 3, k = 0;
+            (function next() {
+                if (done) return; if (k >= n) return end(true);
+                var ms2 = (o.ms || 1100) * easy, r2 = ring(15 + rnd() * 70, 38 + rnd() * 34, ms2, function (el) { clearTimeout(t2); setTimeout(function () { el.remove(); }, 120); k++; next(); });
+                var t2 = setTimeout(function () { r2.classList.add('bad'); end(false); }, ms2); timers.push(t2);
+            })();
+        }
+        if (type === 'mash') {
+            var need = Math.round((o.need || 14) / easy), got = 0, dur = (o.ms || 3200), m = document.createElement('div'); m.className = 'meter'; m.innerHTML = '<i></i>'; box.appendChild(m);
+            var r3 = ring(50, 56, dur, function () { }); r3.insertAdjacentText('beforeend', '✊');
+            var hitf = function (e) { if (e) e.stopPropagation && e.stopPropagation(); got++; AU.s.tap(); m.firstChild.style.width = Math.min(100, got / need * 100) + '%'; r3.animate([{ transform: 'scale(.9)' }, { transform: 'scale(1)' }], { duration: 90 }); if (got >= need) end(true); };
+            r3.onpointerdown = hitf; box.onpointerdown = hitf;
+            key = function (e) { if (e.key === ' ' || e.key === 'Enter') hitf(); };
+            timers.push(setTimeout(function () { end(false); }, dur * (CFG.qte === 'easy' ? 1.4 : 1)));
+        }
+        if (type === 'hold') {
+            var m2 = document.createElement('div'); m2.className = 'meter'; var zs = 0.55 + rnd() * 0.2, zw = 0.16 * easy; m2.innerHTML = '<b style="left:' + zs * 100 + '%;width:' + zw * 100 + '%"></b><i></i>'; box.appendChild(m2);
+            var r4 = ring(50, 58, 99999, function () { }); r4.querySelector('.shrink').remove(); r4.insertAdjacentText('beforeend', '✋');
+            var holding = false, v = 0, raf2, sp = (o.speed || 0.55) / (CFG.qte === 'easy' ? 1.3 : 1), started = false;
+            r4.onpointerdown = function (e) { e.stopPropagation(); holding = true; started = true; };
+            var up = function () { if (!holding) return; holding = false; end(v >= zs && v <= zs + zw); };
+            r4.onpointerup = up; r4.onpointerleave = up; addEventListener('pointerup', up, { once: true });
+            key = function (e) { if (e.type === 'keydown' && e.key === ' ') { holding = true; started = true; } };
+            addEventListener('keyup', function ku(e) { if (e.key === ' ') { removeEventListener('keyup', ku); up(); } });
+            var last = performance.now();
+            (function tk(now) { if (done) return; var dt = (now - last) / 1000; last = now; if (holding) { v += dt * sp; m2.lastChild.style.width = Math.min(100, v * 100) + '%'; if (v > 1) { holding = false; return end(false); } } raf2 = requestAnimationFrame(tk); })(last);
+            timers.push(setTimeout(function () { if (!started) end(false); }, 4000 * easy));
+        }
+        if (type === 'swipe') {
+            var dirs = { l: '◀', r: '▶', u: '▲', d: '▼' }, want = o.dir || pick(['l', 'r', 'u']), ar = document.createElement('div'); ar.className = 'arrow'; ar.textContent = dirs[want]; box.appendChild(ar);
+            ar.animate([{ transform: 'scale(1.3)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }], { duration: 180 });
+            var sx = 0, sy = 0, ms3 = (o.ms || 1600) * easy;
+            box.onpointerdown = function (e) { sx = e.clientX; sy = e.clientY; };
+            box.onpointerup = function (e) { var dx = e.clientX - sx, dy = e.clientY - sy; if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return; var d = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'l' : 'r') : (dy < 0 ? 'u' : 'd'); ar.classList.add(d === want ? 'ok' : 'bad'); end(d === want); };
+            key = function (e) { var m = { ArrowLeft: 'l', ArrowRight: 'r', ArrowUp: 'u', ArrowDown: 'd' }[e.key]; if (m) { ar.classList.add(m === want ? 'ok' : 'bad'); end(m === want); } };
+            timers.push(setTimeout(function () { ar.classList.add('bad'); end(false); }, ms3));
+        }
+        addEventListener('keydown', key);
+    }));
+}
+/* a run of QTEs: returns how many were passed */
+async function qteRun(list) { var won = 0; for (var i = 0; i < list.length; i++) { if (await qte(list[i][0], list[i][1])) won++; else if (list[i][1] && list[i][1].fatal) return -1; await wait(150); } return won; }
+
+/* ---------------------------------------------------------------- looking around: white circles */
+var ICONS = {};
+function inspect(o) {
+    var box = $('#insp'), hots = $('#hots'), leave = $('#ileave'), found = {}, need = o.need || [];
+    $('#dlg').classList.remove('show'); hots.innerHTML = ''; box.classList.add('show'); talking(null);
+    $('#ihint').textContent = o.hint || 'Tap the white circles to look around.';
+    var spots = o.spots.filter(function (s) { return !s.if || s.if(); });
+    return guard(new Promise(function (ok) {
+        function upd() { var miss = need.filter(function (k) { return !found[k]; }); leave.disabled = miss.length > 0; leave.textContent = miss.length ? 'Keep looking (' + miss.length + ')' : (o.leave || 'Move on'); }
+        spots.forEach(function (sp) {
+            var h = document.createElement('div'); h.className = 'hot'; h.style.left = sp.x + '%'; h.style.top = sp.y + '%';
+            h.innerHTML = '<span>' + sp.n + '</span>'; hots.appendChild(h);
+            h.onclick = async function () {
+                AU.s.look(); found[sp.id] = 1; h.classList.add('seen'); S.clues[sp.id] = 1;
+                var txt = typeof sp.t === 'function' ? sp.t() : fill(sp.t);
+                var act = await look(sp.n, txt, sp.ic, sp.acts);
+                if (sp.on) await sp.on(act);
+                if (sp.once) h.remove();
+                upd();
+            };
+        });
+        upd();
+        leave.onclick = function () { if (leave.disabled) return; box.classList.remove('show'); ok(found); };
+    }));
+}
+function look(title, text, ic, acts) {
+    var lk = $('#look'); lk.querySelector('h3').textContent = title; lk.querySelector('p').textContent = text;
+    lk.querySelector('.ic').innerHTML = ITEM(ic || 'eye'); lk.querySelector('.ic').style.display = ic === 'none' ? 'none' : 'flex';
+    var row = lk.querySelector('.row'); row.innerHTML = ''; lk.classList.add('show');
+    VO.speak('narrator', text);
+    return new Promise(function (ok) {
+        (acts || [{ t: 'Back', v: null }]).forEach(function (a) { var b = document.createElement('button'); b.textContent = a.t; b.onclick = function () { VO.stop(); lk.classList.remove('show'); ok(a.v); }; row.appendChild(b); });
+    });
+}
+/* small item pictures for the look card */
+function ITEM(k) {
+    var I = {
+        eye: '<svg viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="40" ry="22" fill="none" stroke="#e9b85a" stroke-width="5"/><circle cx="50" cy="50" r="12" fill="#e9b85a"/></svg>',
+        book: '<svg viewBox="0 0 100 100"><path d="M10 25 Q30 15 50 25 Q70 15 90 25 L90 80 Q70 70 50 80 Q30 70 10 80Z" fill="#e9dcb8" stroke="#160d1c" stroke-width="3"/><path d="M50 25 L50 80" stroke="#160d1c" stroke-width="3"/><path d="M18 35 L42 33 M18 45 L42 43 M18 55 L38 53 M58 33 L82 35 M58 43 L82 45" stroke="#6a5a4a" stroke-width="2"/></svg>',
+        glove: '<svg viewBox="0 0 100 100"><path d="M30 90 L32 50 Q30 34 40 32 L40 14 Q44 8 48 14 L48 30 L52 10 Q57 6 59 12 L57 32 L64 18 Q69 15 70 21 L64 44 Q78 40 80 48 Q66 60 60 90Z" fill="#8c8c98" stroke="#160d1c" stroke-width="3"/></svg>',
+        key: '<svg viewBox="0 0 100 100"><circle cx="30" cy="50" r="16" fill="none" stroke="#e9b85a" stroke-width="7"/><path d="M46 50 L88 50 M76 50 L76 64 M86 50 L86 60" stroke="#e9b85a" stroke-width="7"/></svg>',
+        skull: '<svg viewBox="0 0 100 100"><path d="M20 50 Q20 15 50 15 Q80 15 80 50 Q80 62 70 66 L70 82 L30 82 L30 66 Q20 62 20 50Z" fill="#e8dfcc" stroke="#160d1c" stroke-width="3"/><circle cx="38" cy="48" r="8" fill="#160d1c"/><circle cx="62" cy="48" r="8" fill="#160d1c"/><path d="M46 64 L50 56 L54 64Z" fill="#160d1c"/></svg>',
+        bird: '<svg viewBox="0 0 100 100"><path d="M15 60 Q30 30 55 40 Q70 25 85 30 Q75 36 72 44 Q80 70 50 72 Q30 74 15 60Z" fill="none" stroke="#e8dfcc" stroke-width="4"/><circle cx="68" cy="38" r="2.5" fill="#e8dfcc"/><path d="M10 88 L90 88" stroke="#6a5a4a" stroke-width="3"/></svg>',
+        lever: '<svg viewBox="0 0 100 100"><rect x="20" y="70" width="60" height="16" fill="#4a4a52" stroke="#160d1c" stroke-width="3"/><path d="M50 74 L70 22" stroke="#8a8f98" stroke-width="8"/><circle cx="70" cy="20" r="9" fill="#a8452f" stroke="#160d1c" stroke-width="3"/></svg>',
+        coin: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="#9a9aa8" stroke="#160d1c" stroke-width="4"/><circle cx="50" cy="50" r="24" fill="none" stroke="#5a5a68" stroke-width="3"/><text x="50" y="60" font-size="28" text-anchor="middle">✋</text></svg>',
+        map: '<svg viewBox="0 0 100 100"><path d="M10 20 L35 12 L65 22 L90 14 L90 82 L65 90 L35 80 L10 88Z" fill="#e9dcb8" stroke="#160d1c" stroke-width="3"/><path d="M20 40 Q40 30 50 50 T80 60" stroke="#a8452f" stroke-width="3" fill="none" stroke-dasharray="5 4"/><path d="M76 56 l8 8 M84 56 l-8 8" stroke="#a8452f" stroke-width="3"/></svg>',
+        locket: '<svg viewBox="0 0 100 100"><path d="M30 10 Q50 40 70 10" fill="none" stroke="#e9b85a" stroke-width="3"/><ellipse cx="50" cy="58" rx="26" ry="30" fill="#e9b85a" stroke="#160d1c" stroke-width="3"/><ellipse cx="50" cy="58" rx="17" ry="21" fill="#f6e3b0"/><path d="M42 54 Q50 46 58 54 Q50 70 42 54Z" fill="#a8452f"/></svg>',
+        hammer: '<svg viewBox="0 0 100 100"><rect x="18" y="16" width="64" height="26" rx="4" fill="#6c727c" stroke="#160d1c" stroke-width="3"/><rect x="44" y="40" width="12" height="52" fill="#7a4a2a" stroke="#160d1c" stroke-width="3"/><path d="M28 28 L72 28" stroke="#c9a35a" stroke-width="3"/></svg>',
+        note: '<svg viewBox="0 0 100 100"><path d="M22 12 L70 12 L82 24 L82 90 L22 90Z" fill="#efe6cf" stroke="#160d1c" stroke-width="3"/><path d="M30 34 L74 34 M30 46 L74 46 M30 58 L66 58 M30 70 L58 70" stroke="#6a5a4a" stroke-width="2.5"/></svg>',
+        crown: '<svg viewBox="0 0 100 100"><path d="M14 74 L20 26 L36 50 L50 18 L64 50 L80 26 L86 74Z" fill="#e9b85a" stroke="#160d1c" stroke-width="3"/><circle cx="50" cy="60" r="7" fill="#c8a2ff"/></svg>',
+        potion: '<svg viewBox="0 0 100 100"><path d="M40 12 L60 12 L60 34 Q82 46 78 70 Q72 92 50 92 Q28 92 22 70 Q18 46 40 34Z" fill="#a8452f" stroke="#160d1c" stroke-width="3"/><rect x="38" y="6" width="24" height="10" fill="#7a4a2a"/></svg>',
+        lantern: '<svg viewBox="0 0 100 100"><path d="M50 6 L50 18" stroke="#160d1c" stroke-width="4"/><rect x="28" y="18" width="44" height="62" rx="6" fill="#ffd27a" stroke="#160d1c" stroke-width="3"/><path d="M28 34 L72 34 M28 66 L72 66" stroke="#160d1c" stroke-width="3"/></svg>',
+        ice: '<svg viewBox="0 0 100 100"><path d="M50 8 L62 40 L92 50 L62 60 L50 92 L38 60 L8 50 L38 40Z" fill="#bfefff" stroke="#5aa0c0" stroke-width="3"/></svg>'
+    };
+    return I[k] || I.eye;
+}
+
+/* ---------------------------------------------------------------- staging helpers */
+function wait(ms) { return guard(sleep(ms)); }
+function bg(name, o) { SC.set(name, o); }
+function flash(col, ms) { var f = $('#fx'); f.style.background = col || '#fff'; f.style.transition = 'none'; f.style.opacity = 1; requestAnimationFrame(function () { f.style.transition = 'opacity ' + (ms || 600) + 'ms'; f.style.opacity = 0; }); }
+function cine(on) { $('#game').classList.toggle('cine', !!on); }
+function hurt(id) { var a = STAGE.on[id]; if (a) { a.el.classList.remove('hurt'); void a.el.offsetWidth; a.el.classList.add('hurt'); } AU.hit(0.7); }
+function titleCard(ep, title, sub, ms) {
+    var c = $('#card'); c.querySelector('.ep').textContent = ep || ''; c.querySelector('h1').textContent = title; c.querySelector('.sub').textContent = sub || '';
+    c.classList.add('show'); AU.s.bell(); VO.speak('narrator', title + (sub ? '. ' + sub : ''));
+    return wait(ms || 3600).then(function () { c.classList.remove('show'); });
+}
+/* death: Telltale-style rewind to the last checkpoint */
+async function die(text) {
+    AU.s.death(); flash('rgba(120,0,0,.9)', 1600); SC.shake(1);
+    var c = $('#card'); c.querySelector('.ep').textContent = 'YOU DIED'; c.querySelector('h1').textContent = text || 'The dark takes you.'; c.querySelector('.sub').textContent = 'Rewinding...';
+    c.classList.add('show'); S.deaths++;
+    await wait(2600); c.classList.remove('show');
+    throw DEATH;
+}
+</script>
+<script>
+/* ==========================================================================
+   STORY - THE GRAY LEDGER
+   Linear spine, five chapters. Every run rolls its own: why you owe, what happens at the gate,
+   the crypt, the monsters, who is selling you out, what became of Wren, the riddle, the side events.
+   ========================================================================== */
+function rollRun() {
+    var R = S.R;
+    R.why = pick(['brother', 'dice', 'fire', 'medicine']);
+    R.debt = pick(['four hundred and twelve', 'three hundred and ninety', 'five hundred and six', 'six hundred and one']);
+    R.sur = pick(['Marsh', 'Hale', 'Corran', 'Vey', 'Tamsin', 'Ardley', 'Crane']);
+    R.gate = pick(['mother', 'whip', 'riot']);
+    R.crypt = pick(['bone', 'flooded', 'collapsed']);
+    R.enemy = pick(['ghouls', 'wraiths', 'crawlers']);
+    R.traitor = weighted({ cobb: 4, ash: 4, none: 3 });
+    R.wren = weighted({ alive: 3, choir: 4, dead: 3 });
+    var sy = shuffle(['moon', 'crown', 'eye']); R.syms = sy; R.sym = pick(sy);
+    R.riddle = Math.floor(rnd() * 3);
+    R.camp = pick(['song', 'noise', 'stars']);
+    R.side2 = pick(['tomb', 'rats', 'mirror']);
+    R.side3 = pick(['frozen', 'bridge', 'wolf']);
+    R.boy = pick(['Pell', 'Tobin', 'Arlo', 'Wick']);
+    R.daughter = pick(['Rosie', 'Nell', 'Tilly', 'Bea']);
+    R.mons = { ghouls: 'ghouls', wraiths: 'wraiths', crawlers: 'crawlers' }[R.enemy];
+    R.mon = { ghouls: 'ghoul', wraiths: 'wraith', crawlers: 'crawler' }[R.enemy];
+}
+var ENEMY = {
+    ghouls: 'Gray, hairless things that walk on their knuckles and wear the clothes of the people they ate.',
+    wraiths: 'Shapes made of cold, like the space a person leaves when they walk out of a room for the last time.',
+    crawlers: 'Long, pale, too many joints. They come down the walls head first, smiling with no mouths.'
+};
+function team() { return ['lyra', 'bror', 'mira', 'cobb', 'ash', 'wren'].filter(function (k) { return S.alive[k] && F('met_' + k); }); }
+function met(id) { F('met_' + id, 1); }
+
+/* ======================================================= CHAPTER ONE: THE DEBT */
+async function c1_intro() {
+    cast([]); cine(true); bg('gate', { z: 1.5, y: -0.9, snap: 1 }); SC.cam(1.08, 0, 0.1, 0.004);
+    await wait(900);
+    await N('Every winter, the town above the Abyss pays its debts the old way.', { auto: 1 });
+    await N('Not in coin. In people.', { auto: 1 });
+    await N('The Gray Hand keeps the ledger. A guild of collectors with an open gray palm on every seal.', { auto: 1 });
+    await N('When your debt grows too large to pay, they offer you a door instead.', { auto: 1 });
+    await N('Tonight, the ledger has your name in it.', { auto: 1 });
+    cine(false);
+    await titleCard('Dungeon Dwellers', 'The Gray Ledger', 'Chapter One: The Debt');
+}
+async function c1_office() {
+    bg('office', { z: 1.1 }); cast(['harrow']);
+    await N('The office of Collector Harrow smells of candle wax and wet wool. The ledger on his desk is as big as a door.');
+    await say('harrow', ['Sit. Or stand. The ledger does not care which.', 'Ah. Delver {sur}. Come in out of the cold. The cold is free; my time is not.'], 'smirk');
+    var why = {
+        brother: 'Your brother borrowed {debt} silver and then had the poor manners to die. Debts, unlike brothers, are inherited.',
+        dice: '{debt} silver. Lost at dice at the Lame Horse, over eleven nights. I almost admire the persistence.',
+        fire: 'The Tallyman\'s warehouse. Every bolt of cloth, gone up the chimney. You say it was an accident. The ledger does not record intentions.',
+        medicine: 'Your mother\'s medicine. {debt} silver of it. Very touching. The ledger is not touched.'
+    };
+    await say('harrow', why[S.R.why], 'neutral');
+    var c = await choose('', [
+        { id: 'own', t: '"I know what I owe."' },
+        { id: 'unfair', t: '"Your interest doubled it. That\'s theft."' },
+        { id: 'joke', t: '"Can I pay in compliments? Lovely hat."' }
+    ], { timer: 9, log: 'Harrow names your debt' });
+    if (c === 'own') { await say('harrow', 'Honesty. How rare. It will not lower the number, but I will think slightly better of you while you starve.', 'smirk'); F('harrowRespect', 1); }
+    if (c === 'unfair') { await say('harrow', 'Interest is the cost of time. And you, Delver, have used a great deal of mine.', 'cold'); F('harrowAnnoyed', 1); }
+    if (c === 'joke') { await say('harrow', 'It is a lovely hat. It was paid for. Note the difference.', 'smirk'); }
+    if (c === '...') { await say('harrow', 'Silence. Good. Most of them weep.', 'cold'); }
+    await say('harrow', '*He turns to the window.* Look around if you like. Everything in this room is something someone owed me.', 'neutral');
+    var seen = await inspect({
+        need: ['ledger'], hint: 'Harrow lets you look. Tap the white circles.', spots: [
+            { id: 'ledger', n: 'The Ledger', x: 42, y: 70, ic: 'book', t: function () { return 'Your name, in neat gray ink: ' + S.R.sur + ', ' + S.R.debt + ' silver. Three lines below it: "Lyra Thorne. Eleven years remaining." Someone has pressed so hard writing "eleven" that the nib tore the page.'; } },
+            { id: 'glove', n: 'Gray glove', x: 49, y: 22, ic: 'glove', t: 'A single gray glove, mounted like a trophy. The sign of the Gray Hand. The fingers are stiff, as if someone died making a fist inside it.' },
+            { id: 'coins', n: 'Bowl of gray coins', x: 75, y: 64, ic: 'coin', t: 'A bowl of small gray coins stamped with an open palm. "Delvers\' tokens," a label says. They are faintly, oddly warm.' },
+            { id: 'map', n: 'Old map', x: 22, y: 34, ic: 'map', t: 'A map of the upper Abyss, hand-drawn and water-stained. In the bottom corner someone has drawn a tiny bird instead of a signature.' },
+            { id: 'window', n: 'Window', x: 70, y: 26, ic: 'none', t: 'Through the frost you can see the Brass Gates, and the queue of debtors in the snow. Twelve of them tonight. Thirteen, with you.' },
+            { id: 'shelf', n: 'Ledgers', x: 22, y: 52, ic: 'note', t: 'Shelves of older ledgers. One spine reads "DELVERS RETURNED". It is very thin.' }
+        ]
+    });
+    if (seen.coins) F('sawCoins', 1);
+    if (seen.map) F('sawBird', 1);
+    await say('harrow', 'Here is my offer. At the bottom of the Abyss there is a Crown. Bring it to me, and your page burns.', 'neutral');
+    await say('harrow', 'Refuse, and you work the salt mines until the ledger balances. Around the time your grandchildren die, I imagine.', 'smirk');
+    c = await choose('', [
+        { id: 'yes', t: '"I\'ll bring you your crown."' },
+        { id: 'burn', t: '"Burn the page first. Then we talk."' },
+        { id: 'last', t: '"What happened to the last delvers you sent?"' }
+    ], { timer: 10, log: 'Harrow\'s offer' });
+    if (c === 'yes') { await say('harrow', 'Splendid. I do enjoy a quick yes.', 'smile'); }
+    if (c === 'burn') { await say('harrow', '*He laughs, once, like a cough.* No. But I will remember you asked.', 'smirk'); F('harrowAnnoyed', 1); toast('Harrow will remember that.'); }
+    if (c === 'last') { await say('harrow', 'Some of them came back. The ledger is very fond of the ones who came back. ...There were not many.', 'cold'); F('askedLast', 1); }
+    if (c === '...') { await say('harrow', 'I will take that as a yes. Everyone does, eventually.', 'cold'); }
+    await say('harrow', '*He presses a small gray coin into your palm.* Your token. It shows the guards below that you belong to me. Do not lose it.', 'neutral');
+    F('coin', 1); remember('harrow', 'You took Harrow\'s gray coin.');
+}
+async function c1_gate() {
+    bg('gate', { z: 1.04, y: 0.2 }); cast(['lyra', 'bror']); met('lyra'); met('bror');
+    await N('The Brass Gates stand open a crack, breathing cold. Twelve debtors wait in the snow. Two of them look like they have done this before.');
+    await say('lyra', ['First time? You have the look. Like a lamb that just noticed the butcher has a nice smile.', 'Oh, good, a new one. Stand behind me. Not that far behind me.'], 'smirk');
+    await say('bror', 'Leave off, Lyra. ...Bror. Of the Karak-Dun forges. Or what is left of them.', 'neutral');
+    await say('lyra', 'Lyra. I would say "pleasure", but we are about to walk into a hole in the ground.', 'smile');
+    var c = await choose('', [
+        { id: 'nice', t: '"Glad I won\'t be alone down there."' },
+        { id: 'lamb', t: '"I\'m not a lamb."' },
+        { id: 'been', t: '"You two have been down before?"' }
+    ], { timer: 9, log: 'Meeting Lyra and Bror' });
+    if (c === 'nice') { await say('bror', 'Aye. Nobody should be. Stay near the shield.', 'smile'); remember('bror', 'Bror will remember that.', 1); }
+    if (c === 'lamb') { await say('lyra', '*She looks you over.* ...No. Maybe a goat. Goats bite.', 'smile'); remember('lyra', 'Lyra will remember that.', 1); }
+    if (c === 'been') { await say('lyra', 'Twice. I came back both times. My sister did not come back once.', 'sad'); F('askedWren', 1); await say('bror', 'Her sister went down six years ago. Wren. Lyra keeps a locket.', 'sad'); }
+    if (c === '...') { await say('lyra', 'Quiet type. Fine. The quiet ones last longest down there.', 'neutral'); }
+    /* what is happening at the gate tonight (rolls each run) */
+    if (S.R.gate === 'mother') await gateMother();
+    if (S.R.gate === 'whip') await gateWhip();
+    if (S.R.gate === 'riot') await gateRiot();
+    /* Lyra's plan */
+    cast(['lyra', 'bror']);
+    await say('lyra', '*She leans in close.* Harrow keeps the key to the debt vault on his belt. Every page. Every name in this town. I want it.', 'neutral');
+    await say('lyra', 'All you would have to do is keep him talking for ten heartbeats.', 'smirk');
+    await say('bror', 'That is how people get hanged, lass.', 'angry');
+    c = await choose('Harrow is walking down the line toward you.', [
+        { id: 'help', t: 'Help Lyra. Keep him talking.' },
+        { id: 'no', t: '"Not worth the rope."' },
+        { id: 'tell', t: 'Tell Harrow what she is planning.' }
+    ], { timer: 8, log: 'Lyra\'s plan to steal the vault key' });
+    if (c === 'help') {
+        cast(['harrow', 'lyra']);
+        await say('harrow', 'Delver. Second thoughts?', 'neutral');
+        var d = await choose('Keep him busy.', [
+            { id: 'crown', t: '"Tell me about the Crown. What does it do?"' },
+            { id: 'hat', t: '"Seriously, where did you get that hat?"' },
+            { id: 'debt', t: '"If I bring it back, I want it in writing."' }
+        ], { timer: 6, log: 'Distracting Harrow' });
+        if (d === 'crown') await say('harrow', 'It makes whoever wears it the owner of everything below. Every vein of silver, every soul. The ledger, in a sense, goes all the way down.', 'smirk');
+        else if (d === 'hat') await say('harrow', 'A hatter who owed me. He is now a very good hatter in the salt mines.', 'smirk');
+        else await say('harrow', 'In writing. Oh, you would like it in writing. Everything is in writing, Delver.', 'smile');
+        await N('Behind him, Lyra drifts closer. Harrow starts to turn.');
+        var ok = await qte('tap', { label: 'BUMP HIM BACK!', ms: 1300 });
+        if (ok) { F('lyraKey', 1); await N('You stumble into Harrow, apologizing. When he straightens his coat, Lyra is already three people down the line, smiling at nothing.'); remember('lyra', 'Lyra will remember that.', 3); }
+        else { F('harrowSuspect', 1); await say('harrow', '*He catches Lyra\'s wrist without looking.* Careful, Miss Thorne. Eleven years can become twelve.', 'cold'); await say('lyra', 'Just admiring the stitching.', 'angry'); remember('lyra', 'Lyra will remember you tried.', 1); }
+    } else if (c === 'tell') {
+        cast(['harrow', 'lyra', 'bror']);
+        await say('harrow', 'Is that so. Guards.', 'cold');
+        await N('Two guards take Lyra by the arms. One of them hits her, once, in the stomach. She does not make a sound. She just looks at you.');
+        F('lyraHurt', 1); renderActor('lyra', 'hurt'); F('betrayedLyra', 1); F('harrowFavor', 1);
+        remember('lyra', 'Lyra will never forget that.', -5);
+        await say('bror', '*Bror says nothing. He moves his shield to the other arm, away from you.*', 'cold');
+        rel('bror', -2);
+    } else {
+        await say('lyra', 'Suit yourself. Some of us want more than to survive.', 'cold'); rel('lyra', -1); remember('bror', 'Bror will remember that.', 1);
+    }
+}
+async function gateMother() {
+    cast(['mother', 'guard', 'lyra']);
+    await N('At the front of the line a woman is on her knees in the snow, holding the coat of a boy no older than fourteen.');
+    await say('mother', 'Please. He is {boy}. He is only {boy}. Take me twice. Take me three times.', 'sad');
+    await say('guard', 'The ledger says the boy. The boy goes down.', 'cold');
+    var c = await choose('', [
+        { id: 'take', t: '"Put his debt on my page."' },
+        { id: 'speak', t: '"He\'s a child. Let him go."' },
+        { id: 'no', t: 'Stay out of it.' }
+    ], { timer: 8, log: 'The boy at the gate' });
+    if (c === 'take') { F('tookBoy', 1); await say('guard', '*The guard shrugs and writes. Your number gets bigger. The boy runs.*', 'neutral'); await say('mother', '*She does not thank you. She just holds your hand for a moment, and it is enough.*', 'sad'); remember('bror', 'Bror will remember that.', 2); rel('lyra', 1); }
+    else if (c === 'speak') { await say('guard', 'Then you can go down hungry, mouth.*He hits you with the butt of his spear.*', 'angry'); flash('rgba(200,30,30,.4)'); AU.hit(); await N('The boy still goes through the gate. But Bror is looking at you differently now.'); rel('bror', 1); }
+    else { await N('The boy goes through the gate. His mother does not scream until he is out of sight.'); await say('lyra', 'Smart. Cold, but smart.', 'cold'); }
+}
+async function gateWhip() {
+    cast(['guard', 'bror']);
+    await N('An old man slips on the ice and falls out of the line. A guard uncoils a whip.');
+    var c = await choose('', [{ id: 'step', t: 'Step between them.' }, { id: 'look', t: 'Look away.' }], { timer: 5, log: 'The old man and the whip' });
+    if (c === 'step') {
+        var ok = await qte('tap', { label: 'CATCH THE WHIP!', ms: 1100 });
+        if (ok) { await N('The whip wraps your forearm and stops. You pull. The guard nearly falls on his face, and the line laughs, very quietly.'); await say('guard', 'You will be first into the dark, mouth.', 'angry'); remember('bror', 'Bror will remember that.', 2); }
+        else { await N('The whip opens your cheek instead of his back. It stings like fire.'); F('youScar', 1); remember('bror', 'Bror will remember that.', 2); await say('bror', '*He helps the old man up himself.* Brave and stupid. My favourite kind.', 'smile'); }
+    } else { await N('The crack of the whip follows you to the gate.'); rel('bror', -1); }
+}
+async function gateRiot() {
+    cast(['lyra', 'bror', 'guard']);
+    await N('Someone in the crowd shouts "Gray Hand, gray heart!" and a stone flies. Then twenty stones.');
+    var c = await choose('A stone is flying straight at Lyra.', [{ id: 'shield', t: 'Pull Lyra out of the way.' }, { id: 'bror', t: 'Get behind Bror\'s shield.' }, { id: 'throw', t: 'Throw one back at the guards.' }], { timer: 4, log: 'The stone riot' });
+    if (c === 'shield') { var ok = await qte('swipe', { dir: 'l', label: 'PULL HER!' }); if (ok) { await say('lyra', '*She blinks at you from the snow.* ...Thanks. Do not make it weird.', 'smile'); remember('lyra', 'Lyra will remember that.', 2); } else { hurt('lyra'); F('lyraHurt', 1); await say('lyra', 'Ow. Ow. Nice try.', 'hurt'); rel('lyra', 1); } }
+    else if (c === 'throw') { await N('Your stone hits a guard\'s helmet with a beautiful clang. Up on the steps, Harrow writes something down.'); F('harrowAnnoyed', 1); rel('lyra', 2); toast('Harrow will remember that.'); }
+    else { hurt('lyra'); F('lyraHurt', 1); await say('bror', '*Stones ring off the shield. Lyra was not so lucky.*', 'angry'); }
+}
+async function c1_descent() {
+    bg('lift', { z: 1.06 }); cast(['lyra', 'bror']);
+    await N('The lift is an iron cage on a chain as old as the town. It goes down for a very long time.');
+    await say('bror', ['My grandfather helped hang this chain. He used to say a chain is only as good as the dwarf who hates it most.', 'Listen to her creak. She is older than Harrow\'s grandmother.'], 'neutral');
+    await say('lyra', ['If anyone has to scream, do it now, while we are still near people who might care.', 'I used to count the links on the way down. I stopped at four thousand.'], 'smirk');
+    await wait(600); AU.s.boom(); SC.shake(1); flash('#fff', 300);
+    await N('Something above you snaps with a sound like a bone.');
+    await say('bror', 'The chain! The brake, pull the brake!', 'shock');
+    var a = await qte('mash', { label: 'PULL THE BRAKE!', need: 14, ms: 3400 });
+    if (a) {
+        AU.s.boom(); SC.shake(0.8);
+        await N('The lift slams to a stop. Bror pitches over the edge.');
+        var b = await qte('tap', { label: 'GRAB BROR!', ms: 1200 });
+        if (b) { await say('bror', '*You haul him back by his beard and his belt.* ...Do not tell anyone about the beard.', 'smile'); remember('bror', 'Bror will remember that.', 2); }
+        else { F('brorHurt', 1); await N('He drops twenty feet onto a ledge. When you reach him his arm is bent the wrong way.'); await say('bror', 'It is fine. I have another one.', 'hurt'); }
+    } else {
+        await N('The brake shears off in your hands. The lift is falling.');
+        var j = await qte('swipe', { dir: 'u', label: 'JUMP!', ms: 1300 });
+        if (!j) await die('The lift hits the bottom before you do.');
+        await N('You jump. The lift does not. You land hard on a ledge with Lyra half on top of you, and you hear the iron cage explode somewhere far below.');
+        F('youHurt', 1); await say('lyra', 'Well. We are going to need another way home.', 'shock');
+    }
+    bg('black', { z: 1.2 }); cast(['lyra', 'bror']);
+    await N('Darkness. Your lantern catches something moving at the edge of the light. Then another something.');
+    await N(ENEMY[S.R.enemy]);
+    await say('lyra', '{mons}. Of course it is {mons}. Move!', 'shock');
+    var d = await qte('swipe', { label: 'DODGE!' });
+    if (!d) { F('youHurt', 1); await N('Claws drag across your shoulder. You keep running anyway.'); }
+    var e = await qte('tap', { label: 'STRIKE!' });
+    await N(e ? 'You hit it so hard it folds. The others hesitate, and that is all you need.' : 'You miss. Bror does not. His shield turns the thing into a wet shape on the wall.');
+    await N('You run until the dark stops chasing you.');
+}
+
+/* ======================================================= CHAPTER TWO: THE CRYPT OF NAMES */
+async function c2_crypt() {
+    bg('crypt', { variant: { crypt: S.R.crypt }, z: 1.08 }); cast(['lyra', 'bror']);
+    var desc = { bone: 'The Crypt of Names. The floor is bones, crunching like frost, and every wall is carved with the names of the dead.', flooded: 'The Crypt of Names is half under black water. Every wall is carved with the names of the dead, and the water reflects them backwards.', collapsed: 'The Crypt of Names. Half the ceiling has come down, and dust hangs in the lantern light. Every standing wall is carved with names.' };
+    await N(desc[S.R.crypt]);
+    await N('A light swings out of a niche. Behind it is a man with a lantern on a pole and both hands up.');
+    cast(['lyra', 'cobb', 'bror']); met('cobb');
+    await say('cobb', 'Don\'t shoot! I mean, don\'t stab! You lot are real, yes? Not more of the singing?', 'shock');
+    await say('cobb', 'Cobb. Lantern-man. Came down with the Tamsin crew three weeks back. I am the Tamsin crew now, I suppose.', 'sad');
+    var c = await choose('', [
+        { id: 'join', t: '"Stay with us. We could use the light."' },
+        { id: 'front', t: '"You can come. You walk in front."' },
+        { id: 'go', t: '"We don\'t need another mouth."' }
+    ], { timer: 9, log: 'Cobb the lantern-man' });
+    if (c === 'join') { await say('cobb', 'Bless you. Bless you twice. I know these tunnels a little.', 'smile'); remember('cobb', 'Cobb will remember that.', 2); }
+    if (c === 'front') { await say('cobb', 'Fair. Fair! A lantern is meant to go in front anyhow.', 'smirk'); rel('cobb', 0); await say('lyra', 'I like this one. He knows his place.', 'smirk'); }
+    if (c === 'go' || c === '...') { await say('cobb', 'Then I will follow ten steps behind and you can pretend I am a ghost. A useful ghost.', 'sad'); rel('cobb', -1); }
+    var seen = await inspect({
+        need: ['doors'], hint: 'Look around the crypt.', spots: [
+            { id: 'names', n: 'The names', x: 20, y: 30, ic: 'note', t: function () { return 'Thousands of names. Near the bottom, newer, shallower: "' + S.R.sur + '". Your family\'s name. Somebody you never knew came down here and never left.'; } },
+            { id: 'bird', n: 'A scratch', x: 76, y: 46, ic: 'bird', t: 'A small bird scratched into the stone with the tip of a knife. Under it, an arrow pointing down.', on: async function () { if (F('wrenMark')) return; F('wrenMark', 1); $('#look').classList.remove('show'); cast(['lyra']); await say('lyra', 'That is hers. That is Wren\'s mark. She was here. She was HERE.', 'shock'); await say('lyra', '*She touches the scratch the way you would touch a face.*', 'sad'); remember('lyra', 'Lyra will remember you found it.', 1); cast(['lyra', 'cobb', 'bror']); $('#insp').classList.add('show'); } },
+            { id: 'doors', n: 'Three signs', x: 50, y: 34, ic: 'eye', t: function () { return 'Above the far arch, three carved signs: a ' + S.R.syms.join(', a ') + '. The ' + S.R.sym + ' has fresh scratches around it, as if someone has pressed it over and over. Someone who knew which one opens things.'; }, on: function () { F('knowSym', 1); } },
+            { id: 'pack', n: 'Cobb\'s pack', x: 70, y: 78, ic: 'lantern', t: function () { return S.R.traitor === 'cobb' ? 'Cobb\'s pack is open. Lamp oil, a heel of bread, and a stub of gray sealing wax pressed with an open palm. The kind the Gray Hand uses.' : 'Cobb\'s pack is open. Lamp oil, dried apples, and a small carved wooden horse with "' + S.R.daughter + '" scratched on its belly.'; }, on: function () { F('sawPack', 1); if (S.R.traitor === 'cobb') F('clueCobb1', 1); } },
+            { id: 'skull', n: 'A skull', x: 30, y: 70, ic: 'coin', t: 'A skull in a niche with a gray coin between its teeth. Exactly like yours. Every delver Harrow sends down carries one, it seems. Even the dead ones.', on: function () { F('clueCoin1', 1); } },
+            { id: 'var', n: { bone: 'Bones', flooded: 'Black water', collapsed: 'Rubble' }[S.R.crypt], x: 84, y: 76, ic: 'skull', t: { bone: 'Not all of these bones are old. Some still have the marks of teeth.', flooded: 'Something pale turns over under the water and is gone.', collapsed: 'Under the rubble, a gloved hand. Gray glove. A Gray Hand collector got here before you. Recently.' }[S.R.crypt], on: function () { if (S.R.crypt === 'collapsed') F('handAhead', 1); } }
+        ]
+    });
+    await side2();
+}
+async function side2() {
+    cast(team().slice(0, 3));
+    if (S.R.side2 === 'tomb') {
+        await N('A tomb lies open, a stone lid pushed aside from the INSIDE. Something glints in the dark of it.');
+        var c = await choose('', [{ id: 'reach', t: 'Reach in.' }, { id: 'leave', t: 'Leave it alone.' }], { timer: 7, log: 'The open tomb' });
+        if (c === 'reach') { var ok = await qte('tap', { label: 'PULL BACK!', ms: 1000 }); if (ok) { F('potion', 1); await N('Something grabs at your wrist as you pull away, but you keep what you took: a red tonic, still sealed.'); } else { F('youHurt', 1); await N('Something bites. You keep your fingers. Mostly.'); } }
+    } else if (S.R.side2 === 'rats') {
+        await N('A river of rats pours across the floor, all running the same way. Away from something.');
+        await say('cobb', 'Rats know. Rats always know. Whatever they are running from, let us not meet it.', 'shock');
+        var ok2 = await qte('mash', { label: 'PUSH THROUGH!', need: 10 });
+        await N(ok2 ? 'You wade through the squealing tide and out the other side.' : 'You go down under a hundred tiny feet, and come up bitten and furious.');
+        if (!ok2) F('youHurt', 1);
+    } else {
+        await N('A tall mirror stands in the crypt, clean when nothing else is. Your reflection is a moment late.');
+        var c2 = await choose('', [{ id: 'break', t: 'Break it.' }, { id: 'ask', t: 'Ask it a question.' }, { id: 'go', t: 'Walk past.' }], { timer: 8, log: 'The late mirror' });
+        if (c2 === 'break') { AU.s.boom(); await N('It breaks. For a second you hear a lot of people sighing with relief.'); }
+        if (c2 === 'ask') { await N('You ask what is waiting at the bottom. Your reflection smiles with too many teeth and mouths: "A chair."'); F('mirrorHint', 1); }
+    }
+}
+async function c2_cage() {
+    bg('cage', { z: 1.06 }); cast([]);
+    await N('Beyond the arch the floor ends. A cage hangs over a pit on a single chain, and inside it something moves.');
+    await say('mira', 'Is someone there? Please. Please be real this time.', 'shock');
+    cast(['mira']); met('mira');
+    await say('mira', 'Mira. Cartographer. They hung me here because I drew a map they did not like. Two hundred and twelve days. I counted.', 'sad');
+    await N('Three levers stand at the edge of the pit, marked with a ' + S.R.syms.join(', a ') + '.');
+    var tries = 0;
+    for (;;) {
+        var c = await choose(F('knowSym') ? 'You remember which sign had fresh scratches.' : 'Which lever?', S.R.syms.map(function (s) { return { id: s, t: 'The ' + s + ' lever' + (F('knowSym') && s === S.R.sym ? ' ✦' : '') }; }), { log: 'The cage levers' });
+        if (c === S.R.sym) { AU.s.good(); await N('Gears turn somewhere deep in the wall. The cage swings slowly, gently, to the ledge.'); break; }
+        tries++; AU.s.boom(); SC.shake(0.9);
+        await say('mira', '*The chain drops a yard. Mira screams.*', 'shock');
+        if (tries >= 2) {
+            var ok = await qte('mash', { label: 'HOLD THE CHAIN!', need: 16, ms: 3400 });
+            if (!ok) {
+                kill('mira'); F('miraDied', 1); cast([]);
+                await N('The chain tears through your hands. The cage falls into the pit, and Mira\'s voice goes with it, and then there is no voice at all.');
+                await N('Two hundred and twelve days. And you were the two hundred and thirteenth.');
+                return;
+            }
+            await N('You catch the chain and hold it until your hands bleed. Bror swings the cage in by hand.');
+            break;
+        }
+        var b = await qte('hold', { label: 'BRACE THE CHAIN! RELEASE IN THE BLUE' });
+        if (!b) { F('youHurt', 1); await N('The chain bites into your palms, but it holds.'); }
+    }
+    cast(['mira', 'lyra', 'bror']);
+    await say('mira', '*She steps out of the cage, wobbles, and holds on to your arm.* You are real. You are very real. I am going to draw you all.', 'smile');
+    await say('mira', 'I have a map. Most of the way down. I made it in my head, staring at the walls.', 'smile');
+    remember('mira', 'Mira will remember that.', 2);
+}
+async function c2_ambush() {
+    bg('crypt', { variant: { crypt: S.R.crypt }, z: 1.12, x: 0.3 }); cast(team().slice(0, 3));
+    await N('The lantern flickers. From every niche in the wall, the {mons} come out at once.');
+    AU.s.sting();
+    var w = await qteRun([['swipe', {}], ['tap', { label: 'STRIKE!' }], ['seq', { n: 3 }]]);
+    if (w <= 1) { F('youHurt', 1); await N('You go down under the weight of them. Somebody drags you up by the collar.'); }
+    else await N('You fight like you have never fought for anything. They break and scatter into the dark.');
+    AU.s.boom(); SC.shake(1);
+    await N('Then the floor gives way.');
+    var both = alive('lyra') && alive('bror');
+    if (!both) return;
+    cast(['lyra', 'bror']);
+    await N('Lyra is hanging from one edge of the hole. Bror from the other. You can only reach one of them in time.');
+    var c = await choose('Who do you save?', [{ id: 'lyra', t: 'Grab Lyra.' }, { id: 'bror', t: 'Grab Bror.' }], { timer: 4, log: 'Lyra or Bror over the pit' });
+    if (c === 'lyra') {
+        await say('lyra', '*You drag her up by both hands. Across the hole, Bror hauls himself out alone, but his shield goes tumbling down into the black.*', 'shock');
+        F('brorShieldLost', 1); remember('lyra', 'Lyra will remember that.', 2); remember('bror', 'Bror will remember that.', -2);
+        await say('bror', 'My father\'s shield. ...It is a shield. It is only a shield.', 'sad');
+    } else if (c === 'bror') {
+        await say('bror', '*You brace and pull. Bror comes up like a sack of anvils. Across the hole, Lyra climbs out alone, and something gold falls from her neck.*', 'neutral');
+        F('lyraLocketLost', 1); remember('bror', 'Bror will remember that.', 2); remember('lyra', 'Lyra will remember that.', -2);
+        await say('lyra', 'The locket. Wren\'s picture was in the locket. ...Don\'t. Don\'t say anything.', 'sad');
+    } else {
+        var ok = await qte('mash', { label: 'GRAB THEM BOTH!', need: 20, ms: 3200 });
+        if (ok) { await N('You grab a wrist in each hand and scream and pull, and somehow, impossibly, you all end up in a pile on the floor.'); remember('lyra', 'Lyra will remember that.', 1); remember('bror', 'Bror will remember that.', 1); F('youHurt', 1); }
+        else { F('brorShieldLost', 1); F('lyraLocketLost', 1); await N('You hesitate. They both climb out alone, and both lose something precious to the dark.'); rel('lyra', -1); rel('bror', -1); }
+    }
+}
+async function c2_camp() {
+    bg('camp', { z: 1.05 }); cast(team().slice(0, 4));
+    await N('You make camp in a dry side cave. The fire is small, but it is the only warm thing for a mile in any direction.');
+    var opts = [];
+    if (alive('lyra')) opts.push({ id: 'lyra', t: 'Sit with Lyra.' });
+    if (alive('bror')) opts.push({ id: 'bror', t: 'Sit with Bror.' });
+    if (alive('mira')) opts.push({ id: 'mira', t: 'Sit with Mira.' });
+    if (alive('cobb')) opts.push({ id: 'cobb', t: 'Sit with Cobb.' });
+    var c = await choose('Who do you talk to?', opts, { log: 'Campfire' });
+    cast([c]);
+    if (c === 'lyra') {
+        if (F('betrayedLyra')) { await say('lyra', 'Sit somewhere else. I mean it.', 'cold'); var d0 = await choose('', [{ id: 's', t: '"I\'m sorry. I was scared."' }, { id: 'g', t: 'Leave her alone.' }]); if (d0 === 's') { await say('lyra', 'Everyone is scared. Not everyone sells their friends for a smaller number.', 'angry'); rel('lyra', 1); } }
+        else {
+            await say('lyra', F('lyraLocketLost') ? 'I keep reaching for it. The locket. Six years, I touched it every morning.' : '*She is turning the locket over in her fingers.* Wren drew this picture herself. She was always better at faces than me.', 'sad');
+            var d = await choose('', [{ id: 'find', t: '"We\'ll find her. Whatever we find, we find it together."' }, { id: 'true', t: '"What if she\'s gone, Lyra?"' }, { id: 'joke', t: '"Was she as annoying as you?"' }], { timer: 9, log: 'Lyra talks about Wren' });
+            if (d === 'find') { await say('lyra', 'Together. Huh. I had forgotten that word.', 'smile'); remember('lyra', 'Lyra will remember that.', 2); }
+            if (d === 'true') { await say('lyra', 'Then I bury her. And then I burn Harrow\'s ledger page by page. Either way I am not going back up empty.', 'cold'); rel('lyra', 1); F('lyraVow', 1); }
+            if (d === 'joke') { await say('lyra', '*She laughs, surprised.* Worse. Much worse. You would have loved her.', 'smile'); remember('lyra', 'Lyra will remember that.', 1); }
+        }
+    }
+    if (c === 'bror') {
+        await say('bror', 'Karak-Dun is below us. My people\'s forge. One day thirty years ago every hammer in it stopped at once. No one ever came up to say why.', 'sad');
+        var d2 = await choose('', [{ id: 'why', t: '"What do you think happened?"' }, { id: 'home', t: '"Then we\'ll get you home."' }, { id: 'arm', t: F('brorHurt') ? '"Let me look at that arm."' : '"Teach me to hold a shield."' }], { timer: 9, log: 'Bror talks about Karak-Dun' });
+        if (d2 === 'why') { await say('bror', 'My father said the old king made something he should not have. A crown. He said the king put it on and stopped being anyone at all.', 'cold'); F('crownLore', 1); }
+        if (d2 === 'home') { await say('bror', 'Home. Aye. Even if it is only stone and ghosts now.', 'smile'); remember('bror', 'Bror will remember that.', 2); }
+        if (d2 === 'arm') { if (F('brorHurt')) { await say('bror', '*You splint it with two arrow shafts and his own belt. He does not make a sound. Afterwards he puts his good hand on your shoulder, just once.*', 'smile'); F('brorHurt', 0); } else await say('bror', 'Feet wide. Lean into it. Never lift it so high you cannot see. ...You are hopeless. We will practise.', 'smile'); remember('bror', 'Bror will remember that.', 2); }
+    }
+    if (c === 'mira') {
+        await say('mira', '*She is drawing in the firelight.* I left a small space at the edge of the map. For you. For all of us. So it is a map with people on it.', 'smile');
+        var d3 = await choose('', [{ id: 'add', t: '"Draw yourself too."' }, { id: 'cage', t: '"What kept you going in the cage?"' }, { id: 'where', t: '"Where does the map end?"' }], { timer: 9, log: 'Mira\'s map' });
+        if (d3 === 'add') { await say('mira', 'Myself? ...I always leave myself off. Fine. A very small Mira. In the corner.', 'smile'); remember('mira', 'Mira will remember that.', 2); }
+        if (d3 === 'cage') { await say('mira', 'Counting. And the singing, at night, far below. I hated it. I think it was the only thing that kept me from forgetting what a voice sounds like.', 'sad'); rel('mira', 1); }
+        if (d3 === 'where') { await say('mira', 'At a chair. A big chair, at the bottom of everything. I do not know why I know that.', 'neutral'); F('mirrorHint', 1); rel('mira', 1); }
+    }
+    if (c === 'cobb') {
+        if (S.R.traitor === 'cobb') { await say('cobb', 'Me? Not much to tell. Lantern-man. Good boots, though, eh? Got them... in a trade.', 'smirk'); await N('His boots are new. Gray-Hand issue. Delvers do not get new boots.'); F('clueCobb2', 1); }
+        else { await say('cobb', 'I have a little girl up top. {daughter}. I carved her a horse but I did not finish the tail before they took me. I will finish it. I will.', 'sad'); rel('cobb', 2); F('cobbDaughter', 1); }
+    }
+    cast(team().slice(0, 4));
+    if (S.R.camp === 'song') { await N(pick(['Cobb starts a song about a drunken goat. By the third verse Bror is singing too, very badly, and for a while nobody is in the Abyss at all.', 'Mira hums. Lyra joins in, then stops, then starts again.'])); team().forEach(function (k) { rel(k, 1); }); }
+    if (S.R.camp === 'noise') { await N('Something scrapes in the dark beyond the fire. Everyone freezes.'); var ok = await qte('tap', { label: 'THROW THE TORCH!' }); await N(ok ? 'The torch lands among pale shapes, which flinch back and are gone. Nobody sleeps much after that.' : 'Your torch lands in an empty tunnel. Whatever it was, it was already leaving. Probably.'); }
+    if (S.R.camp === 'stars') { await N('Mira finds a crack in the ceiling, a mile up, and through it you can see one single star. Everyone takes a turn looking at it.'); }
+    /* the night watch: the traitor's clue */
+    bg('camp', { z: 1.2, tint: 'rgba(0,10,40,.45)' }); cast([]);
+    await N('Later, everyone sleeps. Almost everyone.');
+    var w = await choose('You wake to a small sound.', [{ id: 'look', t: 'Get up and look.' }, { id: 'sleep', t: 'Go back to sleep.' }], { timer: 7, log: 'The night watch' });
+    if (w === 'look') {
+        if (S.R.traitor === 'cobb' && alive('cobb')) { cast(['cobb']); await N('Cobb stands at the tunnel mouth with his lantern, covering and uncovering it. Three flashes. Then three more. He does not see you.'); F('clueCobb3', 1); }
+        else if (S.R.traitor === 'ash') { await N('Far below, very faint, someone is singing a hymn. It sounds like it is getting closer, then it stops, as if someone has been told to be quiet.'); F('clueAsh0', 1); }
+        else { await N('Nothing. Everyone is asleep. But there is a warm spot against your leg. Harrow\'s gray coin, in your pocket, is warm as a living thing.'); F('clueCoin2', 1); }
+    } else await N('You sleep. Badly.');
+}
+</script>
+<script>
+/* ======================================================= CHAPTER THREE: THE FROZEN CHOIR */
+async function c3_ice() {
+    bg('ice', { z: 1.08 }); cast(team().slice(0, 3));
+    await N('The tunnels turn white. Then blue. Your breath hangs in the air and does not fall. Somewhere ahead, very far away, people are singing.');
+    if (alive('mira')) await say('mira', 'The Frozen Choir. It is on no map. Not even mine. Especially not mine.', 'shock');
+    if (S.R.side3 === 'frozen') {
+        await N('A delver sits against the wall, frozen solid, smiling. His boots are excellent.');
+        var c = await choose('', [{ id: 'take', t: 'Take his boots.' }, { id: 'bury', t: 'Cover his face and move on.' }], { timer: 8, log: 'The frozen delver' });
+        if (c === 'take') { F('boots', 1); await N('It takes a long time and nobody talks. Your feet are warm for the first time in days.'); if (alive('bror')) rel('bror', -1); }
+        else { await N('You lay your scarf over his face. ' + (alive('mira') ? 'Mira draws a small cross on her map where he sits.' : 'It is the least you can do, and the most.')); team().forEach(function (k) { rel(k, 1); }); }
+    } else if (S.R.side3 === 'bridge') {
+        await N('The only way on is a bridge of ice over a chasm with no bottom. It creaks when you look at it.');
+        var ok = await qte('hold', { label: 'BALANCE... RELEASE IN THE BLUE' });
+        if (!ok) { var ok2 = await qte('swipe', { dir: 'u', label: 'JUMP!' }); if (!ok2) await die('The ice gives way, and the fall is very long.'); F('youHurt', 1); await N('The bridge collapses a step behind you. You land on the far side on your face, alive.'); }
+        else await N('One step. Another. You do not breathe until you are across.');
+    } else {
+        await N('A wolf made of ice steps out of the wall. Snow pours from its jaws instead of breath.');
+        var w = await qteRun([['swipe', {}], ['tap', { label: 'STRIKE!' }]]);
+        if (w < 2) { F('youHurt', 1); await N('It bites your shoulder before it shatters. The cold goes all the way to the bone.'); }
+        else await N('It shatters into a thousand pieces, all of them howling softly.');
+    }
+    await N('Huddled in a crack in the ice is a woman in white robes, blue-lipped, holding a hymn book to her chest.');
+    cast(['ash'].concat(team().slice(0, 2))); met('ash');
+    await say('ash', 'Don\'t... listen to the singing. It learns your name. Then it sings it.', 'shock');
+    await say('ash', 'Sister Ash. I was a Choir sister. Until I stopped singing. They do not like when you stop.', 'sad');
+    var d = await choose('', [{ id: 'warm', t: 'Give her your coat.' }, { id: 'q', t: '"Why did you stop singing?"' }, { id: 'sus', t: '"Convenient, finding you here."' }], { timer: 9, log: 'Sister Ash' });
+    if (d === 'warm') { await say('ash', '*She closes her eyes.* Thank you. It has been a long time since anyone gave me anything without wanting a hymn back.', 'smile'); remember('ash', 'Sister Ash will remember that.', 2); }
+    if (d === 'q') { await say('ash', 'Because I heard what it was singing TO. Something under the throne that wants to be woken. And I did not want to help.', 'cold'); F('choirLore', 1); }
+    if (d === 'sus') { await say('ash', 'Convenient. Yes. I suppose the Abyss is full of convenient women freezing to death.', 'angry'); rel('ash', -2); }
+    if (S.R.traitor === 'ash') { await N('As she stands, you notice a thread of gray stitched through the hem of her white robe, in the shape of an open palm.'); F('clueAsh1', 1); }
+}
+async function c3_chapel() {
+    bg('chapel', { z: 1.06 }); cast(team().slice(0, 3));
+    await N('The Choir is a cathedral carved out of the ice. Rows of singers stand inside the walls, frozen with their mouths open. And yet the song goes on.');
+    var hint = ['A debt', 'The ledger', 'Footsteps'][S.R.riddle];
+    var wv = S.R.wren;
+    await inspect({
+        need: ['altar'], hint: 'Look around the Choir. Quietly.', spots: [
+            { id: 'faces', n: 'The singers', x: 22, y: 46, ic: 'ice', t: 'Faces in the ice. Delvers, mostly. One still has a gray coin hanging on a string around his neck, and it is the only thing in the room that is not covered in frost.', on: function () { F('clueCoin3', 1); } },
+            { id: 'hymn', n: 'Hymn book', x: 40, y: 78, ic: 'book', t: 'A hymn book, frozen open. The verse on the page reads like a riddle answered: "...and the answer is ' + hint.toLowerCase() + ', and it was always ' + hint.toLowerCase() + '." In the margin someone has written a counter-verse, a song to make the singing stop.', on: function () { F('hymn', 1); } },
+            { id: 'bird', n: 'A carving', x: 78, y: 40, ic: 'bird', t: wv === 'dead' ? 'Wren\'s bird, carved deep and old, and under it, in a shaking hand: "Ly. Forgive me. Do not come after me."' : 'Wren\'s bird, carved into the ice. Fresh. The edges are still sharp. She was here days ago, not years.', on: function () { F('wrenMark2', 1); } },
+            { id: 'altar', n: 'The altar', x: 50, y: 68, ic: 'ice', t: 'The altar glows from inside, blue and slow, like a heart. The song comes from here. Every time it pulses, the singers in the walls lean a little closer.' },
+            { id: 'seal', n: 'Gray wax', x: 64, y: 82, ic: 'coin', t: 'A blob of gray sealing wax on the ice, stamped with an open palm. Fresh. The Gray Hand has been here, very recently, and somebody let them know the way.', on: function () { F('handAhead', 1); } },
+            { id: 'bag', n: alive('cobb') ? 'Cobb\'s lantern' : 'Ash\'s satchel', x: 12, y: 74, ic: alive('cobb') ? 'lantern' : 'book', if: function () { return alive('cobb') || alive('ash'); }, t: function () {
+                if (alive('cobb') && S.R.traitor === 'cobb') { F('clueCobb4', 1); return 'Cobb\'s lantern has a little brass shutter that has been added recently. Very good for flashing signals. Not much use for anything else.'; }
+                if (alive('cobb')) return 'Cobb\'s lantern is old and much repaired. On the handle, a child\'s handwriting: "come home daddy".';
+                if (S.R.traitor === 'ash') { F('clueAsh2', 1); return 'Ash\'s satchel. Beneath the hymns, a folded letter in gray ink: "Bring them to the forge. The Hand will meet you. H."'; }
+                return 'Ash\'s satchel. Hymns, a candle stub, a pressed flower. And a list of names: every sister who stopped singing. Hers is the last one.';
+            } }
+        ]
+    });
+}
+async function c3_rope() {
+    bg('ice', { z: 1.2, y: 0.4 });
+    var a = alive('mira') ? 'mira' : (alive('wren') && F('met_wren') ? 'wren' : 'lyra'), b = alive('cobb') ? 'cobb' : 'ash';
+    if (!alive(b)) return;
+    cast([a, b, 'bror'].filter(function (x) { return alive(x); }));
+    AU.s.boom(); SC.shake(1);
+    await N('The floor of the Choir cracks open. ' + nameOf(a) + ' and ' + nameOf(b) + ' drop through, still roped together, and the rope snaps tight in your hands.');
+    await N('The anchor is slipping. The rope will not hold two.');
+    await say(b, b === 'cobb' ? 'Don\'t let go! {daughter}! Think of— please!' : 'Let me go. It is all right. Let me go.', 'shock');
+    var opts = [{ id: 'hold', t: 'Hold on. Pull them both up.' }, { id: 'cut', t: 'Cut the rope below ' + nameOf(a) + '.' }];
+    if (alive('bror')) opts.push({ id: 'bror', t: 'Let Bror take the rope.' });
+    var c = await choose('', opts, { timer: 5, log: 'The rope over the crevasse', silence: 'hold' });
+    if (c === 'cut') {
+        kill(b); cast([a, 'bror'].filter(alive));
+        await N(nameOf(b) + ' looks up at you as the knife goes through the rope. ' + (S.R.traitor === b ? 'Something like relief crosses their face. Then they are gone.' : 'They do not look angry. That is the worst part. Then they are gone.'));
+        if (S.R.traitor !== b) F('killedInnocent', 1); else F('traitorDead', 1);
+        remember(a, nameOf(a) + ' will remember that.', 1);
+    } else if (c === 'bror') {
+        await say('bror', 'Out of the way. *He wraps the rope twice around his good arm and leans back like a mountain.*', 'angry');
+        var ok = await qte('mash', { label: 'HELP BROR PULL!', need: 14 });
+        if (ok && !F('brorHurt')) { await N('They come up over the edge together, gasping. Bror sits down hard and laughs until he coughs.'); remember('bror', 'Bror will remember that.', 1); F('brorHurt', 1); }
+        else { kill(a); await N('Bror\'s bad arm gives out. The rope burns through his hands, and ' + nameOf(a) + ' is gone. ' + nameOf(b) + ' is the only one he can hold.'); F(a + 'Died', 1); }
+    } else {
+        var ok2 = await qte('mash', { label: 'PULL!', need: 22, ms: 3600 });
+        if (ok2) { await N('You pull until your shoulders scream and the world goes white at the edges, and they come up. Both of them.'); remember(a, nameOf(a) + ' will remember that.', 2); remember(b, nameOf(b) + ' will remember that.', 2); F('youHurt', 1); }
+        else { kill(a); kill(b); await N('The anchor tears free. You keep the rope. You do not keep them.'); F('ropeBoth', 1); }
+    }
+}
+async function c3_wren() {
+    bg('chapel', { z: 1.12 }); cast(team().slice(0, 2));
+    await N('The singing gets louder. The frozen choir turns their heads, all at once, toward the altar.');
+    if (!alive('lyra')) { await N('At the altar there is a girl with red hair. She looks at you like she is waiting for someone else. Someone who will never come now.'); return; }
+    var wv = S.R.wren;
+    if (wv === 'alive') {
+        cast(['lyra', 'wren']); met('wren'); F('wrenFound', 1);
+        await say('wren', '*From a crack behind the altar, a thin girl with frost in her hair crawls out.* Ly? Lyra? ...You came. You actually came.', 'shock');
+        await say('lyra', 'I told you I would. I always told you I would. *Lyra is crying and she does not care who sees.*', 'sad');
+        await say('wren', 'Harrow\'s men passed through two days ago. They are going to the forge. They know about the Crown. They had a guide.', 'neutral');
+        remember('lyra', 'Lyra will remember this day.', 3);
+    } else if (wv === 'choir') {
+        cast(['lyra', 'wren']); met('wren'); F('wrenChoir', 1); renderActor('wren', 'cold');
+        await say('wren', 'Lyra. Stay. It is warm here, once you stop fighting. Sing with us.', 'cold');
+        await say('lyra', 'Wren. Wren, it is me. Look at me!', 'shock');
+        var opts = [{ id: 'hold', t: 'Hold Lyra back.' }, { id: 'go', t: 'Go with Lyra. Break the ice.' }];
+        if (F('hymn')) opts.push({ id: 'sing', t: 'Sing the counter-verse from the hymn book.' });
+        var c = await choose('', opts, { timer: 8, log: 'Wren in the Choir' });
+        if (c === 'sing') { AU.s.bell(); await N('You sing it badly, voice cracking. The altar dims. The song stops, for the first time in a hundred years.'); F('wrenFreed', 1); renderActor('wren', 'sad'); await say('wren', 'Ly...? I was so cold. I was so cold for so long.', 'sad'); remember('lyra', 'Lyra will remember this day.', 4); F('choirSilenced', 1); }
+        else if (c === 'go') {
+            var w = await qteRun([['seq', { n: 4, label: 'BREAK THE ICE!' }], ['mash', { label: 'PULL HER OUT!', need: 14 }]]);
+            if (w === 2) { F('wrenFreed', 1); renderActor('wren', 'sad'); await N('The ice cracks. Wren falls forward into Lyra\'s arms, and the song breaks like glass.'); remember('lyra', 'Lyra will remember this day.', 3); }
+            else { F('lyraHurt', 1); await N('The singers in the walls reach out. You barely drag Lyra away. Wren keeps singing, and does not look back.'); rel('lyra', 1); }
+        } else { await N('You pull Lyra back by the waist. She fights you all the way out of the chapel, and then she stops fighting, which is worse.'); remember('lyra', 'Lyra will remember that.', -3); }
+        if (!F('wrenFreed')) kill('wren');
+    } else {
+        cast(['lyra']); F('wrenDead', 1); kill('wren');
+        await N('At the foot of the altar there is a girl with red hair, frozen, curled on her side as if asleep. She is holding a folded note.');
+        await say('lyra', '*Lyra reads it. Then she reads it again.* "Do not come after me." Well. I never listened to you either.', 'sad');
+        if (F('lyraLocketLost')) await say('lyra', 'I do not even have her picture any more. I only have her face. This face.', 'sad');
+        var d = await choose('', [{ id: 'hold', t: 'Hold her.' }, { id: 'time', t: 'Say nothing. Stay close.' }, { id: 'move', t: '"Lyra. We have to keep moving."' }], { timer: 9, log: 'Wren is dead' });
+        if (d === 'hold') { await N('She lets you. For a long time, she lets you.'); remember('lyra', 'Lyra will remember that.', 3); }
+        else if (d === 'time' || d === '...') { await N('You stay. When she finally stands up, she squeezes your hand once without looking at you.'); rel('lyra', 2); }
+        else { await say('lyra', 'Right. Moving. Yes. *Her voice is a stranger\'s.*', 'cold'); remember('lyra', 'Lyra will remember that.', -2); }
+        F('lyraGrief', 1);
+    }
+}
+
+/* ======================================================= CHAPTER FOUR: KARAK-DUN */
+async function c4_forge() {
+    bg('forge', { z: 1.06 }); cast(team().slice(0, 3));
+    await N('Karak-Dun. A dwarven forge-city the size of a valley, and silent as a grave. Lava still runs in the channels. Nobody has worked it in thirty years.');
+    if (alive('bror')) await say('bror', 'A forge should never be quiet. Never. *He takes off his helmet and holds it against his chest.*', 'sad');
+    await inspect({
+        need: ['anvil'], hint: 'Look around the forge.', spots: [
+            { id: 'anvil', n: 'The great anvil', x: 50, y: 82, ic: 'hammer', t: 'The king\'s anvil, as big as a cart. The hammer that belongs on it is gone. Carved into the side: "Here King Orrin made the Crown, and here he unmade himself."', on: async function () { F('crownLore', 1); if (alive('bror')) { $('#look').classList.remove('show'); await say('bror', 'Orrin. The Hollow King was ours. My people made the thing that ate them. *He sounds very tired.*', 'sad'); $('#insp').classList.add('show'); } } },
+            { id: 'hammer', n: 'A glint', x: 82, y: 70, ic: 'hammer', t: 'Under a fallen beam, the head of a great forge hammer, the handle long gone. Bror could swing it. Probably nobody else could.', on: function () { F('hammer', 1); } },
+            { id: 'rune', n: 'Rune door', x: 50, y: 34, ic: 'note', t: 'The great door down to the throne. The runes say: "SHUT WHEN THE FIRE IS LIT." The forge was built as a lock.' },
+            { id: 'boots', n: 'Boot prints', x: 20, y: 80, ic: 'glove', t: 'Fresh boot prints in the ash, nailed with little open palms. Twenty men at least. They came from above, following someone\'s trail.' },
+            { id: 'pocket', n: 'Your pocket', x: 88, y: 88, ic: 'coin', t: 'Harrow\'s gray coin. It is warm. It is always warm. You never noticed until now that it has been warm since the moment he gave it to you.', on: function () { F('clueCoin4', 1); } }
+        ]
+    });
+}
+function clueCount(who) {
+    var k = { cobb: ['clueCobb1', 'clueCobb2', 'clueCobb3', 'clueCobb4'], ash: ['clueAsh0', 'clueAsh1', 'clueAsh2'], none: ['clueCoin1', 'clueCoin2', 'clueCoin3', 'clueCoin4', 'sawCoins'] }[who];
+    return k.filter(function (x) { return F(x); }).length;
+}
+async function c4_traitor() {
+    bg('forge', { z: 1.14 }); cast(team().slice(0, 4));
+    AU.s.sting();
+    await N('Torches at the far end of the hall. Gray cloaks. The Gray Hand has caught up with you, and they knew exactly where you would be.');
+    if (alive('lyra')) await say('lyra', 'Somebody has been leaving a trail. Somebody in THIS group.', 'angry');
+    var opts = [];
+    if (alive('cobb')) opts.push({ id: 'cobb', t: 'Accuse Cobb.' + (clueCount('cobb') ? ' (' + clueCount('cobb') + ' clues)' : '') });
+    if (alive('ash')) opts.push({ id: 'ash', t: 'Accuse Sister Ash.' + (clueCount('ash') ? ' (' + clueCount('ash') + ' clues)' : '') });
+    opts.push({ id: 'none', t: 'Check your own pockets.' + (clueCount('none') ? ' (' + clueCount('none') + ' clues)' : '') });
+    var c = await choose('Who led them here?', opts, { timer: 12, log: 'Who led the Gray Hand?', silence: 'quiet' });
+    var t = S.R.traitor;
+    if (t !== 'none' && !alive(t)) t = 'dead';
+    if (c === 'none') {
+        await N('You pull out Harrow\'s coin. It is warm, and as you hold it up, the gray stamp glows faintly. Like a beacon.');
+        if (S.R.traitor === 'none' || t === 'dead') { await say(alive('mira') ? 'mira' : 'lyra', 'He tracked US. With a coin. The Gray Hand always knows where its money is.', 'shock'); AU.s.boom(); await N('You throw it into the lava channel. It screams like a kettle.'); F('coinGone', 1); F('rightCall', 1); }
+        else { await N('You throw it into the lava. But the torches keep coming. The coin was never the only trail.'); F('coinGone', 1); }
+    } else if (c === 'cobb' || c === 'ash') {
+        if (c === t) {
+            F('rightCall', 1); F('caught_' + c, 1);
+            if (c === 'cobb') { await say('cobb', 'They have {daughter}. Harrow has my girl. He said he would let her go. I am sorry. I am so sorry.', 'sad'); }
+            else { await say('ash', 'The Choir and the Hand want the same thing. Quiet. Order. Everything paid. *She opens her hymn book. There is a knife inside it.*', 'cold'); var ok = await qte('swipe', { label: 'DODGE THE KNIFE!' }); if (!ok) { F('youHurt', 1); await N('The knife opens your arm before Bror pins her.'); } }
+            var d = await choose('What happens to ' + nameOf(c) + '?', [{ id: 'spare', t: 'Tie them up. Leave them for the Hand.' }, { id: 'free', t: 'Let them go.' }, { id: 'kill', t: 'End it.' }], { timer: 8, log: 'The traitor' });
+            if (d === 'kill') { kill(c); await N('It is quick. It is not clean. Nobody says anything afterwards.'); F('executed', 1); team().forEach(function (k) { if (k === 'mira') rel(k, -2); }); }
+            else if (d === 'free') { kill(c); F('freed_' + c, 1); await N(nameOf(c) + ' looks at you for a long moment, then runs. ' + (c === 'cobb' ? 'Maybe toward his daughter.' : 'Up toward the cold.')); }
+            else { kill(c); await N('You leave them tied to a pillar. The torches are close enough to hear the boots now.'); }
+        } else {
+            await say(c, c === 'cobb' ? 'Me? I carried your light for a week! *He stares at all of you, then turns and walks into the dark alone.*' : 'Of course. The sister. Of course. *She walks away into the dark without another word.*', 'angry');
+            kill(c); F('wrongCall', 1); F('left_' + c, 1);
+            if (t === 'cobb' || t === 'ash') { await N('Behind you, ' + nameOf(t) + ' is quietly smiling.'); F('traitorLive', 1); }
+        }
+    } else {
+        await N('Nobody says anything. Everyone looks at everyone. The torches come closer.');
+        if (t === 'cobb' || t === 'ash') F('traitorLive', 1);
+    }
+}
+async function c4_harrow() {
+    bg('forge', { z: 1.04 }); cast(['harrow'].concat(team().slice(0, 3)));
+    await say('harrow', 'Delver {sur}. You have done the hard part. The way down is behind that door. Step aside, and I will make the ledger kind.', 'smile');
+    if (F('traitorLive')) {
+        var t = S.R.traitor; cast(['harrow', t]);
+        await say(t, t === 'cobb' ? 'Sorry, friends. *Cobb walks across the hall to stand at Harrow\'s side.* He has my girl.' : '*Sister Ash crosses the hall to stand at Harrow\'s side.* Peace, sisters. It is nearly over.', 'sad');
+        var v = team().filter(function (k) { return k !== 'lyra' && k !== 'wren' && k !== t; })[0] || team().filter(function (k) { return k !== t; })[0];
+        if (v) { await N('As ' + nameOf(t) + ' goes, a knife flashes. ' + nameOf(v) + ' falls.'); kill(v); F(v + 'Died', 1); F('stabbed', v); AU.s.death(); }
+        kill(t); F('traitorWithHarrow', 1);
+        cast(['harrow'].concat(team().slice(0, 3)));
+    }
+    var opts = [{ id: 'fight', t: 'Fight.' }, { id: 'deal', t: '"What exactly would \'kind\' look like?"' }];
+    if (F('lyraKey') && alive('lyra')) opts.unshift({ id: 'key', t: 'Nod to Lyra. Show him the vault key.' });
+    var c = await choose('', opts, { timer: 9, log: 'Harrow at the forge' });
+    if (c === 'key') {
+        await say('lyra', '*She holds up a brass key on a gray ribbon.* Lose something, Collector? Every name you own is behind one little door.', 'smirk');
+        await say('harrow', '*For the first time, Harrow\'s face does something he did not plan.* ...Give me that.', 'angry');
+        F('harrowShaken', 1);
+    } else if (c === 'deal') {
+        await say('harrow', 'Kind. Your page burned. A warm room. A job, perhaps, collecting for me. You have the temperament.', 'smirk');
+        var d = await choose('', [{ id: 'take', t: 'Take the deal.' }, { id: 'no', t: '"No."' }], { timer: 7, log: 'Harrow\'s deal' });
+        if (d === 'take') { F('tookDeal', 1); team().forEach(function (k) { remember(k, nameOf(k) + ' will remember that.', -3); }); await say('harrow', 'Good. Now open that door.', 'smile'); await N('But behind you, someone is already pulling the bellows chain.'); }
+    }
+    /* the forge: someone has to light it and hold the lever while the door seals */
+    cast(team().slice(0, 3));
+    AU.s.sting();
+    if (alive('bror')) {
+        await say('bror', 'The great bellows. If I light the forge, the rune door shuts behind us and holds them. But someone stays on the lever until it seals. In that heat...', 'cold');
+        await say('bror', 'It is my forge. It should be me.', 'sad');
+        var o2 = [{ id: 'let', t: 'Let Bror do it.' }, { id: 'both', t: '"We do it together."' }, { id: 'me', t: '"No. I\'ll hold it."' }];
+        var e = await choose('', o2, { timer: 10, log: 'Who holds the forge lever?' });
+        if (e === 'let' || e === '...') {
+            await N('Bror pulls the chain. The forge roars awake for the first time in thirty years, and the light of it is gold and terrible.');
+            await say('bror', 'Tell them up top. Tell them Karak-Dun sang one more time. *He is smiling.*', 'smile');
+            kill('bror'); F('brorSacrifice', 1); AU.s.boom(); flash('#ffb060', 1500);
+        } else if (e === 'both') {
+            var w = await qteRun([['hold', { label: 'HOLD THE LEVER... RELEASE IN THE BLUE' }], ['mash', { label: 'PULL BROR THROUGH!', need: 18 }]]);
+            if (w === 2) { await N('The door grinds shut an inch behind his boots. You are both on fire, a little, and alive, a lot.'); F('brorHurt', 1); remember('bror', 'Bror will remember that.', 3); }
+            else { kill('bror'); F('brorSacrifice', 1); await N('Bror shoves you through the closing door with his last strength. The last thing you see is his back, lit gold.'); F('youHurt', 1); }
+        } else {
+            if ((S.rel.bror || 0) >= 3) {
+                await say('bror', '*He looks at you a long time.* ...Aye. Then do not die. That is an order.', 'sad');
+                var w2 = await qteRun([['hold', { label: 'HOLD THE LEVER... RELEASE IN THE BLUE' }], ['swipe', { dir: 'u', label: 'DIVE!' }]]);
+                if (w2 < 2) await die('The forge takes you. Bror does not stop screaming your name.');
+                await N('You dive through the closing door with your clothes smoking. Bror catches you.');
+                remember('bror', 'Bror will remember that.', 3);
+            } else {
+                await say('bror', 'Not your forge. *He pushes you through the door with one hand and pulls the chain with the other.*', 'angry');
+                kill('bror'); F('brorSacrifice', 1); AU.s.boom(); flash('#ffb060', 1500);
+            }
+        }
+    } else {
+        await N('Without Bror there is nobody who knows the forge. You light it yourself, badly, and run.');
+        var r = await qte('swipe', { dir: 'u', label: 'RUN!' }); if (!r) F('youHurt', 1);
+    }
+    if (F('harrowShaken') || F('caught_cobb') || F('caught_ash')) { F('harrowSealed', 1); await N('Through the last crack of the door you see Harrow, shouting, his men scattering from the fire. Then the door shuts.'); }
+    else await N('The door shuts. But you heard the sound of other doors, deeper, opening. Harrow knows another way down.');
+}
+
+/* ======================================================= CHAPTER FIVE: THE HOLLOW CROWN */
+var RIDDLES = [
+    { q: 'I am owed by all and paid by none. The longer you keep me, the heavier I become.', a: 'A debt', o: ['A debt', 'A secret', 'A grudge', 'Gold'] },
+    { q: 'I have a hand but cannot hold. I keep every name but am never told.', a: 'The ledger', o: ['The ledger', 'A clock', 'A grave', 'A glove'] },
+    { q: 'The more of me you take, the more of me you leave behind.', a: 'Footsteps', o: ['Footsteps', 'Coins', 'Years', 'Names'] }
+];
+async function c5_king() {
+    bg('throne', { z: 1.08 }); cast(team().slice(0, 3));
+    await N('The bottom of the Abyss is not a floor. It is a chair. A throne on a stone floating over nothing, and on it, something that used to be a king.');
+    cast(['king']);
+    await say('king', 'Another debtor. Another hand, reaching for my head.', 'cold');
+    await say('king', 'Answer me, and I will let you try to take it. Fail, and I will keep one of you. I am so lonely down here.', 'smirk');
+    var R = RIDDLES[S.R.riddle];
+    await say('king', R.q, 'neutral');
+    if (alive('mira')) await say('mira', '*Mira, very quietly:* The hymn book said it. The answer was in the song.', 'neutral');
+    var c = await choose(R.q, shuffle(R.o).map(function (x) { return { id: x, t: x + (F('hymn') && x === R.a ? ' ✦' : '') }; }), { timer: 15, log: 'The Hollow King\'s riddle' });
+    if (c === R.a) { await say('king', 'Yes. Yes. It was always that. *The King laughs, and his crown flares.* Then come and take it.', 'smile'); F('riddleRight', 1); }
+    else {
+        var v = team().filter(function (k) { return k !== 'lyra'; })[0] || team()[0];
+        await say('king', 'No. *He lifts one finger.*', 'cold');
+        if (v) { cast([v]); await N(nameOf(v) + ' goes very still. Then hollow. Their eyes go dark like a candle snuffed. They do not fall. They simply stop.'); kill(v); F(v + 'Died', 1); F('kingTook', v); AU.s.death(); }
+    }
+}
+async function c5_fight() {
+    bg('throne', { z: 1.16 }); cast(['king'].concat(team().slice(0, 2)));
+    AU.s.sting();
+    await N('The Hollow King stands. He is twice your height, and the crown on his head is the only warm thing at the bottom of the world.');
+    var list = [['swipe', {}], ['tap', { label: 'STRIKE!' }], ['seq', { n: 3, label: 'BLOCK!' }], ['mash', { label: 'TEAR THE CROWN!', need: 16 }]];
+    if (!F('riddleRight')) list.splice(2, 0, ['swipe', {}]);
+    var w = await qteRun(list), miss = list.length - w;
+    if (F('hammer') && alive('bror')) { await N('Bror swings the old forge hammer into the King\'s knee. Karak-Dun\'s last blow.'); miss = Math.max(0, miss - 1); }
+    if (miss >= list.length) await die('The Hollow King keeps you. You will sing for him forever.');
+    for (var i = 1; i < miss; i++) {
+        var v = team().filter(function (k) { return k !== 'lyra'; })[0] || team()[0];
+        if (!v) break;
+        cast([v]); await N('The King\'s hand closes around ' + nameOf(v) + '. When it opens, there is nothing in it but frost.'); kill(v); F(v + 'Died', 1); AU.s.death(); await wait(400);
+    }
+    AU.s.boom(); flash('#fff', 900); SC.shake(1);
+    cast([]); await N('The King comes apart like a burned page. The crown rolls across the stone, rings once, and stops at your feet.');
+    if (!F('harrowSealed')) F('harrowHere', 1);
+}
+async function c5_crown() {
+    bg('throne', { z: 1.1 }); SC.variant.noCrown = 0;
+    var who = team().slice(0, 3); if (F('harrowHere')) who = ['harrow'].concat(who.slice(0, 2));
+    cast(who);
+    if (F('harrowHere')) await say('harrow', '*Harrow steps out of the dark, breathing hard, his coat burnt.* Well done. Truly. Now. That is mine.', 'smile');
+    if (alive('lyra') && (F('wrenDead') || (F('wrenChoir') && !F('wrenFreed')))) await say('lyra', 'They say it can wake the hollow. Bring back what went cold. ...Wren. It could bring back Wren.', 'sad');
+    var opts = [
+        { id: 'destroy', t: 'Destroy it.' },
+        { id: 'wear', t: 'Put it on.' }
+    ];
+    if (F('harrowHere')) opts.push({ id: 'give', t: 'Give it to Harrow. Pay your debt.' });
+    if (alive('lyra') && (F('wrenDead') || (F('wrenChoir') && !F('wrenFreed')))) opts.push({ id: 'lyra', t: 'Give it to Lyra. For Wren.' });
+    opts.push({ id: 'leave', t: 'Leave it where it lies.' });
+    var c = await choose('The Abyssal Crown.', opts, { timer: 20, log: 'The Abyssal Crown', silence: 'leave' });
+    F('crownChoice', c);
+    if (c === 'destroy') {
+        AU.s.boom(); flash('#fff', 1500); SC.variant.noCrown = 1;
+        await N(F('hammer') ? 'You lay it on the stone and bring the forge hammer down. Gold shatters like ice.' : 'You throw it off the edge of the world, and watch the little light of it fall and fall until there is no light at all.');
+        if (F('harrowHere')) await say('harrow', 'Do you know what you have done? Do you know how many pages that was?', 'angry');
+    }
+    if (c === 'wear') { SC.variant.noCrown = 1; SC.tint('rgba(80,0,120,.25)'); await N('It fits. Of course it fits. It has always fitted everyone. The cold comes in through your temples, gentle as snow.'); }
+    if (c === 'give') { await say('harrow', '*He takes it with both hands, the way you would take a baby.* The ledger thanks you. Your page is clean. *He does not look at you again.*', 'smile'); }
+    if (c === 'lyra') { await say('lyra', F('wrenDead') ? '*She takes it in both hands and holds it against her chest.* I am taking it back to the Choir. To her. Wake up, Wren. Please. One more time.' : '*She takes it in both hands.* She is still up there, singing. I am going to bring her home. Even if home is down here.', 'sad'); }
+    if (c === 'leave') { await N('You leave it lying in the dark. Behind you, very softly, the singing starts again.'); }
+}
+
+/* ======================================================= ENDINGS */
+var ENDINGS = {
+    burn: { t: 'Burn the Ledger', d: 'The Crown is gone, Harrow is sealed below, and Lyra still has the key to the vault.' },
+    light: { t: 'Ash and Brass', d: 'You destroyed the Crown and climbed back into the light.' },
+    heir: { t: 'The Hollow Heir', d: 'You put on the Crown.' },
+    paid: { t: 'Paid in Full', d: 'You gave the Crown to the Gray Hand.' },
+    sisters: { t: 'Two Sisters', d: 'You gave the Crown to Lyra, for Wren.' },
+    silence: { t: 'The Song Goes On', d: 'You left the Crown in the dark.' },
+    alone: { t: 'The Last Delver', d: 'Everyone who went down with you stayed down.' }
+};
+function endingId() {
+    var c = F('crownChoice'), anyone = team().length > 0;
+    if (c === 'wear') return 'heir';
+    if (c === 'give') return 'paid';
+    if (c === 'lyra') return 'sisters';
+    if (!anyone) return 'alone';
+    if (c === 'destroy') return (F('lyraKey') && alive('lyra') && F('harrowSealed')) ? 'burn' : 'light';
+    return 'silence';
+}
+var EPI = {
+    burn: ['You come up through the Brass Gates at dawn with Lyra beside you, and you walk straight to the counting house.', 'She opens the vault with Harrow\'s own key. You carry the ledgers out into the snow, all of them, and the whole town comes to watch them burn.', 'Nobody in the town above the Abyss owes anything this winter. Or the next.'],
+    light: ['You climb for nine days. When you come out of the gates, the guards do not know what to do with you, so they let you go.', 'The Gray Hand still keeps its ledger. But there is no Crown to dig for any more, and fewer doors to send people through.', 'It is not a victory. It is a beginning.'],
+    heir: ['The cold is not unpleasant. It is quiet. It asks nothing of you.', 'Your friends call your name for a long time. Eventually they stop. Eventually you stop remembering it was your name.', 'Far above, a new delver signs a new page, and starts the long walk down to you.'],
+    paid: ['Harrow keeps his word. Your page burns. You are free, and warm, and nobody in the town will look you in the eye.', 'By spring the Gray Hand owns the silver under every house. By summer, it owns the houses.', 'You paid in full. Everyone else is still paying.'],
+    sisters: ['The crown settles on Wren\'s head, and her eyes open, and they are not quite her eyes. But she smiles Lyra\'s smile.', 'Lyra does not come back up. She sits beside the throne with her sister\'s hand in hers, and sings to her, and sometimes Wren sings back.', 'There are new kings at the bottom of the Abyss. Two of them. They are very kind to visitors.'],
+    silence: ['You climb out alone, or nearly. Behind you the song goes on.', 'The Crown waits in the dark for the next pair of hands. It is very patient.', 'Every winter, the town above the Abyss pays its debts the old way.'],
+    alone: ['You come up through the Brass Gates alone. The guards ask where the others are. You find you cannot say the words.', 'At night you hear them sometimes, calling your name from very far down.', 'The ledger says you are free. The ledger does not know anything at all.']
+};
+function charEpi(id) {
+    var r = S.rel[id] || 0, a = alive(id), d = F(id + 'Died') || F('brorSacrifice') && id === 'bror';
+    var L = {
+        lyra: a ? (r >= 4 ? 'Lyra never leaves your side again, and pretends it is a coincidence.' : r <= -3 ? 'Lyra walks away at the top of the stairs without a word. You never see her again.' : 'Lyra buys you one drink, as promised, and then is gone, the way she always is.') : 'Lyra Thorne never came back up. Her page in the ledger stays open forever.',
+        bror: a ? (F('brorSacrifice') ? '' : 'Bror goes back down a month later with forty dwarves and every hammer in the town. Karak-Dun rings again.') : 'Bror of Karak-Dun lit the forge one last time. They carve his name on the anvil.',
+        mira: a ? 'Mira finishes the map. There are people on it. You are in the corner, slightly too big, because she likes you.' : (F('miraDied') ? 'Mira was in the cage for two hundred and twelve days. You count them sometimes, at night.' : 'Mira\'s map was never finished. You keep the unfinished half.'),
+        cobb: a ? 'Cobb finishes the tail on the wooden horse.' : (F('freed_cobb') ? 'Cobb ran toward his daughter. You never learn if he reached her.' : 'Nobody up top ever learns what happened to the lantern-man.'),
+        ash: a ? 'Sister Ash never sings again, except once, quietly, at a funeral.' : (F('left_ash') ? 'Sister Ash walked into the dark alone. She was telling the truth.' : ''),
+        wren: a ? 'Wren learns how to be warm again. It takes a long time. Lyra is very patient.' : ''
+    };
+    return L[id] || '';
+}
+</script>
+<script>
+/* ==========================================================================
+   FLOW - chapters, checkpoints, the menu, settings, the ending and your choices
+   ========================================================================== */
+var CHAPTERS = [
+    { n: 'Chapter One', t: 'The Debt', s: [c1_intro, c1_office, c1_gate, c1_descent] },
+    { n: 'Chapter Two', t: 'The Crypt of Names', s: [c2_crypt, c2_cage, c2_ambush, c2_camp] },
+    { n: 'Chapter Three', t: 'The Frozen Choir', s: [c3_ice, c3_chapel, c3_rope, c3_wren] },
+    { n: 'Chapter Four', t: 'Karak-Dun', s: [c4_forge, c4_traitor, c4_harrow] },
+    { n: 'Chapter Five', t: 'The Hollow Crown', s: [c5_king, c5_fight, c5_crown] }
+];
+function snap() { S.rn = RNG.n; return JSON.stringify(S); }
+function restore(js) { S = JSON.parse(js); reseed(S.seed, S.rn); }
+function saveGame() { LS.set('ddt_save', JSON.parse(snap())); }
+var PLAYING = false;
+async function play() {
+    PLAYING = true; $('#menu').classList.remove('show'); $('#hud').style.display = 'flex'; AU.init();
+    try {
+        while (S.ch < CHAPTERS.length) {
+            var C = CHAPTERS[S.ch];
+            if (S.sc === 0 && S.ch > 0) { cast([]); bg('black', { z: 1.2 }); await titleCard(C.n, C.t, '', 3200); }
+            while (S.sc < C.s.length) {
+                var cp = snap(); saveGame();
+                try { await C.s[S.sc](); S.sc++; }
+                catch (e) { if (e === DEATH) { restore(cp); continue; } throw e; }
+            }
+            await chapterEnd(S.ch);
+            S.ch++; S.sc = 0;
+        }
+        await theEnd();
+    } catch (e) { if (e !== ABORT) { console.error(e); toast('Something went wrong: ' + (e && e.message)); } }
+    PLAYING = false;
+}
+function chapterEnd(ch) {
+    cast([]); bg('black', { z: 1.2 }); VO.stop(); $('#dlg').classList.remove('show');
+    var mine = S.log.filter(function (l) { return l.ch === ch; });
+    var p = $('#panel');
+    p.innerHTML = '<h2>End of ' + CHAPTERS[ch].n + '</h2><div class="note" style="margin-bottom:12px">' + CHAPTERS[ch].t + '. Here is what you chose.</div><div class="box">' +
+        mine.map(function (l) { return '<div class="rcap">' + l.q + '<br><b>' + l.a + '</b></div>'; }).join('') + '</div>' + relBox() +
+        '<button class="mbtn" id="cont">' + (ch < CHAPTERS.length - 1 ? 'Continue to ' + CHAPTERS[ch + 1].n : 'Continue') + '</button>';
+    p.classList.add('show'); AU.s.bell();
+    return guard(new Promise(function (ok) { $('#cont').onclick = function () { p.classList.remove('show'); ok(); }; }));
+}
+function relWord(id) { var r = S.rel[id] || 0; return r >= 5 ? 'would die for you' : r >= 2 ? 'trusts you' : r >= 0 ? 'is unsure of you' : r >= -3 ? 'is wary of you' : 'hates you'; }
+function relBox() {
+    var ids = ['lyra', 'bror', 'mira', 'cobb', 'ash', 'wren'].filter(function (k) { return F('met_' + k); });
+    if (!ids.length) return '';
+    return '<div class="box">' + ids.map(function (k) { return '<div class="rcap" style="color:' + colOf(k) + '">' + nameOf(k) + ' <b style="float:right">' + (alive(k) ? relWord(k) : (F('left_' + k) || F('freed_' + k) ? 'gone' : 'dead')) + '</b></div>'; }).join('') + '</div>';
+}
+async function theEnd() {
+    var id = endingId(), E = ENDINGS[id];
+    var got = LS.get('ddt_endings', {}); got[id] = 1; LS.set('ddt_endings', got);
+    var B = { burn: 'surface', light: 'surface', heir: 'throne', paid: 'gate', sisters: 'throne', silence: 'chapel', alone: 'gate' };
+    cast([]); cine(true); bg(B[id], { z: 1.25, snap: 1 }); SC.cam(1.05, 0, 0, 0.004);
+    if (id === 'heir' || id === 'sisters') SC.variant.noCrown = 0;
+    for (var i = 0; i < EPI[id].length; i++) await N(EPI[id][i]);
+    var ids = ['lyra', 'bror', 'mira', 'cobb', 'ash', 'wren'].filter(function (k) { return F('met_' + k); });
+    for (var j = 0; j < ids.length; j++) { var t = charEpi(ids[j]); if (t) { if (alive(ids[j])) cast([ids[j]]); else cast([]); await N(t); } }
+    cast([]); cine(false);
+    await titleCard('Ending', E.t, E.d, 4200);
+    var p = $('#panel'), all = LS.get('ddt_endings', {}), n = Object.keys(all).length;
+    p.innerHTML = '<h2>' + E.t + '</h2><div class="note">' + E.d + '<br>Deaths along the way: ' + S.deaths + '. Endings found: ' + n + ' of ' + Object.keys(ENDINGS).length + '.</div>' +
+        '<div class="box" style="margin-top:12px">' + Object.keys(ENDINGS).map(function (k) { return '<span class="ending' + (all[k] ? ' got' : '') + '">' + (all[k] ? ENDINGS[k].t : '???') + '</span>'; }).join('') + '</div>' +
+        relBox() + '<div class="box"><div class="note" style="margin-bottom:6px">This run: you owed money for ' + ({ brother: 'your brother', dice: 'dice', fire: 'a fire', medicine: 'your mother\'s medicine' })[S.R.why] + '. The traitor was ' + ({ cobb: 'Cobb', ash: 'Sister Ash', none: 'nobody: Harrow\'s coin was tracking you' })[S.R.traitor] + '. Wren was ' + ({ alive: 'alive', choir: 'taken by the Choir', dead: 'already gone' })[S.R.wren] + '.</div>' +
+        S.log.map(function (l) { return '<div class="rcap">' + l.q + '<br><b>' + l.a + '</b></div>'; }).join('') + '</div>' +
+        '<button class="mbtn" id="again">Play again<small>New run: new debts, new traitor, new fates</small></button><button class="mbtn" id="tomenu">Main menu</button>';
+    p.classList.add('show'); LS.set('ddt_save', null);
+    await guard(new Promise(function (ok) { $('#again').onclick = function () { p.classList.remove('show'); ok(); newRun(); }; $('#tomenu').onclick = function () { p.classList.remove('show'); ok(); menu(); }; }));
+}
+function newRun() { abortAll(); S = freshState((Math.random() * 4294967295) >>> 0); reseed(S.seed, 0); rollRun(); setTimeout(play, 50); }
+function continueRun() { var s = LS.get('ddt_save', null); if (!s) return newRun(); abortAll(); S = s; reseed(S.seed, S.rn); setTimeout(play, 50); }
+
+/* ---------------------------------------------------------------- menu & settings */
+function menu() {
+    abortAll(); PLAYING = false; $('#hud').style.display = 'none'; cast([]); cine(false);
+    S = S || freshState(1); bg('gate', { z: 1.15, y: -0.3 });
+    var save = LS.get('ddt_save', null), got = LS.get('ddt_endings', {});
+    var m = $('#menu');
+    m.innerHTML = '<div class="logo"><small>DUNGEON DWELLERS</small><b>The Gray<br>Ledger</b><i>a story in five chapters</i></div>' +
+        (save ? '<button class="mbtn" id="m_cont">Continue<small>' + CHAPTERS[save.ch].n + ': ' + CHAPTERS[save.ch].t + '</small></button>' : '') +
+        '<button class="mbtn" id="m_new">' + (save ? 'New run' : 'Begin') + '<small>Every run rolls new debts, events, a new traitor and a new fate for Wren</small></button>' +
+        '<button class="mbtn" id="m_end">Endings<small>' + Object.keys(got).length + ' of ' + Object.keys(ENDINGS).length + ' found</small></button>' +
+        '<button class="mbtn" id="m_set">Settings<small>Voices, text, quick-time events</small></button>' +
+        '<div class="note" style="text-align:center;margin-top:18px;font:12px system-ui;color:#8a7d6a">Choices matter. Characters will remember. Some of them will not come back.</div>';
+    m.classList.add('show');
+    var go = function (f) { return function () { AU.init(); f(); }; };
+    if (save) $('#m_cont').onclick = go(function () { m.classList.remove('show'); continueRun(); });
+    $('#m_new').onclick = go(function () { m.classList.remove('show'); newRun(); });
+    $('#m_end').onclick = go(endingsPanel);
+    $('#m_set').onclick = go(function () { settings(false); });
+}
+function endingsPanel() {
+    var got = LS.get('ddt_endings', {}), p = $('#panel');
+    p.innerHTML = '<h2>Endings</h2>' + Object.keys(ENDINGS).map(function (k) { return '<div class="box"><b style="color:' + (got[k] ? 'var(--gold)' : '#666') + '">' + (got[k] ? ENDINGS[k].t : '???') + '</b><div class="note">' + (got[k] ? ENDINGS[k].d : 'Not found yet.') + '</div></div>'; }).join('') + '<button class="mbtn" id="pback">Back</button>';
+    p.classList.add('show'); $('#pback').onclick = function () { p.classList.remove('show'); };
+}
+function settings(inGame) {
+    var p = $('#panel');
+    function vs() { var M = VO.M; return M.state === 'download' ? 'Downloading voice: ' + (M.total ? Math.round(M.got / M.total * 100) + '%' : Math.round(M.got / 1e6) + ' MB') : M.state === 'ready' ? 'Piper voices ready.' : M.state === 'error' ? 'Piper could not start (' + M.err + '). The phone\'s own voice is used.' : M.state === 'loading' || M.state === 'starting' ? 'Starting Piper...' : 'Off. Uses the phone\'s own voice.'; }
+    p.innerHTML = '<h2>' + (inGame ? 'Paused' : 'Settings') + '</h2>' +
+        (inGame ? '<button class="mbtn" id="s_res">Resume</button>' : '') +
+        '<div class="box"><label>Voices <input type="checkbox" id="s_voice"' + (CFG.voice ? ' checked' : '') + '></label>' +
+        '<label>Piper neural voices <input type="checkbox" id="s_piper"' + (CFG.piper ? ' checked' : '') + '></label>' +
+        '<div class="note" id="s_vs">' + vs() + '</div><div class="note">Same voices as Dungeon Dwellers (Lyra, Bror, the narrator...). First time it downloads about 120 MB and keeps it on the phone. If you already turned Piper on in Dungeon Dwellers on this site, it is already saved.</div></div>' +
+        '<div class="box"><label>Text speed <input type="range" id="s_speed" min="15" max="90" value="' + CFG.speed + '"></label>' +
+        '<label>Auto-play lines <input type="checkbox" id="s_auto"' + (CFG.auto ? ' checked' : '') + '></label>' +
+        '<label>Timed choices <input type="checkbox" id="s_timers"' + (CFG.timers ? ' checked' : '') + '></label>' +
+        '<label>Quick-time events <select id="s_qte"><option value="easy">Easy</option><option value="normal">Normal</option><option value="hard">Hard</option></select></label></div>' +
+        '<div class="box"><label>Music <input type="range" id="s_mus" min="0" max="1" step=".05" value="' + CFG.music + '"></label><label>Sound <input type="range" id="s_sfx" min="0" max="1" step=".05" value="' + CFG.sfx + '"></label></div>' +
+        (inGame ? '<button class="mbtn" id="s_quit">Quit to menu<small>Progress is saved at the start of every scene</small></button>' : '<button class="mbtn" id="s_back">Back</button>');
+    p.classList.add('show');
+    $('#s_qte').value = CFG.qte;
+    VO.onState = function () { var el = $('#s_vs'); if (el) el.textContent = vs(); };
+    var ch = function () { CFG.voice = $('#s_voice').checked; CFG.speed = +$('#s_speed').value; CFG.auto = $('#s_auto').checked; CFG.timers = $('#s_timers').checked; CFG.qte = $('#s_qte').value; CFG.music = +$('#s_mus').value; CFG.sfx = +$('#s_sfx').value; saveCfg(); AU.vol(); };
+    p.querySelectorAll('input,select').forEach(function (el) { el.onchange = ch; el.oninput = ch; });
+    $('#s_piper').onchange = function () { if (this.checked) { VO.enable(); } else { CFG.piper = false; saveCfg(); } $('#s_vs').textContent = vs(); };
+    if (inGame) { $('#s_res').onclick = function () { p.classList.remove('show'); }; $('#s_quit').onclick = function () { p.classList.remove('show'); menu(); }; }
+    else $('#s_back').onclick = function () { p.classList.remove('show'); };
+}
+$('#hmenu').onclick = function () { settings(true); };
+$('#hrel').onclick = function () {
+    var r = $('#rel'); if (r.classList.contains('show')) { r.classList.remove('show'); return; }
+    r.innerHTML = ['lyra', 'bror', 'mira', 'cobb', 'ash', 'wren'].filter(function (k) { return F('met_' + k); }).map(function (k) { return '<div style="color:' + colOf(k) + '">' + nameOf(k) + ': ' + (alive(k) ? relWord(k) : 'gone') + '</div>'; }).join('') || '<div>No one yet.</div>';
+    r.classList.add('show'); setTimeout(function () { r.classList.remove('show'); }, 4000);
+};
+document.addEventListener('visibilitychange', function () { if (document.hidden) VO.stop(); });
+if (CFG.piper) VO.boot().catch(function () { });
+menu();
+window.__ddt = { get S() { return S; }, CHAPTERS: CHAPTERS, play: play, newRun: newRun, menu: menu };
+</script>
+</body>
+</html>
