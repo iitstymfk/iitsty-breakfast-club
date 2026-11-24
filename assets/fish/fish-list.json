@@ -1,0 +1,5954 @@
+[
+ {
+  "id": "mosquitofish",
+  "name": "Mosquitofish",
+  "biome": "pond",
+  "tier": 0,
+  "shape": "fish",
+  "len": 32,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#8a9a6a",
+   "#c5d09a",
+   "#f1f0d0"
+  ],
+  "fin": "#b8c48a"
+ },
+ {
+  "id": "fatheadminnow",
+  "name": "Fathead Minnow",
+  "biome": "pond",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#7a6a4a",
+   "#b8a878",
+   "#efe6c8"
+  ],
+  "fin": "#c9b98a"
+ },
+ {
+  "id": "pumpkinseed",
+  "name": "Pumpkinseed",
+  "biome": "pond",
+  "tier": 0,
+  "shape": "fish",
+  "len": 46,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#3a7a6a",
+   "#e0a030",
+   "#f3b84a"
+  ],
+  "fin": "#d9822b"
+ },
+ {
+  "id": "goldenshiner",
+  "name": "Golden Shiner",
+  "biome": "pond",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#a08a3a",
+   "#e8d070",
+   "#fff4c0"
+  ],
+  "fin": "#e8b84a"
+ },
+ {
+  "id": "greensunfish",
+  "name": "Green Sunfish",
+  "biome": "pond",
+  "tier": 0,
+  "shape": "fish",
+  "len": 46,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#2f6a3a",
+   "#6aa050",
+   "#d9e08a"
+  ],
+  "fin": "#7aa860"
+ },
+ {
+  "id": "brownbullhead",
+  "name": "Brown Bullhead",
+  "biome": "pond",
+  "tier": 0,
+  "shape": "fish",
+  "len": 58,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#4a3a2a",
+   "#7a6a4a",
+   "#d8cfa8"
+  ],
+  "fin": "#5a4a38"
+ },
+ {
+  "id": "cruciancarp",
+  "name": "Crucian Carp",
+  "biome": "pond",
+  "tier": 1,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#8a6a2a",
+   "#d9a44a",
+   "#f6df9a"
+  ],
+  "fin": "#c98a3a"
+ },
+ {
+  "id": "tench",
+  "name": "Tench",
+  "biome": "pond",
+  "tier": 1,
+  "shape": "fish",
+  "len": 78,
+  "w": 1024,
+  "h": 463,
+  "colors": [
+   "#3a5a2a",
+   "#6a8a3a",
+   "#c8c070"
+  ],
+  "fin": "#4a6a30"
+ },
+ {
+  "id": "rudd",
+  "name": "Rudd",
+  "biome": "pond",
+  "tier": 1,
+  "shape": "fish",
+  "len": 60,
+  "w": 1024,
+  "h": 463,
+  "colors": [
+   "#6a7a5a",
+   "#c0b080",
+   "#f4e8c0"
+  ],
+  "fin": "#e04a3a"
+ },
+ {
+  "id": "redearsunfish",
+  "name": "Redear Sunfish",
+  "biome": "pond",
+  "tier": 1,
+  "shape": "fish",
+  "len": 56,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#3a6a50",
+   "#d0b050",
+   "#f0c860"
+  ],
+  "fin": "#d04a2a"
+ },
+ {
+  "id": "blackcrappie",
+  "name": "Black Crappie",
+  "biome": "pond",
+  "tier": 1,
+  "shape": "fish",
+  "len": 62,
+  "w": 1024,
+  "h": 731,
+  "colors": [
+   "#1f2f2a",
+   "#8a9a8a",
+   "#e8ede0"
+  ],
+  "fin": "#4a5a55"
+ },
+ {
+  "id": "grasscarp",
+  "name": "Grass Carp",
+  "biome": "pond",
+  "tier": 1,
+  "shape": "fish",
+  "len": 96,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#4a5a3a",
+   "#9aa070",
+   "#efe9c0"
+  ],
+  "fin": "#6a7a50"
+ },
+ {
+  "id": "commoncarp",
+  "name": "Common Carp",
+  "biome": "pond",
+  "tier": 2,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#6a5a2a",
+   "#c09a3a",
+   "#f0d890"
+  ],
+  "fin": "#a8782a"
+ },
+ {
+  "id": "mirrorcarp",
+  "name": "Mirror Carp",
+  "biome": "pond",
+  "tier": 2,
+  "shape": "fish",
+  "len": 118,
+  "w": 1024,
+  "h": 549,
+  "colors": [
+   "#5a4a30",
+   "#b08a40",
+   "#ecd08a"
+  ],
+  "fin": "#966a28"
+ },
+ {
+  "id": "goldenorfe",
+  "name": "Golden Orfe",
+  "biome": "pond",
+  "tier": 2,
+  "shape": "fish",
+  "len": 94,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#d85a1a",
+   "#f08a2a",
+   "#ffd090"
+  ],
+  "fin": "#f0a040"
+ },
+ {
+  "id": "kohakukoi",
+  "name": "Kohaku Koi",
+  "biome": "pond",
+  "tier": 2,
+  "shape": "fish",
+  "len": 112,
+  "w": 1024,
+  "h": 439,
+  "colors": [
+   "#f4f0e8",
+   "#fbf6ee",
+   "#ffffff"
+  ],
+  "fin": "#ffd8c0"
+ },
+ {
+  "id": "shubunkin",
+  "name": "Shubunkin",
+  "biome": "pond",
+  "tier": 2,
+  "shape": "fish",
+  "len": 88,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#e8e0d8",
+   "#f4ece4",
+   "#fffaf2"
+  ],
+  "fin": "#9ac8f0"
+ },
+ {
+  "id": "showakoi",
+  "name": "Showa Koi",
+  "biome": "pond",
+  "tier": 3,
+  "shape": "fish",
+  "len": 140,
+  "w": 1024,
+  "h": 463,
+  "colors": [
+   "#1a1a1a",
+   "#e8e4dc",
+   "#fbf8f2"
+  ],
+  "fin": "#f4f0e8"
+ },
+ {
+  "id": "spottedgar",
+  "name": "Spotted Gar",
+  "biome": "pond",
+  "tier": 3,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 176,
+  "colors": [
+   "#4a5a3a",
+   "#8a9a5a",
+   "#e4dfa8"
+  ],
+  "fin": "#6a7a4a"
+ },
+ {
+  "id": "bowfin",
+  "name": "Bowfin",
+  "biome": "pond",
+  "tier": 3,
+  "shape": "fish",
+  "len": 130,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#3a5a2a",
+   "#6a8a3a",
+   "#d0d098"
+  ],
+  "fin": "#5a7a38"
+ },
+ {
+  "id": "goldenkoi",
+  "name": "Golden Koi",
+  "biome": "pond",
+  "tier": 4,
+  "shape": "fish",
+  "len": 120,
+  "w": 1024,
+  "h": 439,
+  "colors": [
+   "#ffb703",
+   "#ffd86b",
+   "#fff3c4"
+  ],
+  "fin": "#ffe08a"
+ },
+ {
+  "id": "jadedragoncarp",
+  "name": "Jade Dragon Carp",
+  "biome": "pond",
+  "tier": 4,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#1aa078",
+   "#5ae0b0",
+   "#d8fff0"
+  ],
+  "fin": "#8af0d0"
+ },
+ {
+  "id": "creekchub",
+  "name": "Creek Chub",
+  "biome": "river",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#6a6a5a",
+   "#aaa890",
+   "#f0eed8"
+  ],
+  "fin": "#c0b890"
+ },
+ {
+  "id": "blacknosedace",
+  "name": "Blacknose Dace",
+  "biome": "river",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#8a7a5a",
+   "#d0c090",
+   "#f6f0d8"
+  ],
+  "fin": "#d89a4a"
+ },
+ {
+  "id": "centralstoneroller",
+  "name": "Central Stoneroller",
+  "biome": "river",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#7a6a3a",
+   "#b8a060",
+   "#eadfae"
+  ],
+  "fin": "#a89050"
+ },
+ {
+  "id": "johnnydarter",
+  "name": "Johnny Darter",
+  "biome": "river",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#6a6a40",
+   "#b8b070",
+   "#efe8b8"
+  ],
+  "fin": "#8aa0a0"
+ },
+ {
+  "id": "riverchub",
+  "name": "River Chub",
+  "biome": "river",
+  "tier": 0,
+  "shape": "fish",
+  "len": 50,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#5a6a5a",
+   "#a0b090",
+   "#e8f0e0"
+  ],
+  "fin": "#d88a6a"
+ },
+ {
+  "id": "whitesucker",
+  "name": "White Sucker",
+  "biome": "river",
+  "tier": 0,
+  "shape": "fish",
+  "len": 62,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#6a6a50",
+   "#b0aa88",
+   "#f0ecd8"
+  ],
+  "fin": "#a07a5a"
+ },
+ {
+  "id": "smallmouthbass",
+  "name": "Smallmouth Bass",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 82,
+  "w": 1024,
+  "h": 390,
+  "colors": [
+   "#5a5a2a",
+   "#a08a3a",
+   "#e8dca0"
+  ],
+  "fin": "#7a6a30"
+ },
+ {
+  "id": "browntrout",
+  "name": "Brown Trout",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 88,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#6a5a30",
+   "#c09a50",
+   "#f0e4b8"
+  ],
+  "fin": "#a8884a"
+ },
+ {
+  "id": "brooktrout",
+  "name": "Brook Trout",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 72,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#3a4a3a",
+   "#7a8a5a",
+   "#e87a3a"
+  ],
+  "fin": "#f0702a"
+ },
+ {
+  "id": "channelcatfish",
+  "name": "Channel Catfish",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 96,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#575a50",
+   "#8a8576",
+   "#cdc8b2"
+  ],
+  "fin": "#6b6a5a"
+ },
+ {
+  "id": "redhorsesucker",
+  "name": "Redhorse Sucker",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 78,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#6a4a2a",
+   "#c0804a",
+   "#f0d8a8"
+  ],
+  "fin": "#d84a2a"
+ },
+ {
+  "id": "arcticgrayling",
+  "name": "Arctic Grayling",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 80,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#5a6a8a",
+   "#9aaac0",
+   "#e8eef4"
+  ],
+  "fin": "#7a4a9a"
+ },
+ {
+  "id": "walleye",
+  "name": "Walleye",
+  "biome": "river",
+  "tier": 2,
+  "shape": "fish",
+  "len": 100,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#6a6a2a",
+   "#b0a040",
+   "#f0e8b0"
+  ],
+  "fin": "#9a9a50"
+ },
+ {
+  "id": "northernpike",
+  "name": "Northern Pike",
+  "biome": "river",
+  "tier": 2,
+  "shape": "fish",
+  "len": 128,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#3d5a37",
+   "#6e8a4a",
+   "#e6e2b8"
+  ],
+  "fin": "#566b3a"
+ },
+ {
+  "id": "steelhead",
+  "name": "Steelhead",
+  "biome": "river",
+  "tier": 2,
+  "shape": "fish",
+  "len": 108,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#5a7a8a",
+   "#b8c8c8",
+   "#f4f4f0"
+  ],
+  "fin": "#9ab0b0"
+ },
+ {
+  "id": "americanshad",
+  "name": "American Shad",
+  "biome": "river",
+  "tier": 2,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#3a5a7a",
+   "#b0c8d8",
+   "#f4f8fa"
+  ],
+  "fin": "#8aa8c0"
+ },
+ {
+  "id": "muskellunge",
+  "name": "Muskellunge",
+  "biome": "river",
+  "tier": 2,
+  "shape": "fish",
+  "len": 160,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#4a6a3a",
+   "#8aa060",
+   "#e8e8b8"
+  ],
+  "fin": "#6a8a48"
+ },
+ {
+  "id": "chinooksalmon",
+  "name": "Chinook Salmon",
+  "biome": "river",
+  "tier": 3,
+  "shape": "fish",
+  "len": 140,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#4a6a5a",
+   "#aac0b8",
+   "#f4f4f0"
+  ],
+  "fin": "#6a8a7a"
+ },
+ {
+  "id": "sockeyesalmon",
+  "name": "Sockeye Salmon",
+  "biome": "river",
+  "tier": 3,
+  "shape": "fish",
+  "len": 120,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#c02a2a",
+   "#e05a4a",
+   "#f4cac0"
+  ],
+  "fin": "#3a6a3a"
+ },
+ {
+  "id": "bluecatfish",
+  "name": "Blue Catfish",
+  "biome": "river",
+  "tier": 3,
+  "shape": "fish",
+  "len": 170,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#4a5a6a",
+   "#8a9aaa",
+   "#d8e0e8"
+  ],
+  "fin": "#5a6a7a"
+ },
+ {
+  "id": "belugasturgeon",
+  "name": "Beluga Sturgeon",
+  "biome": "river",
+  "tier": 4,
+  "shape": "fish",
+  "len": 280,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#3a3a40",
+   "#7a7a80",
+   "#e8e4d8"
+  ],
+  "fin": "#5a5a60"
+ },
+ {
+  "id": "spiritsalmon",
+  "name": "Spirit Salmon",
+  "biome": "river",
+  "tier": 4,
+  "shape": "fish",
+  "len": 130,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#7ad0ff",
+   "#c8f0ff",
+   "#ffffff"
+  ],
+  "fin": "#a0e8ff"
+ },
+ {
+  "id": "bluegill",
+  "name": "Bluegill",
+  "biome": "lake",
+  "tier": 0,
+  "shape": "fish",
+  "len": 50,
+  "w": 1024,
+  "h": 658,
+  "colors": [
+   "#2c5a52",
+   "#5f8f5c",
+   "#eaa23c"
+  ],
+  "fin": "#3b6b6a"
+ },
+ {
+  "id": "yellowperch",
+  "name": "Yellow Perch",
+  "biome": "lake",
+  "tier": 0,
+  "shape": "fish",
+  "len": 56,
+  "w": 1024,
+  "h": 439,
+  "colors": [
+   "#4f6b2a",
+   "#a3ab3c",
+   "#f3dc8c"
+  ],
+  "fin": "#e0672f"
+ },
+ {
+  "id": "rockbass",
+  "name": "Rock Bass",
+  "biome": "lake",
+  "tier": 0,
+  "shape": "fish",
+  "len": 52,
+  "w": 1024,
+  "h": 512,
+  "colors": [
+   "#4a4a2a",
+   "#8a8a4a",
+   "#d8d090"
+  ],
+  "fin": "#6a6a3a"
+ },
+ {
+  "id": "whitebass",
+  "name": "White Bass",
+  "biome": "lake",
+  "tier": 0,
+  "shape": "fish",
+  "len": 60,
+  "w": 1024,
+  "h": 439,
+  "colors": [
+   "#6a7a8a",
+   "#c0cad2",
+   "#f4f8f8"
+  ],
+  "fin": "#8a9aa8"
+ },
+ {
+  "id": "warmouth",
+  "name": "Warmouth",
+  "biome": "lake",
+  "tier": 0,
+  "shape": "fish",
+  "len": 50,
+  "w": 1024,
+  "h": 536,
+  "colors": [
+   "#5a4a2a",
+   "#9a8a4a",
+   "#d8c88a"
+  ],
+  "fin": "#8a7a3a"
+ },
+ {
+  "id": "lakechub",
+  "name": "Lake Chub",
+  "biome": "lake",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#6a7a6a",
+   "#aab8a0",
+   "#e8f0e0"
+  ],
+  "fin": "#a8b8a0"
+ },
+ {
+  "id": "largemouthbass",
+  "name": "Largemouth Bass",
+  "biome": "lake",
+  "tier": 1,
+  "shape": "fish",
+  "len": 88,
+  "w": 1024,
+  "h": 402,
+  "colors": [
+   "#3f5f2d",
+   "#7d9a43",
+   "#e5e3b6"
+  ],
+  "fin": "#4c6b32"
+ },
+ {
+  "id": "whitecrappie",
+  "name": "White Crappie",
+  "biome": "lake",
+  "tier": 1,
+  "shape": "fish",
+  "len": 62,
+  "w": 1024,
+  "h": 707,
+  "colors": [
+   "#5a6a5a",
+   "#c0c8b8",
+   "#f4f6ec"
+  ],
+  "fin": "#8a9a88"
+ },
+ {
+  "id": "lakewhitefish",
+  "name": "Lake Whitefish",
+  "biome": "lake",
+  "tier": 1,
+  "shape": "fish",
+  "len": 88,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#6a7a6a",
+   "#c0c8c0",
+   "#f4f6f2"
+  ],
+  "fin": "#8a9a8a"
+ },
+ {
+  "id": "cisco",
+  "name": "Cisco",
+  "biome": "lake",
+  "tier": 1,
+  "shape": "fish",
+  "len": 58,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#3a6a7a",
+   "#b0d0d8",
+   "#f4fafa"
+  ],
+  "fin": "#7ab0c0"
+ },
+ {
+  "id": "burbot",
+  "name": "Burbot",
+  "biome": "lake",
+  "tier": 1,
+  "shape": "fish",
+  "len": 100,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#5a4a2a",
+   "#8a7a4a",
+   "#d0c898"
+  ],
+  "fin": "#6a5a38"
+ },
+ {
+  "id": "freshwaterdrum",
+  "name": "Freshwater Drum",
+  "biome": "lake",
+  "tier": 1,
+  "shape": "fish",
+  "len": 92,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#6a6a60",
+   "#b0b0a0",
+   "#f0eee0"
+  ],
+  "fin": "#8a8a7a"
+ },
+ {
+  "id": "laketrout",
+  "name": "Lake Trout",
+  "biome": "lake",
+  "tier": 2,
+  "shape": "fish",
+  "len": 120,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#4a5a4a",
+   "#8aa090",
+   "#e4ece0"
+  ],
+  "fin": "#7a8a78"
+ },
+ {
+  "id": "landlockedstripedbass",
+  "name": "Landlocked Striped Bass",
+  "biome": "lake",
+  "tier": 2,
+  "shape": "fish",
+  "len": 118,
+  "w": 1024,
+  "h": 390,
+  "colors": [
+   "#4a6a7a",
+   "#b0c8d0",
+   "#f2f6f6"
+  ],
+  "fin": "#7a98a8"
+ },
+ {
+  "id": "chainpickerel",
+  "name": "Chain Pickerel",
+  "biome": "lake",
+  "tier": 2,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#4a5a2a",
+   "#8a9a4a",
+   "#e8e8b0"
+  ],
+  "fin": "#6a7a3a"
+ },
+ {
+  "id": "tigermuskie",
+  "name": "Tiger Muskie",
+  "biome": "lake",
+  "tier": 2,
+  "shape": "fish",
+  "len": 170,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#3a5a2a",
+   "#7a9a4a",
+   "#e8e8b0"
+  ],
+  "fin": "#5a7a38"
+ },
+ {
+  "id": "landlockedsalmon",
+  "name": "Landlocked Salmon",
+  "biome": "lake",
+  "tier": 2,
+  "shape": "fish",
+  "len": 104,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#5a6a7a",
+   "#b0c0c8",
+   "#f4f6f6"
+  ],
+  "fin": "#7a8a9a"
+ },
+ {
+  "id": "lakesturgeon",
+  "name": "Lake Sturgeon",
+  "biome": "lake",
+  "tier": 3,
+  "shape": "fish",
+  "len": 230,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#4a4a3a",
+   "#8a8a70",
+   "#e4e0cc"
+  ],
+  "fin": "#6a6a58"
+ },
+ {
+  "id": "welscatfish",
+  "name": "Wels Catfish",
+  "biome": "lake",
+  "tier": 3,
+  "shape": "fish",
+  "len": 230,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#3a3a2a",
+   "#7a7a5a",
+   "#e0dcb8"
+  ],
+  "fin": "#4a4a38"
+ },
+ {
+  "id": "alligatorgar",
+  "name": "Alligator Gar",
+  "biome": "lake",
+  "tier": 3,
+  "shape": "fish",
+  "len": 220,
+  "w": 1024,
+  "h": 183,
+  "colors": [
+   "#3a4a2a",
+   "#7a8a4a",
+   "#e0e0a8"
+  ],
+  "fin": "#5a6a3a"
+ },
+ {
+  "id": "lochserpent",
+  "name": "Loch Serpent",
+  "biome": "lake",
+  "tier": 4,
+  "shape": "eel",
+  "len": 520,
+  "w": 1024,
+  "h": 338,
+  "colors": [
+   "#2a4a3a",
+   "#4a8a6a",
+   "#b8e8c8"
+  ],
+  "fin": "#6adfaa"
+ },
+ {
+  "id": "moonlitwhitefish",
+  "name": "Moonlit Whitefish",
+  "biome": "lake",
+  "tier": 4,
+  "shape": "fish",
+  "len": 100,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#a8b8ff",
+   "#d8e0ff",
+   "#ffffff"
+  ],
+  "fin": "#c8d0ff"
+ },
+ {
+  "id": "surfsmelt",
+  "name": "Surf Smelt",
+  "biome": "beach",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#8aa8b8",
+   "#d0e0e8",
+   "#f8fcfc"
+  ],
+  "fin": "#b8d0d8"
+ },
+ {
+  "id": "grunion",
+  "name": "Grunion",
+  "biome": "beach",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#5a7a8a",
+   "#b8d0d8",
+   "#f6fafa"
+  ],
+  "fin": "#9ac0d0"
+ },
+ {
+  "id": "atlanticsilverside",
+  "name": "Atlantic Silverside",
+  "biome": "beach",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#7a9aa8",
+   "#d8e8ec",
+   "#fafcfc"
+  ],
+  "fin": "#c0d8e0"
+ },
+ {
+  "id": "sandlance",
+  "name": "Sand Lance",
+  "biome": "beach",
+  "tier": 0,
+  "shape": "eel",
+  "len": 60,
+  "w": 1024,
+  "h": 410,
+  "colors": [
+   "#c8b080",
+   "#e8d8a8",
+   "#f8f0d8"
+  ],
+  "fin": "#d8c890"
+ },
+ {
+  "id": "pinfish",
+  "name": "Pinfish",
+  "biome": "beach",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 512,
+  "colors": [
+   "#5a7a6a",
+   "#c0b860",
+   "#f0e8a0"
+  ],
+  "fin": "#d8c040"
+ },
+ {
+  "id": "stripedkillifish",
+  "name": "Striped Killifish",
+  "biome": "beach",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#7a7a5a",
+   "#c0b890",
+   "#f2ecd0"
+  ],
+  "fin": "#a0a070"
+ },
+ {
+  "id": "floridapompano",
+  "name": "Florida Pompano",
+  "biome": "beach",
+  "tier": 1,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#5a7a8a",
+   "#c8d8d8",
+   "#f8f8f0"
+  ],
+  "fin": "#d8c050"
+ },
+ {
+  "id": "northernwhiting",
+  "name": "Northern Whiting",
+  "biome": "beach",
+  "tier": 1,
+  "shape": "fish",
+  "len": 68,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#8a8a7a",
+   "#d0d0c0",
+   "#f4f4ec"
+  ],
+  "fin": "#b0b0a0"
+ },
+ {
+  "id": "spotcroaker",
+  "name": "Spot Croaker",
+  "biome": "beach",
+  "tier": 1,
+  "shape": "fish",
+  "len": 64,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#8a7a5a",
+   "#d0b888",
+   "#f6ecd0"
+  ],
+  "fin": "#c0a070"
+ },
+ {
+  "id": "sheepshead",
+  "name": "Sheepshead",
+  "biome": "beach",
+  "tier": 1,
+  "shape": "fish",
+  "len": 76,
+  "w": 1024,
+  "h": 634,
+  "colors": [
+   "#6a6a6a",
+   "#c0c0b8",
+   "#f0f0e8"
+  ],
+  "fin": "#8a8a88"
+ },
+ {
+  "id": "stripedmullet",
+  "name": "Striped Mullet",
+  "biome": "beach",
+  "tier": 1,
+  "shape": "fish",
+  "len": 82,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#5a6a7a",
+   "#c0ccd0",
+   "#f6f8f8"
+  ],
+  "fin": "#a0b0b8"
+ },
+ {
+  "id": "bluefish",
+  "name": "Bluefish",
+  "biome": "beach",
+  "tier": 1,
+  "shape": "fish",
+  "len": 96,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#2a5a7a",
+   "#7ab0c8",
+   "#f0f6f8"
+  ],
+  "fin": "#5a8aa8"
+ },
+ {
+  "id": "reddrum",
+  "name": "Red Drum",
+  "biome": "beach",
+  "tier": 2,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#9a3a2a",
+   "#d87a5a",
+   "#f8e0d0"
+  ],
+  "fin": "#b84a38"
+ },
+ {
+  "id": "summerflounder",
+  "name": "Summer Flounder",
+  "biome": "beach",
+  "tier": 2,
+  "shape": "flat",
+  "len": 100,
+  "w": 1024,
+  "h": 579,
+  "colors": [
+   "#8a7a4a",
+   "#c0b078",
+   "#eee4c0"
+  ],
+  "fin": "#9a8a50"
+ },
+ {
+  "id": "blackdrum",
+  "name": "Black Drum",
+  "biome": "beach",
+  "tier": 2,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#3a3a40",
+   "#7a7a80",
+   "#d0d0d0"
+  ],
+  "fin": "#4a4a50"
+ },
+ {
+  "id": "snook",
+  "name": "Snook",
+  "biome": "beach",
+  "tier": 2,
+  "shape": "fish",
+  "len": 120,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#7a8a6a",
+   "#c8d0b0",
+   "#f6f8ec"
+  ],
+  "fin": "#8a9a70"
+ },
+ {
+  "id": "spanishmackerel",
+  "name": "Spanish Mackerel",
+  "biome": "beach",
+  "tier": 2,
+  "shape": "fish",
+  "len": 100,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#2a6a8a",
+   "#9ac8d8",
+   "#f6fafa"
+  ],
+  "fin": "#5a98b0"
+ },
+ {
+  "id": "tarpon",
+  "name": "Tarpon",
+  "biome": "beach",
+  "tier": 3,
+  "shape": "fish",
+  "len": 190,
+  "w": 1024,
+  "h": 439,
+  "colors": [
+   "#7a8a98",
+   "#e0e8f0",
+   "#ffffff"
+  ],
+  "fin": "#a8b8c8"
+ },
+ {
+  "id": "permit",
+  "name": "Permit",
+  "biome": "beach",
+  "tier": 3,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#6a8a98",
+   "#d8e4e8",
+   "#fafcfc"
+  ],
+  "fin": "#9ab0b8"
+ },
+ {
+  "id": "cobia",
+  "name": "Cobia",
+  "biome": "beach",
+  "tier": 3,
+  "shape": "fish",
+  "len": 200,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#3a3a3a",
+   "#8a8a7a",
+   "#e8e4d8"
+  ],
+  "fin": "#5a5a50"
+ },
+ {
+  "id": "leatherbackturtle",
+  "name": "Leatherback Turtle",
+  "biome": "beach",
+  "tier": 4,
+  "shape": "turtle",
+  "len": 240,
+  "w": 1024,
+  "h": 534,
+  "colors": [
+   "#2a3a4a",
+   "#4a6a7a",
+   "#c8d8d8"
+  ],
+  "fin": "#3a5060"
+ },
+ {
+  "id": "sunrisesailfish",
+  "name": "Sunrise Sailfish",
+  "biome": "beach",
+  "tier": 4,
+  "shape": "fish",
+  "len": 250,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#ff8a2a",
+   "#ffc040",
+   "#fff4c8"
+  ],
+  "fin": "#ff6a3a"
+ },
+ {
+  "id": "anchovy",
+  "name": "Anchovy",
+  "biome": "harbor",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#5a7a8a",
+   "#b8d0d8",
+   "#f4fafa"
+  ],
+  "fin": "#9ac0cc"
+ },
+ {
+  "id": "sardine",
+  "name": "Sardine",
+  "biome": "harbor",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#3a6a8a",
+   "#aac8d8",
+   "#f6fafa"
+  ],
+  "fin": "#7aa8c0"
+ },
+ {
+  "id": "atlanticherring",
+  "name": "Atlantic Herring",
+  "biome": "harbor",
+  "tier": 0,
+  "shape": "fish",
+  "len": 46,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#3a5a7a",
+   "#b0c8d8",
+   "#f4f8fa"
+  ],
+  "fin": "#7a98b0"
+ },
+ {
+  "id": "sprat",
+  "name": "Sprat",
+  "biome": "harbor",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#4a6a7a",
+   "#b8cdd4",
+   "#f6fafa"
+  ],
+  "fin": "#8aa8b4"
+ },
+ {
+  "id": "roundgoby",
+  "name": "Round Goby",
+  "biome": "harbor",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#6a6a50",
+   "#a8a078",
+   "#e6e0c0"
+  ],
+  "fin": "#8a8a60"
+ },
+ {
+  "id": "threespinestickleback",
+  "name": "Threespine Stickleback",
+  "biome": "harbor",
+  "tier": 0,
+  "shape": "fish",
+  "len": 32,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#6a7a5a",
+   "#b8c090",
+   "#f0f0cc"
+  ],
+  "fin": "#a0a870"
+ },
+ {
+  "id": "atlanticmackerel",
+  "name": "Atlantic Mackerel",
+  "biome": "harbor",
+  "tier": 1,
+  "shape": "fish",
+  "len": 66,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#2a5a7a",
+   "#8ab8d0",
+   "#f4fafa"
+  ],
+  "fin": "#4a8aa8"
+ },
+ {
+  "id": "scup",
+  "name": "Scup",
+  "biome": "harbor",
+  "tier": 1,
+  "shape": "fish",
+  "len": 62,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#6a6a70",
+   "#b8b8c0",
+   "#f0f0f4"
+  ],
+  "fin": "#8a8a90"
+ },
+ {
+  "id": "tautog",
+  "name": "Tautog",
+  "biome": "harbor",
+  "tier": 1,
+  "shape": "fish",
+  "len": 78,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#3a3a3a",
+   "#6a6a60",
+   "#b8b8a8"
+  ],
+  "fin": "#4a4a44"
+ },
+ {
+  "id": "blackseabass",
+  "name": "Black Sea Bass",
+  "biome": "harbor",
+  "tier": 1,
+  "shape": "fish",
+  "len": 72,
+  "w": 1024,
+  "h": 463,
+  "colors": [
+   "#1a1a2a",
+   "#4a4a5a",
+   "#a0a0b0"
+  ],
+  "fin": "#3a3a48"
+ },
+ {
+  "id": "cunner",
+  "name": "Cunner",
+  "biome": "harbor",
+  "tier": 1,
+  "shape": "fish",
+  "len": 52,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#5a6a3a",
+   "#9a9a58",
+   "#d8d8a0"
+  ],
+  "fin": "#7a7a48"
+ },
+ {
+  "id": "winterflounder",
+  "name": "Winter Flounder",
+  "biome": "harbor",
+  "tier": 1,
+  "shape": "flat",
+  "len": 74,
+  "w": 1024,
+  "h": 579,
+  "colors": [
+   "#6a5a3a",
+   "#a09068",
+   "#e0d8b0"
+  ],
+  "fin": "#8a7a50"
+ },
+ {
+  "id": "atlanticcod",
+  "name": "Atlantic Cod",
+  "biome": "harbor",
+  "tier": 2,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#5a6a4a",
+   "#a8a878",
+   "#eeeed0"
+  ],
+  "fin": "#8a8a60"
+ },
+ {
+  "id": "haddock",
+  "name": "Haddock",
+  "biome": "harbor",
+  "tier": 2,
+  "shape": "fish",
+  "len": 98,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#5a5a6a",
+   "#a0a0b0",
+   "#eeeef4"
+  ],
+  "fin": "#6a6a78"
+ },
+ {
+  "id": "pollock",
+  "name": "Pollock",
+  "biome": "harbor",
+  "tier": 2,
+  "shape": "fish",
+  "len": 104,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#3a4a3a",
+   "#7a8a6a",
+   "#d8dcc0"
+  ],
+  "fin": "#5a6a50"
+ },
+ {
+  "id": "americanlobster",
+  "name": "American Lobster",
+  "biome": "harbor",
+  "tier": 2,
+  "shape": "crab",
+  "len": 120,
+  "w": 1024,
+  "h": 768,
+  "colors": [
+   "#8a2a1a",
+   "#d0502a",
+   "#f8c8a0"
+  ],
+  "fin": "#c04a2a"
+ },
+ {
+  "id": "dungenesscrab",
+  "name": "Dungeness Crab",
+  "biome": "harbor",
+  "tier": 2,
+  "shape": "crab",
+  "len": 90,
+  "w": 1024,
+  "h": 768,
+  "colors": [
+   "#c08a5a",
+   "#e8b080",
+   "#f8e4c8"
+  ],
+  "fin": "#d89a60"
+ },
+ {
+  "id": "atlantichalibut",
+  "name": "Atlantic Halibut",
+  "biome": "harbor",
+  "tier": 3,
+  "shape": "flat",
+  "len": 220,
+  "w": 1024,
+  "h": 532,
+  "colors": [
+   "#4a5a3a",
+   "#8a9a68",
+   "#e8e8d0"
+  ],
+  "fin": "#6a7a4a"
+ },
+ {
+  "id": "monkfish",
+  "name": "Monkfish",
+  "biome": "harbor",
+  "tier": 3,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 853,
+  "colors": [
+   "#4a3a2a",
+   "#8a7a5a",
+   "#e8e0c8"
+  ],
+  "fin": "#5a4a34"
+ },
+ {
+  "id": "atlanticwolffish",
+  "name": "Atlantic Wolffish",
+  "biome": "harbor",
+  "tier": 3,
+  "shape": "eel",
+  "len": 170,
+  "w": 1024,
+  "h": 648,
+  "colors": [
+   "#4a5a6a",
+   "#8a9aa8",
+   "#d8e0e8"
+  ],
+  "fin": "#6a7a88"
+ },
+ {
+  "id": "giantbluefintuna",
+  "name": "Giant Bluefin Tuna",
+  "biome": "harbor",
+  "tier": 4,
+  "shape": "fish",
+  "len": 300,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#1a2a4a",
+   "#3a5a8a",
+   "#d8e4f4"
+  ],
+  "fin": "#4a6a9a"
+ },
+ {
+  "id": "goldenlobster",
+  "name": "Golden Lobster",
+  "biome": "harbor",
+  "tier": 4,
+  "shape": "crab",
+  "len": 130,
+  "w": 1024,
+  "h": 768,
+  "colors": [
+   "#e8a020",
+   "#ffd060",
+   "#fff4c0"
+  ],
+  "fin": "#f0b030"
+ },
+ {
+  "id": "garibaldi",
+  "name": "Garibaldi",
+  "biome": "kelp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 52,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#ff6a00",
+   "#ff8c1a",
+   "#ffb860"
+  ],
+  "fin": "#ff7a10"
+ },
+ {
+  "id": "kelpbass",
+  "name": "Kelp Bass",
+  "biome": "kelp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 60,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#5a6a3a",
+   "#a0a468",
+   "#e0e0b0"
+  ],
+  "fin": "#7a8a48"
+ },
+ {
+  "id": "senorita",
+  "name": "Senorita",
+  "biome": "kelp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#c07a3a",
+   "#e0b878",
+   "#f8ecc8"
+  ],
+  "fin": "#e08a3a"
+ },
+ {
+  "id": "blacksmith",
+  "name": "Blacksmith",
+  "biome": "kelp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 46,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#3a4a6a",
+   "#6a7a9a",
+   "#aab0c8"
+  ],
+  "fin": "#2a3a5a"
+ },
+ {
+  "id": "opaleye",
+  "name": "Opaleye",
+  "biome": "kelp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 58,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#2a4a3a",
+   "#5a8a6a",
+   "#b0d0b8"
+  ],
+  "fin": "#3a6a4a"
+ },
+ {
+  "id": "halfmoon",
+  "name": "Halfmoon",
+  "biome": "kelp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 56,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#3a5a7a",
+   "#6a8aa8",
+   "#b0c8d8"
+  ],
+  "fin": "#2a4a6a"
+ },
+ {
+  "id": "californiasheephead",
+  "name": "California Sheephead",
+  "biome": "kelp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 80,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#d84a2a",
+   "#e07a4a",
+   "#f4d0b8"
+  ],
+  "fin": "#3a2a2a"
+ },
+ {
+  "id": "vermilionrockfish",
+  "name": "Vermilion Rockfish",
+  "biome": "kelp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 72,
+  "w": 1024,
+  "h": 512,
+  "colors": [
+   "#d83a2a",
+   "#f05a3a",
+   "#f8c0a8"
+  ],
+  "fin": "#c02a1a"
+ },
+ {
+  "id": "lingcod",
+  "name": "Lingcod",
+  "biome": "kelp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#5a6a5a",
+   "#9aaa88",
+   "#e0e8d0"
+  ],
+  "fin": "#6a7a5a"
+ },
+ {
+  "id": "cabezon",
+  "name": "Cabezon",
+  "biome": "kelp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 76,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#6a4a3a",
+   "#b08a58",
+   "#f0d8a8"
+  ],
+  "fin": "#7a5a3a"
+ },
+ {
+  "id": "kelpgreenling",
+  "name": "Kelp Greenling",
+  "biome": "kelp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 68,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#3a6a4a",
+   "#8aa860",
+   "#e8e4b0"
+  ],
+  "fin": "#e8803a"
+ },
+ {
+  "id": "blacksurfperch",
+  "name": "Black Surfperch",
+  "biome": "kelp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 66,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#2a2a3a",
+   "#5a5a6a",
+   "#a0a0b0"
+  ],
+  "fin": "#3a3a4a"
+ },
+ {
+  "id": "giantseabass",
+  "name": "Giant Sea Bass",
+  "biome": "kelp",
+  "tier": 2,
+  "shape": "fish",
+  "len": 220,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#2a2a30",
+   "#5a5a68",
+   "#b0b0b8"
+  ],
+  "fin": "#4a4a54"
+ },
+ {
+  "id": "leopardshark",
+  "name": "Leopard Shark",
+  "biome": "kelp",
+  "tier": 2,
+  "shape": "fish",
+  "len": 160,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#8a8a7a",
+   "#c0bca8",
+   "#f0ece0"
+  ],
+  "fin": "#7a7a6a"
+ },
+ {
+  "id": "wolfeel",
+  "name": "Wolf Eel",
+  "biome": "kelp",
+  "tier": 2,
+  "shape": "eel",
+  "len": 150,
+  "w": 1024,
+  "h": 680,
+  "colors": [
+   "#6a6a5a",
+   "#9a9a80",
+   "#d0d0b0"
+  ],
+  "fin": "#7a7a60"
+ },
+ {
+  "id": "batray",
+  "name": "Bat Ray",
+  "biome": "kelp",
+  "tier": 2,
+  "shape": "ray",
+  "len": 150,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#4a4a3a",
+   "#7a7a60",
+   "#e8e4d0"
+  ],
+  "fin": "#5a5a48"
+ },
+ {
+  "id": "californiamoray",
+  "name": "California Moray",
+  "biome": "kelp",
+  "tier": 2,
+  "shape": "eel",
+  "len": 140,
+  "w": 1024,
+  "h": 543,
+  "colors": [
+   "#5a5a3a",
+   "#9a9a58",
+   "#e0e0a8"
+  ],
+  "fin": "#7a7a48"
+ },
+ {
+  "id": "greatwhiteshark",
+  "name": "Great White Shark",
+  "biome": "kelp",
+  "tier": 3,
+  "shape": "fish",
+  "len": 330,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#4a5a68",
+   "#8a98a8",
+   "#f4f6f8"
+  ],
+  "fin": "#5a6a78"
+ },
+ {
+  "id": "giantpacificoctopus",
+  "name": "Giant Pacific Octopus",
+  "biome": "kelp",
+  "tier": 3,
+  "shape": "octopus",
+  "len": 190,
+  "w": 1024,
+  "h": 652,
+  "colors": [
+   "#b0301a",
+   "#e0583a",
+   "#f8c8b0"
+  ],
+  "fin": "#d84a2a"
+ },
+ {
+  "id": "broadnosesevengill",
+  "name": "Broadnose Sevengill",
+  "biome": "kelp",
+  "tier": 3,
+  "shape": "fish",
+  "len": 260,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#6a6a60",
+   "#a09c88",
+   "#e0dcc8"
+  ],
+  "fin": "#5a5a50"
+ },
+ {
+  "id": "leafyseadragon",
+  "name": "Leafy Sea Dragon",
+  "biome": "kelp",
+  "tier": 4,
+  "shape": "seahorse",
+  "len": 150,
+  "w": 1024,
+  "h": 2150,
+  "colors": [
+   "#c8a820",
+   "#e8d050",
+   "#fff0a0"
+  ],
+  "fin": "#7ab03a"
+ },
+ {
+  "id": "giantoceansunfish",
+  "name": "Giant Ocean Sunfish",
+  "biome": "kelp",
+  "tier": 4,
+  "shape": "fish",
+  "len": 260,
+  "w": 1024,
+  "h": 1097,
+  "colors": [
+   "#6a7a8a",
+   "#aab8c4",
+   "#e8eef2"
+  ],
+  "fin": "#5a6a7a"
+ },
+ {
+  "id": "clownfish",
+  "name": "Clownfish",
+  "biome": "reef",
+  "tier": 0,
+  "shape": "fish",
+  "len": 42,
+  "w": 1024,
+  "h": 561,
+  "colors": [
+   "#ff6a14",
+   "#ff8c2d",
+   "#ffb56b"
+  ],
+  "fin": "#ff7a1c"
+ },
+ {
+  "id": "bluedamselfish",
+  "name": "Blue Damselfish",
+  "biome": "reef",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#1a5aff",
+   "#2a8aff",
+   "#8ad0ff"
+  ],
+  "fin": "#ffe040"
+ },
+ {
+  "id": "pajamacardinalfish",
+  "name": "Pajama Cardinalfish",
+  "biome": "reef",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#e0e0f0",
+   "#f4f4f8",
+   "#ffffff"
+  ],
+  "fin": "#d8d8e8"
+ },
+ {
+  "id": "bluechromis",
+  "name": "Blue Chromis",
+  "biome": "reef",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#1a6aff",
+   "#4aa0ff",
+   "#aae0ff"
+  ],
+  "fin": "#2a7aff"
+ },
+ {
+  "id": "cleanerwrasse",
+  "name": "Cleaner Wrasse",
+  "biome": "reef",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#1a8aff",
+   "#4ab0ff",
+   "#ffffff"
+  ],
+  "fin": "#2a8aff"
+ },
+ {
+  "id": "neongoby",
+  "name": "Neon Goby",
+  "biome": "reef",
+  "tier": 0,
+  "shape": "fish",
+  "len": 30,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#1a1a2a",
+   "#2a2a40",
+   "#5a5a70"
+  ],
+  "fin": "#1a1a2a"
+ },
+ {
+  "id": "bluetang",
+  "name": "Blue Tang",
+  "biome": "reef",
+  "tier": 1,
+  "shape": "fish",
+  "len": 54,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#1f4fd8",
+   "#2f80ff",
+   "#68b0ff"
+  ],
+  "fin": "#ffd60a"
+ },
+ {
+  "id": "raccoonbutterflyfish",
+  "name": "Raccoon Butterflyfish",
+  "biome": "reef",
+  "tier": 1,
+  "shape": "fish",
+  "len": 56,
+  "w": 1024,
+  "h": 975,
+  "colors": [
+   "#f4e8a0",
+   "#f8f0c8",
+   "#ffffff"
+  ],
+  "fin": "#ffd040"
+ },
+ {
+  "id": "stoplightparrotfish",
+  "name": "Stoplight Parrotfish",
+  "biome": "reef",
+  "tier": 1,
+  "shape": "fish",
+  "len": 80,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#2aa08a",
+   "#5ad0a0",
+   "#f0e070"
+  ],
+  "fin": "#e8508a"
+ },
+ {
+  "id": "titantriggerfish",
+  "name": "Titan Triggerfish",
+  "biome": "reef",
+  "tier": 1,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#3a4a5a",
+   "#7a8a98",
+   "#c0cdd6"
+  ],
+  "fin": "#e0c040"
+ },
+ {
+  "id": "yellowtang",
+  "name": "Yellow Tang",
+  "biome": "reef",
+  "tier": 1,
+  "shape": "fish",
+  "len": 56,
+  "w": 1024,
+  "h": 731,
+  "colors": [
+   "#ffd800",
+   "#ffe84a",
+   "#fff4a8"
+  ],
+  "fin": "#ffc800"
+ },
+ {
+  "id": "longnosehawkfish",
+  "name": "Longnose Hawkfish",
+  "biome": "reef",
+  "tier": 1,
+  "shape": "fish",
+  "len": 48,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#ff4a3a",
+   "#ff8a5a",
+   "#fff0e0"
+  ],
+  "fin": "#ff5a4a"
+ },
+ {
+  "id": "emperorangelfish",
+  "name": "Emperor Angelfish",
+  "biome": "reef",
+  "tier": 2,
+  "shape": "fish",
+  "len": 60,
+  "w": 1024,
+  "h": 1097,
+  "colors": [
+   "#f4d35e",
+   "#f7e29a",
+   "#fff6d8"
+  ],
+  "fin": "#4f8dff"
+ },
+ {
+  "id": "spottedpufferfish",
+  "name": "Spotted Pufferfish",
+  "biome": "reef",
+  "tier": 2,
+  "shape": "puffer",
+  "len": 58,
+  "w": 1024,
+  "h": 916,
+  "colors": [
+   "#c9a45b",
+   "#e8c97a",
+   "#fff0c2"
+  ],
+  "fin": "#d9b86a"
+ },
+ {
+  "id": "redlionfish",
+  "name": "Red Lionfish",
+  "biome": "reef",
+  "tier": 2,
+  "shape": "fish",
+  "len": 76,
+  "w": 1024,
+  "h": 512,
+  "colors": [
+   "#9d2b2b",
+   "#d9503f",
+   "#f2c9a8"
+  ],
+  "fin": "#e9a27d"
+ },
+ {
+  "id": "zebramoray",
+  "name": "Zebra Moray",
+  "biome": "reef",
+  "tier": 2,
+  "shape": "eel",
+  "len": 150,
+  "w": 1024,
+  "h": 555,
+  "colors": [
+   "#f4f0e0",
+   "#f8f4ec",
+   "#ffffff"
+  ],
+  "fin": "#d8d4c0"
+ },
+ {
+  "id": "longhorncowfish",
+  "name": "Longhorn Cowfish",
+  "biome": "reef",
+  "tier": 2,
+  "shape": "fish",
+  "len": 66,
+  "w": 1024,
+  "h": 731,
+  "colors": [
+   "#e0d060",
+   "#f4e888",
+   "#fffad0"
+  ],
+  "fin": "#5a9ae0"
+ },
+ {
+  "id": "reefmantaray",
+  "name": "Reef Manta Ray",
+  "biome": "reef",
+  "tier": 3,
+  "shape": "ray",
+  "len": 210,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#1d2a44",
+   "#2f4466",
+   "#e8eef5"
+  ],
+  "fin": "#2a3a5a"
+ },
+ {
+  "id": "blacktipreefshark",
+  "name": "Blacktip Reef Shark",
+  "biome": "reef",
+  "tier": 3,
+  "shape": "fish",
+  "len": 180,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#7a8a98",
+   "#b8c4cc",
+   "#f4f6f8"
+  ],
+  "fin": "#3a4a58"
+ },
+ {
+  "id": "napoleonwrasse",
+  "name": "Napoleon Wrasse",
+  "biome": "reef",
+  "tier": 3,
+  "shape": "fish",
+  "len": 200,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#1a8a8a",
+   "#4ac0b0",
+   "#b8f0d8"
+  ],
+  "fin": "#2a9aa0"
+ },
+ {
+  "id": "mandarindragonet",
+  "name": "Mandarin Dragonet",
+  "biome": "reef",
+  "tier": 4,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#ff6a1a",
+   "#2a8aff",
+   "#ffe040"
+  ],
+  "fin": "#ff5a2a"
+ },
+ {
+  "id": "hawksbillturtle",
+  "name": "Hawksbill Turtle",
+  "biome": "reef",
+  "tier": 4,
+  "shape": "turtle",
+  "len": 230,
+  "w": 1024,
+  "h": 534,
+  "colors": [
+   "#8a5a1a",
+   "#d89a3a",
+   "#fbe0a0"
+  ],
+  "fin": "#9a6a20"
+ },
+ {
+  "id": "capelin",
+  "name": "Capelin",
+  "biome": "arctic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#6a8aa8",
+   "#c0d4e0",
+   "#f6fafc"
+  ],
+  "fin": "#9ab8cc"
+ },
+ {
+  "id": "polarcod",
+  "name": "Polar Cod",
+  "biome": "arctic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 46,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#4a5a6a",
+   "#9aaab8",
+   "#eaf0f4"
+  ],
+  "fin": "#7a8a98"
+ },
+ {
+  "id": "shorthornsculpin",
+  "name": "Shorthorn Sculpin",
+  "biome": "arctic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 52,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#5a4a3a",
+   "#9a8a6a",
+   "#d8d0b0"
+  ],
+  "fin": "#6a5a42"
+ },
+ {
+  "id": "northernsandeel",
+  "name": "Northern Sand Eel",
+  "biome": "arctic",
+  "tier": 0,
+  "shape": "eel",
+  "len": 70,
+  "w": 1024,
+  "h": 410,
+  "colors": [
+   "#9a8a6a",
+   "#d0c498",
+   "#f8f0d8"
+  ],
+  "fin": "#b0a478"
+ },
+ {
+  "id": "lumpfish",
+  "name": "Lumpfish",
+  "biome": "arctic",
+  "tier": 0,
+  "shape": "puffer",
+  "len": 56,
+  "w": 1024,
+  "h": 916,
+  "colors": [
+   "#3a5a7a",
+   "#6a8aa8",
+   "#c8d8e4"
+  ],
+  "fin": "#4a6a88"
+ },
+ {
+  "id": "arcticsnailfish",
+  "name": "Arctic Snailfish",
+  "biome": "arctic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 48,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#d8b8c0",
+   "#eed0d4",
+   "#fff4f4"
+  ],
+  "fin": "#e8c8d0"
+ },
+ {
+  "id": "arcticchar",
+  "name": "Arctic Char",
+  "biome": "arctic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 80,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#3a5a7a",
+   "#e07a5a",
+   "#f8e0d0"
+  ],
+  "fin": "#f8f0e0"
+ },
+ {
+  "id": "atlanticredfish",
+  "name": "Atlantic Redfish",
+  "biome": "arctic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 66,
+  "w": 1024,
+  "h": 512,
+  "colors": [
+   "#e0502a",
+   "#f07a4a",
+   "#fbd0b8"
+  ],
+  "fin": "#d03a1a"
+ },
+ {
+  "id": "antarcticicefish",
+  "name": "Antarctic Icefish",
+  "biome": "arctic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 86,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#d8f0f8",
+   "#eaf8fc",
+   "#ffffff"
+  ],
+  "fin": "#b8e0f0"
+ },
+ {
+  "id": "greenlandhalibut",
+  "name": "Greenland Halibut",
+  "biome": "arctic",
+  "tier": 1,
+  "shape": "flat",
+  "len": 120,
+  "w": 1024,
+  "h": 579,
+  "colors": [
+   "#3a4a58",
+   "#7a8a98",
+   "#d0d8e0"
+  ],
+  "fin": "#5a6a78"
+ },
+ {
+  "id": "saffroncod",
+  "name": "Saffron Cod",
+  "biome": "arctic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#8a7a3a",
+   "#c0b068",
+   "#f0e8b8"
+  ],
+  "fin": "#a89848"
+ },
+ {
+  "id": "spottedwolffish",
+  "name": "Spotted Wolffish",
+  "biome": "arctic",
+  "tier": 1,
+  "shape": "eel",
+  "len": 140,
+  "w": 1024,
+  "h": 677,
+  "colors": [
+   "#5a6a7a",
+   "#8a9aaa",
+   "#d8e0e8"
+  ],
+  "fin": "#6a7a8a"
+ },
+ {
+  "id": "arcticskate",
+  "name": "Arctic Skate",
+  "biome": "arctic",
+  "tier": 2,
+  "shape": "ray",
+  "len": 140,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#5a6a7a",
+   "#8a9aaa",
+   "#e8eef2"
+  ],
+  "fin": "#6a7a8a"
+ },
+ {
+  "id": "salmonshark",
+  "name": "Salmon Shark",
+  "biome": "arctic",
+  "tier": 2,
+  "shape": "fish",
+  "len": 190,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#3a4a5a",
+   "#7a8a98",
+   "#e8eef2"
+  ],
+  "fin": "#4a5a68"
+ },
+ {
+  "id": "snowcrab",
+  "name": "Snow Crab",
+  "biome": "arctic",
+  "tier": 2,
+  "shape": "crab",
+  "len": 90,
+  "w": 1024,
+  "h": 768,
+  "colors": [
+   "#d8c8b0",
+   "#f0e4d0",
+   "#fffaf0"
+  ],
+  "fin": "#e8d8c0"
+ },
+ {
+  "id": "icedragonfish",
+  "name": "Ice Dragonfish",
+  "biome": "arctic",
+  "tier": 2,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#8ad0f0",
+   "#c8f0ff",
+   "#ffffff"
+  ],
+  "fin": "#a0e0ff"
+ },
+ {
+  "id": "greenlandcod",
+  "name": "Greenland Cod",
+  "biome": "arctic",
+  "tier": 2,
+  "shape": "fish",
+  "len": 100,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#5a5a4a",
+   "#a0a080",
+   "#e8e8d0"
+  ],
+  "fin": "#7a7a60"
+ },
+ {
+  "id": "greenlandshark",
+  "name": "Greenland Shark",
+  "biome": "arctic",
+  "tier": 3,
+  "shape": "fish",
+  "len": 300,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#4a4a58",
+   "#7a7a90",
+   "#c8c8d8"
+  ],
+  "fin": "#5a5a70"
+ },
+ {
+  "id": "belugawhale",
+  "name": "Beluga Whale",
+  "biome": "arctic",
+  "tier": 3,
+  "shape": "whale",
+  "len": 360,
+  "w": 1024,
+  "h": 363,
+  "colors": [
+   "#d8e0e8",
+   "#eef2f6",
+   "#ffffff"
+  ],
+  "fin": "#c0ccd8"
+ },
+ {
+  "id": "narwhal",
+  "name": "Narwhal",
+  "biome": "arctic",
+  "tier": 3,
+  "shape": "whale",
+  "len": 380,
+  "w": 1024,
+  "h": 321,
+  "colors": [
+   "#7a8a98",
+   "#c0ccd4",
+   "#f4f8fa"
+  ],
+  "fin": "#8a98a4"
+ },
+ {
+  "id": "auroraghostwhale",
+  "name": "Aurora Ghost Whale",
+  "biome": "arctic",
+  "tier": 4,
+  "shape": "whale",
+  "len": 600,
+  "w": 1024,
+  "h": 342,
+  "colors": [
+   "#6ae0c8",
+   "#a8f0e0",
+   "#f0fffc"
+  ],
+  "fin": "#8affe8"
+ },
+ {
+  "id": "frostwyrm",
+  "name": "Frost Wyrm",
+  "biome": "arctic",
+  "tier": 4,
+  "shape": "eel",
+  "len": 560,
+  "w": 1024,
+  "h": 343,
+  "colors": [
+   "#8ad0f0",
+   "#c0e8ff",
+   "#ffffff"
+  ],
+  "fin": "#a0e0ff"
+ },
+ {
+  "id": "flyingfish",
+  "name": "Flying Fish",
+  "biome": "ocean",
+  "tier": 0,
+  "shape": "fish",
+  "len": 50,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#2a5a9a",
+   "#6a9ad0",
+   "#e8f0f8"
+  ],
+  "fin": "#8ab8e8"
+ },
+ {
+  "id": "pilotfish",
+  "name": "Pilot Fish",
+  "biome": "ocean",
+  "tier": 0,
+  "shape": "fish",
+  "len": 52,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#4a6a9a",
+   "#a0b8d0",
+   "#f0f4f8"
+  ],
+  "fin": "#6a88b8"
+ },
+ {
+  "id": "remora",
+  "name": "Remora",
+  "biome": "ocean",
+  "tier": 0,
+  "shape": "fish",
+  "len": 64,
+  "w": 1024,
+  "h": 195,
+  "colors": [
+   "#4a4a4a",
+   "#7a7a7a",
+   "#c8c8c8"
+  ],
+  "fin": "#5a5a5a"
+ },
+ {
+  "id": "houndfish",
+  "name": "Houndfish",
+  "biome": "ocean",
+  "tier": 0,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 142,
+  "colors": [
+   "#2a8a7a",
+   "#8ac8c0",
+   "#f4fcfc"
+  ],
+  "fin": "#4aa098"
+ },
+ {
+  "id": "halfbeak",
+  "name": "Halfbeak",
+  "biome": "ocean",
+  "tier": 0,
+  "shape": "fish",
+  "len": 54,
+  "w": 1024,
+  "h": 142,
+  "colors": [
+   "#4a7aa0",
+   "#b0d0e0",
+   "#f6fafc"
+  ],
+  "fin": "#e04a3a"
+ },
+ {
+  "id": "sargassumfish",
+  "name": "Sargassum Fish",
+  "biome": "ocean",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#9a7a2a",
+   "#d0aa4a",
+   "#f0e0a0"
+  ],
+  "fin": "#b08a30"
+ },
+ {
+  "id": "skipjacktuna",
+  "name": "Skipjack Tuna",
+  "biome": "ocean",
+  "tier": 1,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#1a3a6a",
+   "#5a8ac0",
+   "#e8f0f8"
+  ],
+  "fin": "#3a5a8a"
+ },
+ {
+  "id": "wahoo",
+  "name": "Wahoo",
+  "biome": "ocean",
+  "tier": 1,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 176,
+  "colors": [
+   "#1a4a7a",
+   "#6a98c0",
+   "#e0eaf4"
+  ],
+  "fin": "#3a6a98"
+ },
+ {
+  "id": "mahimahi",
+  "name": "Mahi-Mahi",
+  "biome": "ocean",
+  "tier": 1,
+  "shape": "fish",
+  "len": 128,
+  "w": 1024,
+  "h": 463,
+  "colors": [
+   "#1fae6a",
+   "#a0d83a",
+   "#ffe27a"
+  ],
+  "fin": "#4dd0a8"
+ },
+ {
+  "id": "greatbarracuda",
+  "name": "Great Barracuda",
+  "biome": "ocean",
+  "tier": 1,
+  "shape": "fish",
+  "len": 152,
+  "w": 1024,
+  "h": 207,
+  "colors": [
+   "#66808c",
+   "#a9bcc6",
+   "#e8eef0"
+  ],
+  "fin": "#7f95a0"
+ },
+ {
+  "id": "atlanticbonito",
+  "name": "Atlantic Bonito",
+  "biome": "ocean",
+  "tier": 1,
+  "shape": "fish",
+  "len": 82,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#1a4a6a",
+   "#6a98b8",
+   "#e0ecf4"
+  ],
+  "fin": "#3a6a88"
+ },
+ {
+  "id": "opah",
+  "name": "Opah",
+  "biome": "ocean",
+  "tier": 1,
+  "shape": "fish",
+  "len": 130,
+  "w": 1024,
+  "h": 1097,
+  "colors": [
+   "#d03a4a",
+   "#e87a8a",
+   "#f8d0d8"
+  ],
+  "fin": "#e8304a"
+ },
+ {
+  "id": "yellowfintuna",
+  "name": "Yellowfin Tuna",
+  "biome": "ocean",
+  "tier": 2,
+  "shape": "fish",
+  "len": 136,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#12315c",
+   "#2f6fa8",
+   "#d9e6f2"
+  ],
+  "fin": "#f2d544"
+ },
+ {
+  "id": "bluemarlin",
+  "name": "Blue Marlin",
+  "biome": "ocean",
+  "tier": 2,
+  "shape": "fish",
+  "len": 300,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#1a3a8a",
+   "#3a6ad0",
+   "#d0e0f8"
+  ],
+  "fin": "#2a50a8"
+ },
+ {
+  "id": "atlanticsailfish",
+  "name": "Atlantic Sailfish",
+  "biome": "ocean",
+  "tier": 2,
+  "shape": "fish",
+  "len": 220,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#1a4a8a",
+   "#4a88c8",
+   "#d8e8f8"
+  ],
+  "fin": "#2a6ab8"
+ },
+ {
+  "id": "swordfish",
+  "name": "Swordfish",
+  "biome": "ocean",
+  "tier": 2,
+  "shape": "fish",
+  "len": 230,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#1b2f55",
+   "#4a6a99",
+   "#c8d4e4"
+  ],
+  "fin": "#2a4577"
+ },
+ {
+  "id": "threshershark",
+  "name": "Thresher Shark",
+  "biome": "ocean",
+  "tier": 2,
+  "shape": "fish",
+  "len": 260,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#4a5a7a",
+   "#8a98b0",
+   "#eef2f6"
+  ],
+  "fin": "#3a4a68"
+ },
+ {
+  "id": "shortfinmako",
+  "name": "Shortfin Mako",
+  "biome": "ocean",
+  "tier": 3,
+  "shape": "fish",
+  "len": 270,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#1a4a9a",
+   "#4a7ac8",
+   "#f0f4f8"
+  ],
+  "fin": "#2a5aa8"
+ },
+ {
+  "id": "greathammerhead",
+  "name": "Great Hammerhead",
+  "biome": "ocean",
+  "tier": 3,
+  "shape": "hammer",
+  "len": 320,
+  "w": 1024,
+  "h": 472,
+  "colors": [
+   "#5a6a78",
+   "#98a8b4",
+   "#eef2f6"
+  ],
+  "fin": "#4a5a68"
+ },
+ {
+  "id": "tigershark",
+  "name": "Tiger Shark",
+  "biome": "ocean",
+  "tier": 3,
+  "shape": "fish",
+  "len": 290,
+  "w": 1024,
+  "h": 305,
+  "colors": [
+   "#4b5b66",
+   "#7a8a95",
+   "#e8eef0"
+  ],
+  "fin": "#566772"
+ },
+ {
+  "id": "bluewhale",
+  "name": "Blue Whale",
+  "biome": "ocean",
+  "tier": 4,
+  "shape": "whale",
+  "len": 900,
+  "w": 1024,
+  "h": 321,
+  "colors": [
+   "#2a4a7a",
+   "#4a7aa8",
+   "#b8d0e8"
+  ],
+  "fin": "#3a5a88"
+ },
+ {
+  "id": "whaleshark",
+  "name": "Whale Shark",
+  "biome": "ocean",
+  "tier": 4,
+  "shape": "fish",
+  "len": 560,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#2a4a6a",
+   "#4a7a9a",
+   "#d8e8f0"
+  ],
+  "fin": "#3a5a78"
+ },
+ {
+  "id": "lanternfish",
+  "name": "Lanternfish",
+  "biome": "abyss",
+  "tier": 0,
+  "shape": "fish",
+  "len": 44,
+  "w": 1024,
+  "h": 390,
+  "colors": [
+   "#1d2b4a",
+   "#2c3e66",
+   "#5b6c99"
+  ],
+  "fin": "#3c4f7e"
+ },
+ {
+  "id": "silverhatchetfish",
+  "name": "Silver Hatchetfish",
+  "biome": "abyss",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 853,
+  "colors": [
+   "#8a98b0",
+   "#d0dae8",
+   "#f8fafc"
+  ],
+  "fin": "#9aa8c0"
+ },
+ {
+  "id": "bristlemouth",
+  "name": "Bristlemouth",
+  "biome": "abyss",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#1a1a2a",
+   "#2a2a40",
+   "#4a4a64"
+  ],
+  "fin": "#2a2a40"
+ },
+ {
+  "id": "blackseadevil",
+  "name": "Black Seadevil",
+  "biome": "abyss",
+  "tier": 0,
+  "shape": "fish",
+  "len": 58,
+  "w": 1024,
+  "h": 975,
+  "colors": [
+   "#0a0a0e",
+   "#1a1a22",
+   "#3a3a48"
+  ],
+  "fin": "#1a1a22"
+ },
+ {
+  "id": "barreleye",
+  "name": "Barreleye",
+  "biome": "abyss",
+  "tier": 0,
+  "shape": "fish",
+  "len": 60,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#2a3a4a",
+   "#5a6a7a",
+   "#a0b0b8"
+  ],
+  "fin": "#3a4a5a"
+ },
+ {
+  "id": "cookiecuttershark",
+  "name": "Cookiecutter Shark",
+  "biome": "abyss",
+  "tier": 0,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#3a3a4a",
+   "#6a6a7a",
+   "#b0b0c0"
+  ],
+  "fin": "#4a4a58"
+ },
+ {
+  "id": "pacificviperfish",
+  "name": "Pacific Viperfish",
+  "biome": "abyss",
+  "tier": 1,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 329,
+  "colors": [
+   "#0b1a2a",
+   "#173a4a",
+   "#2f6a6f"
+  ],
+  "fin": "#1b4a55"
+ },
+ {
+  "id": "fangtooth",
+  "name": "Fangtooth",
+  "biome": "abyss",
+  "tier": 1,
+  "shape": "fish",
+  "len": 66,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#1a1414",
+   "#3a2a2a",
+   "#6a5a5a"
+  ],
+  "fin": "#2a1e1e"
+ },
+ {
+  "id": "blackswallower",
+  "name": "Black Swallower",
+  "biome": "abyss",
+  "tier": 1,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#0a0a12",
+   "#1a1a2a",
+   "#3a3a50"
+  ],
+  "fin": "#1a1a28"
+ },
+ {
+  "id": "blobfish",
+  "name": "Blobfish",
+  "biome": "abyss",
+  "tier": 1,
+  "shape": "puffer",
+  "len": 70,
+  "w": 1024,
+  "h": 916,
+  "colors": [
+   "#e8a8a8",
+   "#f4c4c4",
+   "#fde0e0"
+  ],
+  "fin": "#e0a0a0"
+ },
+ {
+  "id": "dumbooctopus",
+  "name": "Dumbo Octopus",
+  "biome": "abyss",
+  "tier": 1,
+  "shape": "octopus",
+  "len": 100,
+  "w": 1024,
+  "h": 652,
+  "colors": [
+   "#e8a0c0",
+   "#f4c0d8",
+   "#ffe8f4"
+  ],
+  "fin": "#f0b0d0"
+ },
+ {
+  "id": "footballfish",
+  "name": "Footballfish",
+  "biome": "abyss",
+  "tier": 1,
+  "shape": "fish",
+  "len": 80,
+  "w": 1024,
+  "h": 975,
+  "colors": [
+   "#3a2a22",
+   "#5a4030",
+   "#8a6a4a"
+  ],
+  "fin": "#4a3426"
+ },
+ {
+  "id": "goblinshark",
+  "name": "Goblin Shark",
+  "biome": "abyss",
+  "tier": 2,
+  "shape": "fish",
+  "len": 280,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#d8a0b0",
+   "#ecc0cc",
+   "#fff0f4"
+  ],
+  "fin": "#c898a8"
+ },
+ {
+  "id": "frilledshark",
+  "name": "Frilled Shark",
+  "biome": "abyss",
+  "tier": 2,
+  "shape": "eel",
+  "len": 330,
+  "w": 1024,
+  "h": 381,
+  "colors": [
+   "#4a3a2a",
+   "#7a6a4a",
+   "#c0b090"
+  ],
+  "fin": "#5a4a34"
+ },
+ {
+  "id": "giantsquid",
+  "name": "Giant Squid",
+  "biome": "abyss",
+  "tier": 2,
+  "shape": "squid",
+  "len": 230,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#7a1f3d",
+   "#b33a5e",
+   "#e6a1b4"
+  ],
+  "fin": "#a02c52"
+ },
+ {
+  "id": "giantoarfish",
+  "name": "Giant Oarfish",
+  "biome": "abyss",
+  "tier": 2,
+  "shape": "eel",
+  "len": 290,
+  "w": 1024,
+  "h": 356,
+  "colors": [
+   "#aabccd",
+   "#dbe6f0",
+   "#ffffff"
+  ],
+  "fin": "#e63946"
+ },
+ {
+  "id": "triplewartseadevil",
+  "name": "Triplewart Seadevil",
+  "biome": "abyss",
+  "tier": 2,
+  "shape": "fish",
+  "len": 120,
+  "w": 1024,
+  "h": 975,
+  "colors": [
+   "#1a1218",
+   "#3a2a30",
+   "#6a4a52"
+  ],
+  "fin": "#2a1e24"
+ },
+ {
+  "id": "humpbackanglerfish",
+  "name": "Humpback Anglerfish",
+  "biome": "abyss",
+  "tier": 3,
+  "shape": "fish",
+  "len": 130,
+  "w": 1024,
+  "h": 1000,
+  "colors": [
+   "#2a1a1a",
+   "#4a2a2a",
+   "#6b3b3b"
+  ],
+  "fin": "#3b2222"
+ },
+ {
+  "id": "colossalsquid",
+  "name": "Colossal Squid",
+  "biome": "abyss",
+  "tier": 3,
+  "shape": "squid",
+  "len": 420,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#5a0f2a",
+   "#a02a52",
+   "#e08aa4"
+  ],
+  "fin": "#8a1a40"
+ },
+ {
+  "id": "pacificsleepershark",
+  "name": "Pacific Sleeper Shark",
+  "biome": "abyss",
+  "tier": 3,
+  "shape": "fish",
+  "len": 330,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#3a3a4a",
+   "#6a6a7a",
+   "#b0b0c0"
+  ],
+  "fin": "#4a4a58"
+ },
+ {
+  "id": "megalodon",
+  "name": "Megalodon",
+  "biome": "abyss",
+  "tier": 4,
+  "shape": "fish",
+  "len": 820,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#3a4a5a",
+   "#6a7a8a",
+   "#d8dfe4"
+  ],
+  "fin": "#4a5a68"
+ },
+ {
+  "id": "abyssalleviathan",
+  "name": "Abyssal Leviathan",
+  "biome": "abyss",
+  "tier": 4,
+  "shape": "eel",
+  "len": 820,
+  "w": 1024,
+  "h": 364,
+  "colors": [
+   "#14052b",
+   "#3a0f66",
+   "#7a2fc0"
+  ],
+  "fin": "#c04dff"
+ },
+ {
+  "id": "bogminnow",
+  "name": "Bog Minnow",
+  "biome": "swamp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#5a4a2a",
+   "#8a7a4a",
+   "#d8caa0"
+  ],
+  "fin": "#8a7a4a"
+ },
+ {
+  "id": "pygmysunfish",
+  "name": "Pygmy Sunfish",
+  "biome": "swamp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 30,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#2a4a3a",
+   "#4a7a5a",
+   "#d0e090"
+  ],
+  "fin": "#5a8a5a"
+ },
+ {
+  "id": "swampdarter",
+  "name": "Swamp Darter",
+  "biome": "swamp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#6a5a2a",
+   "#a89a4a",
+   "#e8e0a8"
+  ],
+  "fin": "#a89a4a"
+ },
+ {
+  "id": "cypresskillifish",
+  "name": "Cypress Killifish",
+  "biome": "swamp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#4a5a3a",
+   "#8aa060",
+   "#f0e8b0"
+  ],
+  "fin": "#7a9a50"
+ },
+ {
+  "id": "tannintetra",
+  "name": "Tannin Tetra",
+  "biome": "swamp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 32,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#7a3a1a",
+   "#c0702a",
+   "#f0c080"
+  ],
+  "fin": "#e08a3a"
+ },
+ {
+  "id": "stonecatmadtom",
+  "name": "Stonecat Madtom",
+  "biome": "swamp",
+  "tier": 0,
+  "shape": "fish",
+  "len": 42,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#3a3a2a",
+   "#6a6a4a",
+   "#c8c49a"
+  ],
+  "fin": "#5a5a3a"
+ },
+ {
+  "id": "cypresswarmouth",
+  "name": "Cypress Warmouth",
+  "biome": "swamp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 54,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#4a4a2a",
+   "#7a7a3a",
+   "#d0c070"
+  ],
+  "fin": "#6a6a30"
+ },
+ {
+  "id": "yellowbullhead",
+  "name": "Yellow Bullhead",
+  "biome": "swamp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 60,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#5a4a1a",
+   "#a08a3a",
+   "#f0e090"
+  ],
+  "fin": "#7a6a2a"
+ },
+ {
+  "id": "bogpickerel",
+  "name": "Bog Pickerel",
+  "biome": "swamp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#3a5a2a",
+   "#7a9a4a",
+   "#e8e8b0"
+  ],
+  "fin": "#5a7a30"
+ },
+ {
+  "id": "cypressgar",
+  "name": "Cypress Gar",
+  "biome": "swamp",
+  "tier": 1,
+  "shape": "fish",
+  "len": 96,
+  "w": 1024,
+  "h": 195,
+  "colors": [
+   "#4a5a3a",
+   "#8a9a5a",
+   "#e8e8c0"
+  ],
+  "fin": "#6a7a40"
+ },
+ {
+  "id": "bogturtle",
+  "name": "Bog Turtle",
+  "biome": "swamp",
+  "tier": 1,
+  "shape": "turtle",
+  "len": 70,
+  "w": 1024,
+  "h": 534,
+  "colors": [
+   "#4a3a2a",
+   "#7a6a3a",
+   "#e8c860"
+  ],
+  "fin": "#6a5a30"
+ },
+ {
+  "id": "lessersiren",
+  "name": "Lesser Siren",
+  "biome": "swamp",
+  "tier": 1,
+  "shape": "eel",
+  "len": 110,
+  "w": 1024,
+  "h": 438,
+  "colors": [
+   "#3a3a3a",
+   "#5a5a50",
+   "#a0a090"
+  ],
+  "fin": "#4a4a40"
+ },
+ {
+  "id": "mudfishbowfin",
+  "name": "Mudfish Bowfin",
+  "biome": "swamp",
+  "tier": 2,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#3a5a2a",
+   "#6a8a30",
+   "#d8d880"
+  ],
+  "fin": "#4a6a28"
+ },
+ {
+  "id": "longnosegar",
+  "name": "Longnose Gar",
+  "biome": "swamp",
+  "tier": 2,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 176,
+  "colors": [
+   "#5a6a4a",
+   "#9aaa6a",
+   "#f0f0d0"
+  ],
+  "fin": "#7a8a50"
+ },
+ {
+  "id": "bayoucrappie",
+  "name": "Bayou Crappie",
+  "biome": "swamp",
+  "tier": 2,
+  "shape": "fish",
+  "len": 64,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#2a3a3a",
+   "#5a6a5a",
+   "#e8e8e0"
+  ],
+  "fin": "#4a5a4a"
+ },
+ {
+  "id": "flatheadcatfish",
+  "name": "Flathead Catfish",
+  "biome": "swamp",
+  "tier": 2,
+  "shape": "fish",
+  "len": 130,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#5a4a1a",
+   "#8a7a30",
+   "#e0d090"
+  ],
+  "fin": "#6a5a20"
+ },
+ {
+  "id": "alligatorsnapper",
+  "name": "Alligator Snapper",
+  "biome": "swamp",
+  "tier": 2,
+  "shape": "turtle",
+  "len": 160,
+  "w": 1024,
+  "h": 534,
+  "colors": [
+   "#3a3a22",
+   "#5a5a38",
+   "#b0a870"
+  ],
+  "fin": "#4a4a30"
+ },
+ {
+  "id": "gatorgarelder",
+  "name": "Gator Gar Elder",
+  "biome": "swamp",
+  "tier": 3,
+  "shape": "fish",
+  "len": 230,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#3a4a2a",
+   "#6a7a40",
+   "#d8d8a0"
+  ],
+  "fin": "#5a6a30"
+ },
+ {
+  "id": "greatersiren",
+  "name": "Greater Siren",
+  "biome": "swamp",
+  "tier": 3,
+  "shape": "eel",
+  "len": 260,
+  "w": 1024,
+  "h": 410,
+  "colors": [
+   "#2a2a2a",
+   "#4a4a40",
+   "#8a8a70"
+  ],
+  "fin": "#3a3a30"
+ },
+ {
+  "id": "bayoubluecat",
+  "name": "Bayou Blue Cat",
+  "biome": "swamp",
+  "tier": 3,
+  "shape": "fish",
+  "len": 280,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#3a4a5a",
+   "#6a7a8a",
+   "#d0d8d8"
+  ],
+  "fin": "#4a5a6a"
+ },
+ {
+  "id": "voodoobowfin",
+  "name": "Voodoo Bowfin",
+  "biome": "swamp",
+  "tier": 4,
+  "shape": "fish",
+  "len": 200,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#2a1a3a",
+   "#5a2a7a",
+   "#c090e0"
+  ],
+  "fin": "#7a3aa0"
+ },
+ {
+  "id": "ghostgatorgar",
+  "name": "Ghost Gator Gar",
+  "biome": "swamp",
+  "tier": 4,
+  "shape": "fish",
+  "len": 330,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#b8c8c0",
+   "#e0ece6",
+   "#ffffff"
+  ],
+  "fin": "#c8d8d0"
+ },
+ {
+  "id": "embertetra",
+  "name": "Ember Tetra",
+  "biome": "volcano",
+  "tier": 0,
+  "shape": "fish",
+  "len": 32,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#a02a0a",
+   "#e05a1a",
+   "#ffd080"
+  ],
+  "fin": "#ff7a2a"
+ },
+ {
+  "id": "cindergoby",
+  "name": "Cinder Goby",
+  "biome": "volcano",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#3a2a2a",
+   "#6a4a3a",
+   "#c09a7a"
+  ],
+  "fin": "#5a3a2a"
+ },
+ {
+  "id": "ashblenny",
+  "name": "Ash Blenny",
+  "biome": "volcano",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#5a5a5a",
+   "#8a8a8a",
+   "#d8d8d8"
+  ],
+  "fin": "#7a7a7a"
+ },
+ {
+  "id": "magmaminnow",
+  "name": "Magma Minnow",
+  "biome": "volcano",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#8a1a0a",
+   "#e0501a",
+   "#ffc060"
+  ],
+  "fin": "#ff8a30"
+ },
+ {
+  "id": "sulfurdamsel",
+  "name": "Sulfur Damsel",
+  "biome": "volcano",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#c8b00a",
+   "#f0e040",
+   "#fffae0"
+  ],
+  "fin": "#e8d030"
+ },
+ {
+  "id": "sootanchovy",
+  "name": "Soot Anchovy",
+  "biome": "volcano",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#2a2a30",
+   "#5a5a68",
+   "#b0b0c0"
+  ],
+  "fin": "#4a4a58"
+ },
+ {
+  "id": "coalparrotfish",
+  "name": "Coal Parrotfish",
+  "biome": "volcano",
+  "tier": 1,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#2a2a30",
+   "#5a4a6a",
+   "#e08a3a"
+  ],
+  "fin": "#e07a2a"
+ },
+ {
+  "id": "obsidiansnapper",
+  "name": "Obsidian Snapper",
+  "biome": "volcano",
+  "tier": 1,
+  "shape": "fish",
+  "len": 80,
+  "w": 1024,
+  "h": 463,
+  "colors": [
+   "#0a0a14",
+   "#2a2a3a",
+   "#6a6a8a"
+  ],
+  "fin": "#1a1a28"
+ },
+ {
+  "id": "embersquid",
+  "name": "Ember Squid",
+  "biome": "volcano",
+  "tier": 1,
+  "shape": "squid",
+  "len": 90,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#a0300a",
+   "#e0601a",
+   "#ffc080"
+  ],
+  "fin": "#d0501a"
+ },
+ {
+  "id": "pumicepuffer",
+  "name": "Pumice Puffer",
+  "biome": "volcano",
+  "tier": 1,
+  "shape": "puffer",
+  "len": 60,
+  "w": 1024,
+  "h": 916,
+  "colors": [
+   "#8a7a6a",
+   "#b8a898",
+   "#f0e0d0"
+  ],
+  "fin": "#a89888"
+ },
+ {
+  "id": "firefinlionfish",
+  "name": "Firefin Lionfish",
+  "biome": "volcano",
+  "tier": 1,
+  "shape": "fish",
+  "len": 76,
+  "w": 1024,
+  "h": 512,
+  "colors": [
+   "#7a1a0a",
+   "#e0501a",
+   "#ffd0a0"
+  ],
+  "fin": "#ff7a2a"
+ },
+ {
+  "id": "lavaseahorse",
+  "name": "Lava Seahorse",
+  "biome": "volcano",
+  "tier": 1,
+  "shape": "seahorse",
+  "len": 50,
+  "w": 1024,
+  "h": 2150,
+  "colors": [
+   "#a0200a",
+   "#e05a1a",
+   "#ffc070"
+  ],
+  "fin": "#ff8a30"
+ },
+ {
+  "id": "magmamoray",
+  "name": "Magma Moray",
+  "biome": "volcano",
+  "tier": 2,
+  "shape": "eel",
+  "len": 160,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#5a1a0a",
+   "#b0401a",
+   "#f0a050"
+  ],
+  "fin": "#e0701a"
+ },
+ {
+  "id": "blazingbarracuda",
+  "name": "Blazing Barracuda",
+  "biome": "volcano",
+  "tier": 2,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 207,
+  "colors": [
+   "#6a2a1a",
+   "#c0603a",
+   "#f8d0a8"
+  ],
+  "fin": "#e07a3a"
+ },
+ {
+  "id": "volcanooctopus",
+  "name": "Volcano Octopus",
+  "biome": "volcano",
+  "tier": 2,
+  "shape": "octopus",
+  "len": 110,
+  "w": 1024,
+  "h": 652,
+  "colors": [
+   "#8a1a0a",
+   "#d0401a",
+   "#ffa060"
+  ],
+  "fin": "#e0601a"
+ },
+ {
+  "id": "cinderstingray",
+  "name": "Cinder Stingray",
+  "biome": "volcano",
+  "tier": 2,
+  "shape": "ray",
+  "len": 190,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#2a2a30",
+   "#4a4a58",
+   "#a09aa0"
+  ],
+  "fin": "#3a3a48"
+ },
+ {
+  "id": "sulfursailfish",
+  "name": "Sulfur Sailfish",
+  "biome": "volcano",
+  "tier": 2,
+  "shape": "fish",
+  "len": 210,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#8a7a0a",
+   "#d8c030",
+   "#fff4b0"
+  ],
+  "fin": "#e0c030"
+ },
+ {
+  "id": "lavahammerhead",
+  "name": "Lava Hammerhead",
+  "biome": "volcano",
+  "tier": 3,
+  "shape": "hammer",
+  "len": 320,
+  "w": 1024,
+  "h": 536,
+  "colors": [
+   "#3a1208",
+   "#8a2a10",
+   "#e0905a"
+  ],
+  "fin": "#5a1a0a"
+ },
+ {
+  "id": "calderasquid",
+  "name": "Caldera Squid",
+  "biome": "volcano",
+  "tier": 3,
+  "shape": "squid",
+  "len": 340,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#4a0a0a",
+   "#a02a1a",
+   "#f0805a"
+  ],
+  "fin": "#8a1a0a"
+ },
+ {
+  "id": "obsidianmanta",
+  "name": "Obsidian Manta",
+  "biome": "volcano",
+  "tier": 3,
+  "shape": "ray",
+  "len": 380,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#08080e",
+   "#1a1a2a",
+   "#5a5a7a"
+  ],
+  "fin": "#1a1a28"
+ },
+ {
+  "id": "phoenixmarlin",
+  "name": "Phoenix Marlin",
+  "biome": "volcano",
+  "tier": 4,
+  "shape": "fish",
+  "len": 420,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#c0200a",
+   "#ff7a1a",
+   "#ffe080"
+  ],
+  "fin": "#ffb030"
+ },
+ {
+  "id": "magmawserpent",
+  "name": "Magmaw Serpent",
+  "biome": "volcano",
+  "tier": 4,
+  "shape": "eel",
+  "len": 620,
+  "w": 1024,
+  "h": 400,
+  "colors": [
+   "#2a0a04",
+   "#a02a0a",
+   "#ff7a2a"
+  ],
+  "fin": "#ff9a30"
+ },
+ {
+  "id": "ruingoby",
+  "name": "Ruin Goby",
+  "biome": "ruins",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#6a7a6a",
+   "#a0b0a0",
+   "#e8f0e0"
+  ],
+  "fin": "#8a9a8a"
+ },
+ {
+  "id": "mosaicwrasse",
+  "name": "Mosaic Wrasse",
+  "biome": "ruins",
+  "tier": 0,
+  "shape": "fish",
+  "len": 42,
+  "w": 1024,
+  "h": 390,
+  "colors": [
+   "#1a6a8a",
+   "#e0b02a",
+   "#f8f0c8"
+  ],
+  "fin": "#2a8aa0"
+ },
+ {
+  "id": "columncardinalfish",
+  "name": "Column Cardinalfish",
+  "biome": "ruins",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#8a5a3a",
+   "#d09a6a",
+   "#fff0d8"
+  ],
+  "fin": "#b07a4a"
+ },
+ {
+  "id": "amphorablenny",
+  "name": "Amphora Blenny",
+  "biome": "ruins",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#7a4a2a",
+   "#b07a4a",
+   "#f0d0a8"
+  ],
+  "fin": "#9a6a38"
+ },
+ {
+  "id": "coinminnow",
+  "name": "Coin Minnow",
+  "biome": "ruins",
+  "tier": 0,
+  "shape": "fish",
+  "len": 32,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#b8901a",
+   "#f0d060",
+   "#fffbd0"
+  ],
+  "fin": "#f0c840"
+ },
+ {
+  "id": "templetetra",
+  "name": "Temple Tetra",
+  "biome": "ruins",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#2a6a6a",
+   "#5aa8a0",
+   "#d8f8f0"
+  ],
+  "fin": "#3a8a88"
+ },
+ {
+  "id": "marblegrouper",
+  "name": "Marble Grouper",
+  "biome": "ruins",
+  "tier": 1,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#8a8a90",
+   "#c0c0c8",
+   "#f8f8fa"
+  ],
+  "fin": "#a0a0a8"
+ },
+ {
+  "id": "statuescorpionfish",
+  "name": "Statue Scorpionfish",
+  "biome": "ruins",
+  "tier": 1,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#6a6a5a",
+   "#9a9a88",
+   "#d8d8c8"
+  ],
+  "fin": "#7a7a68"
+ },
+ {
+  "id": "gildedangelfish",
+  "name": "Gilded Angelfish",
+  "biome": "ruins",
+  "tier": 1,
+  "shape": "fish",
+  "len": 62,
+  "w": 1024,
+  "h": 1073,
+  "colors": [
+   "#b8901a",
+   "#f0d050",
+   "#fffae0"
+  ],
+  "fin": "#e8c030"
+ },
+ {
+  "id": "tiledpuffer",
+  "name": "Tiled Puffer",
+  "biome": "ruins",
+  "tier": 1,
+  "shape": "puffer",
+  "len": 60,
+  "w": 1024,
+  "h": 916,
+  "colors": [
+   "#1a5a8a",
+   "#3a8ac0",
+   "#e0f0f8"
+  ],
+  "fin": "#2a6a9a"
+ },
+ {
+  "id": "mossmoray",
+  "name": "Moss Moray",
+  "biome": "ruins",
+  "tier": 1,
+  "shape": "eel",
+  "len": 150,
+  "w": 1024,
+  "h": 472,
+  "colors": [
+   "#2a5a2a",
+   "#5a8a3a",
+   "#c0d890"
+  ],
+  "fin": "#3a6a30"
+ },
+ {
+  "id": "seasage",
+  "name": "Sea Sage",
+  "biome": "ruins",
+  "tier": 1,
+  "shape": "seahorse",
+  "len": 52,
+  "w": 1024,
+  "h": 2150,
+  "colors": [
+   "#4a6a8a",
+   "#8aa8c8",
+   "#e0ecf8"
+  ],
+  "fin": "#6a8aa8"
+ },
+ {
+  "id": "tridentbarracuda",
+  "name": "Trident Barracuda",
+  "biome": "ruins",
+  "tier": 2,
+  "shape": "fish",
+  "len": 160,
+  "w": 1024,
+  "h": 158,
+  "colors": [
+   "#3a5a6a",
+   "#7a9aa8",
+   "#e0ecf0"
+  ],
+  "fin": "#5a7a8a"
+ },
+ {
+  "id": "ancientsturgeon",
+  "name": "Ancient Sturgeon",
+  "biome": "ruins",
+  "tier": 2,
+  "shape": "fish",
+  "len": 190,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#4a4a3a",
+   "#7a7a60",
+   "#e0dcc0"
+  ],
+  "fin": "#5a5a48"
+ },
+ {
+  "id": "sphinxcatfish",
+  "name": "Sphinx Catfish",
+  "biome": "ruins",
+  "tier": 2,
+  "shape": "fish",
+  "len": 140,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#5a4a2a",
+   "#a08a4a",
+   "#f0e0a8"
+  ],
+  "fin": "#7a6a30"
+ },
+ {
+  "id": "royalray",
+  "name": "Royal Ray",
+  "biome": "ruins",
+  "tier": 2,
+  "shape": "ray",
+  "len": 200,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#2a4a8a",
+   "#5a80c8",
+   "#f0f0ff"
+  ],
+  "fin": "#3a5aa0"
+ },
+ {
+  "id": "sirenoctopus",
+  "name": "Siren Octopus",
+  "biome": "ruins",
+  "tier": 2,
+  "shape": "octopus",
+  "len": 120,
+  "w": 1024,
+  "h": 652,
+  "colors": [
+   "#4a2a6a",
+   "#8a5ac0",
+   "#e0c8f8"
+  ],
+  "fin": "#6a3a9a"
+ },
+ {
+  "id": "drownedkingcrab",
+  "name": "Drowned King Crab",
+  "biome": "ruins",
+  "tier": 3,
+  "shape": "crab",
+  "len": 200,
+  "w": 1024,
+  "h": 768,
+  "colors": [
+   "#6a2a1a",
+   "#b0502a",
+   "#f0c090"
+  ],
+  "fin": "#9a3a1a"
+ },
+ {
+  "id": "krakenspawn",
+  "name": "Kraken Spawn",
+  "biome": "ruins",
+  "tier": 3,
+  "shape": "squid",
+  "len": 360,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#2a1a4a",
+   "#5a3a9a",
+   "#c0a0f0"
+  ],
+  "fin": "#4a2a7a"
+ },
+ {
+  "id": "poseidonstuna",
+  "name": "Poseidon's Tuna",
+  "biome": "ruins",
+  "tier": 3,
+  "shape": "fish",
+  "len": 300,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#1a3a7a",
+   "#3a70c8",
+   "#f0f4ff"
+  ],
+  "fin": "#f0d040"
+ },
+ {
+  "id": "atlanteanguardian",
+  "name": "Atlantean Guardian",
+  "biome": "ruins",
+  "tier": 4,
+  "shape": "ray",
+  "len": 520,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#1a3a5a",
+   "#3a8ab0",
+   "#fff0c0"
+  ],
+  "fin": "#f0d060"
+ },
+ {
+  "id": "crownedseaserpent",
+  "name": "Crowned Sea Serpent",
+  "biome": "ruins",
+  "tier": 4,
+  "shape": "eel",
+  "len": 700,
+  "w": 1024,
+  "h": 320,
+  "colors": [
+   "#1a3a4a",
+   "#2a8a8a",
+   "#e8d060"
+  ],
+  "fin": "#f0c840"
+ },
+ {
+  "id": "stardusttetra",
+  "name": "Stardust Tetra",
+  "biome": "cosmic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#2a2a6a",
+   "#6a5ac0",
+   "#f0e8ff"
+  ],
+  "fin": "#8a7aff"
+ },
+ {
+  "id": "cometminnow",
+  "name": "Comet Minnow",
+  "biome": "cosmic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#1a2a5a",
+   "#4a7ad0",
+   "#f8fcff"
+  ],
+  "fin": "#a0c0ff"
+ },
+ {
+  "id": "moonbeamguppy",
+  "name": "Moonbeam Guppy",
+  "biome": "cosmic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 30,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#c8d0e8",
+   "#e8ecf8",
+   "#ffffff"
+  ],
+  "fin": "#c0c8e8"
+ },
+ {
+  "id": "nebuladanio",
+  "name": "Nebula Danio",
+  "biome": "cosmic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 38,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#5a1a7a",
+   "#c04ab0",
+   "#ffb0e8"
+  ],
+  "fin": "#e060c0"
+ },
+ {
+  "id": "aurorasmelt",
+  "name": "Aurora Smelt",
+  "biome": "cosmic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#1a6a5a",
+   "#40d0a0",
+   "#d0fff0"
+  ],
+  "fin": "#50e0b0"
+ },
+ {
+  "id": "quasarsprat",
+  "name": "Quasar Sprat",
+  "biome": "cosmic",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#2a1a4a",
+   "#6a3ab0",
+   "#e0b0ff"
+  ],
+  "fin": "#a070ff"
+ },
+ {
+  "id": "meteormackerel",
+  "name": "Meteor Mackerel",
+  "biome": "cosmic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 76,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#2a2a4a",
+   "#5a5a9a",
+   "#c8c8f8"
+  ],
+  "fin": "#7a7ac0"
+ },
+ {
+  "id": "pulsarpike",
+  "name": "Pulsar Pike",
+  "biome": "cosmic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 100,
+  "w": 1024,
+  "h": 207,
+  "colors": [
+   "#1a2a4a",
+   "#3a6a9a",
+   "#c0f0ff"
+  ],
+  "fin": "#60c0ff"
+ },
+ {
+  "id": "galaxyangelfish",
+  "name": "Galaxy Angelfish",
+  "biome": "cosmic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 64,
+  "w": 1024,
+  "h": 1097,
+  "colors": [
+   "#1a1a5a",
+   "#5a3ac0",
+   "#e0d0ff"
+  ],
+  "fin": "#8a5aff"
+ },
+ {
+  "id": "eclipsesnapper",
+  "name": "Eclipse Snapper",
+  "biome": "cosmic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 463,
+  "colors": [
+   "#0a0a14",
+   "#2a2a44",
+   "#f0b040"
+  ],
+  "fin": "#f0a020"
+ },
+ {
+  "id": "lunarjelly",
+  "name": "Lunar Jelly",
+  "biome": "cosmic",
+  "tier": 1,
+  "shape": "jelly",
+  "len": 70,
+  "w": 1024,
+  "h": 1117,
+  "colors": [
+   "#c8d0f0",
+   "#e8ecff",
+   "#ffffff"
+  ],
+  "fin": "#e0e8ff"
+ },
+ {
+  "id": "orbitseahorse",
+  "name": "Orbit Seahorse",
+  "biome": "cosmic",
+  "tier": 1,
+  "shape": "seahorse",
+  "len": 54,
+  "w": 1024,
+  "h": 2150,
+  "colors": [
+   "#3a2a8a",
+   "#7a5af0",
+   "#e8e0ff"
+  ],
+  "fin": "#a080ff"
+ },
+ {
+  "id": "supernovaswordfish",
+  "name": "Supernova Swordfish",
+  "biome": "cosmic",
+  "tier": 2,
+  "shape": "fish",
+  "len": 240,
+  "w": 1024,
+  "h": 197,
+  "colors": [
+   "#2a1a6a",
+   "#7a3ad0",
+   "#ffd0f8"
+  ],
+  "fin": "#ff7ae0"
+ },
+ {
+  "id": "voidangler",
+  "name": "Void Angler",
+  "biome": "cosmic",
+  "tier": 2,
+  "shape": "fish",
+  "len": 130,
+  "w": 1024,
+  "h": 975,
+  "colors": [
+   "#04040a",
+   "#14143a",
+   "#3a3a7a"
+  ],
+  "fin": "#1a1a40"
+ },
+ {
+  "id": "cosmicmanta",
+  "name": "Cosmic Manta",
+  "biome": "cosmic",
+  "tier": 2,
+  "shape": "ray",
+  "len": 260,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#0a0a2a",
+   "#2a2a7a",
+   "#c0b0ff"
+  ],
+  "fin": "#1a1a5a"
+ },
+ {
+  "id": "plasmaoctopus",
+  "name": "Plasma Octopus",
+  "biome": "cosmic",
+  "tier": 2,
+  "shape": "octopus",
+  "len": 130,
+  "w": 1024,
+  "h": 652,
+  "colors": [
+   "#4a0a7a",
+   "#b02ae0",
+   "#ffa0ff"
+  ],
+  "fin": "#c040f0"
+ },
+ {
+  "id": "starforgedturtle",
+  "name": "Starforged Turtle",
+  "biome": "cosmic",
+  "tier": 2,
+  "shape": "turtle",
+  "len": 140,
+  "w": 1024,
+  "h": 534,
+  "colors": [
+   "#1a1a4a",
+   "#4a4ab0",
+   "#f0e090"
+  ],
+  "fin": "#6a6ad0"
+ },
+ {
+  "id": "blackholeshark",
+  "name": "Black Hole Shark",
+  "biome": "cosmic",
+  "tier": 3,
+  "shape": "fish",
+  "len": 420,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#02020a",
+   "#0a0a22",
+   "#4a3a8a"
+  ],
+  "fin": "#1a1a3a"
+ },
+ {
+  "id": "celestialwhale",
+  "name": "Celestial Whale",
+  "biome": "cosmic",
+  "tier": 3,
+  "shape": "whale",
+  "len": 640,
+  "w": 1024,
+  "h": 321,
+  "colors": [
+   "#1a1a5a",
+   "#4a4ac0",
+   "#e0e0ff"
+  ],
+  "fin": "#7a7aff"
+ },
+ {
+  "id": "orionsquid",
+  "name": "Orion Squid",
+  "biome": "cosmic",
+  "tier": 3,
+  "shape": "squid",
+  "len": 380,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#1a1a5a",
+   "#5a5ad0",
+   "#e0e0ff"
+  ],
+  "fin": "#7a7aff"
+ },
+ {
+  "id": "celestialkoi",
+  "name": "Celestial Koi",
+  "biome": "cosmic",
+  "tier": 4,
+  "shape": "fish",
+  "len": 320,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#f0f0ff",
+   "#ffd0f0",
+   "#ffffff"
+  ],
+  "fin": "#ff90e0"
+ },
+ {
+  "id": "cosmicleviathan",
+  "name": "Cosmic Leviathan",
+  "biome": "cosmic",
+  "tier": 4,
+  "shape": "eel",
+  "len": 900,
+  "w": 1024,
+  "h": 375,
+  "colors": [
+   "#08041a",
+   "#3a1a8a",
+   "#c070ff"
+  ],
+  "fin": "#e080ff"
+ },
+ {
+  "id": "jackolanternbass",
+  "name": "Jack-o'-Lantern Bass",
+  "biome": "pond",
+  "tier": 2,
+  "shape": "fish",
+  "len": 62,
+  "w": 1024,
+  "h": 512,
+  "colors": [
+   "#e8782a",
+   "#f09a3a",
+   "#ffd070"
+  ],
+  "fin": "#b85a1a"
+ },
+ {
+  "id": "phantomwhitefish",
+  "name": "Phantom Whitefish",
+  "biome": "lake",
+  "tier": 2,
+  "shape": "fish",
+  "len": 78,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#d8e4f0",
+   "#f4f8ff",
+   "#ffffff"
+  ],
+  "fin": "#a8b8d0"
+ },
+ {
+  "id": "zombiegar",
+  "name": "Zombie Gar",
+  "biome": "swamp",
+  "tier": 3,
+  "shape": "fish",
+  "len": 120,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#5a8a5a",
+   "#8ab08a",
+   "#c8d8a0"
+  ],
+  "fin": "#3a5a3a"
+ },
+ {
+  "id": "reapermoray",
+  "name": "Reaper Moray",
+  "biome": "ocean",
+  "tier": 3,
+  "shape": "eel",
+  "len": 220,
+  "w": 1024,
+  "h": 580,
+  "colors": [
+   "#1a1a22",
+   "#3a3a4a",
+   "#8a8aa0"
+  ],
+  "fin": "#e84a4a"
+ },
+ {
+  "id": "frostlanterntrout",
+  "name": "Frost Lantern Trout",
+  "biome": "lake",
+  "tier": 2,
+  "shape": "fish",
+  "len": 66,
+  "w": 1024,
+  "h": 439,
+  "colors": [
+   "#a8d8f0",
+   "#d8f0ff",
+   "#ffffff"
+  ],
+  "fin": "#6ab0e0"
+ },
+ {
+  "id": "candycaneperch",
+  "name": "Candy-Cane Perch",
+  "biome": "arctic",
+  "tier": 1,
+  "shape": "fish",
+  "len": 52,
+  "w": 1024,
+  "h": 561,
+  "colors": [
+   "#ffffff",
+   "#ff6a7a",
+   "#ffeef0"
+  ],
+  "fin": "#d8412f"
+ },
+ {
+  "id": "snowflakesmelt",
+  "name": "Snowflake Smelt",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#e8f4ff",
+   "#ffffff",
+   "#ffffff"
+  ],
+  "fin": "#a8c8e8"
+ },
+ {
+  "id": "yulesturgeon",
+  "name": "Yule Sturgeon",
+  "biome": "ocean",
+  "tier": 3,
+  "shape": "fish",
+  "len": 260,
+  "w": 1024,
+  "h": 244,
+  "colors": [
+   "#2a6a3a",
+   "#4a9a5a",
+   "#d8b84a"
+  ],
+  "fin": "#c8412f"
+ },
+ {
+  "id": "blossomcarp",
+  "name": "Blossom Carp",
+  "biome": "pond",
+  "tier": 1,
+  "shape": "fish",
+  "len": 58,
+  "w": 1024,
+  "h": 536,
+  "colors": [
+   "#ffb0c8",
+   "#ffd0e0",
+   "#ffffff"
+  ],
+  "fin": "#ff80a8"
+ },
+ {
+  "id": "pastelbluegill",
+  "name": "Pastel Bluegill",
+  "biome": "river",
+  "tier": 1,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#a8e0c8",
+   "#f0c8e8",
+   "#fff0b8"
+  ],
+  "fin": "#88d0a8"
+ },
+ {
+  "id": "eastereggwrasse",
+  "name": "Easter Egg Wrasse",
+  "biome": "beach",
+  "tier": 2,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#f0a8e8",
+   "#a8d8f0",
+   "#fff0a0"
+  ],
+  "fin": "#e87ac8"
+ },
+ {
+  "id": "tulipangelfish",
+  "name": "Tulip Angelfish",
+  "biome": "reef",
+  "tier": 3,
+  "shape": "fish",
+  "len": 80,
+  "w": 1024,
+  "h": 853,
+  "colors": [
+   "#ff6a9a",
+   "#ffd85a",
+   "#ffffff"
+  ],
+  "fin": "#e8402a"
+ },
+ {
+  "id": "sunburstsnapper",
+  "name": "Sunburst Snapper",
+  "biome": "beach",
+  "tier": 1,
+  "shape": "fish",
+  "len": 66,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#ffb040",
+   "#ffd878",
+   "#fff4c0"
+  ],
+  "fin": "#e8802a"
+ },
+ {
+  "id": "fireworkwrasse",
+  "name": "Firework Wrasse",
+  "biome": "reef",
+  "tier": 2,
+  "shape": "fish",
+  "len": 74,
+  "w": 1024,
+  "h": 488,
+  "colors": [
+   "#2a2aa8",
+   "#e84a8a",
+   "#ffd85a"
+  ],
+  "fin": "#ff6a2a"
+ },
+ {
+  "id": "carnivalmackerel",
+  "name": "Carnival Mackerel",
+  "biome": "harbor",
+  "tier": 2,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#2a8ae8",
+   "#f0f0ff",
+   "#e84a4a"
+  ],
+  "fin": "#2a4ac8"
+ },
+ {
+  "id": "beachballpuffer",
+  "name": "Beach-Ball Puffer",
+  "biome": "ocean",
+  "tier": 3,
+  "shape": "puffer",
+  "len": 74,
+  "w": 1024,
+  "h": 916,
+  "colors": [
+   "#ff5a5a",
+   "#fff0f0",
+   "#5a8aff"
+  ],
+  "fin": "#ffd85a"
+ },
+ {
+  "id": "weedblenny",
+  "name": "Weed Blenny",
+  "biome": "sargasso",
+  "tier": 0,
+  "shape": "fish",
+  "len": 24,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#6a7a2a",
+   "#9aaa3a",
+   "#d8e8a0"
+  ],
+  "fin": "#7a8a2a"
+ },
+ {
+  "id": "gulfpipefish",
+  "name": "Gulf Pipefish",
+  "biome": "sargasso",
+  "tier": 0,
+  "shape": "eel",
+  "len": 40,
+  "w": 1024,
+  "h": 566,
+  "colors": [
+   "#8a9a3a",
+   "#b8c860",
+   "#e8f0b0"
+  ],
+  "fin": "#9aaa40"
+ },
+ {
+  "id": "sargassumcrab",
+  "name": "Sargassum Crab",
+  "biome": "sargasso",
+  "tier": 0,
+  "shape": "crab",
+  "len": 20,
+  "w": 1024,
+  "h": 768,
+  "colors": [
+   "#7a6a1a",
+   "#b8a030",
+   "#e8d870"
+  ],
+  "fin": "#9a8a28"
+ },
+ {
+  "id": "matshrimp",
+  "name": "Mat Shrimp",
+  "biome": "sargasso",
+  "tier": 0,
+  "shape": "fish",
+  "len": 20,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#b8a050",
+   "#e0c880",
+   "#fff0c8"
+  ],
+  "fin": "#c8a850"
+ },
+ {
+  "id": "triggerfishdrifter",
+  "name": "Triggerfish Drifter",
+  "biome": "sargasso",
+  "tier": 1,
+  "shape": "fish",
+  "len": 46,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#4a6a8a",
+   "#7aa0b8",
+   "#d0e8f0"
+  ],
+  "fin": "#5a7a98"
+ },
+ {
+  "id": "dolphinfish",
+  "name": "Dolphinfish",
+  "biome": "sargasso",
+  "tier": 1,
+  "shape": "fish",
+  "len": 110,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#2a9a5a",
+   "#e8d030",
+   "#f8f8c8"
+  ],
+  "fin": "#2a9a70"
+ },
+ {
+  "id": "sargassofrogfish",
+  "name": "Sargasso Frogfish",
+  "biome": "sargasso",
+  "tier": 1,
+  "shape": "fish",
+  "len": 40,
+  "w": 1024,
+  "h": 756,
+  "colors": [
+   "#9a7a2a",
+   "#c8a850",
+   "#f0e0a0"
+  ],
+  "fin": "#8a6a20"
+ },
+ {
+  "id": "wahoostreak",
+  "name": "Wahoo Streak",
+  "biome": "sargasso",
+  "tier": 1,
+  "shape": "fish",
+  "len": 150,
+  "w": 1024,
+  "h": 219,
+  "colors": [
+   "#2a5a8a",
+   "#6a9ac8",
+   "#e8f4ff"
+  ],
+  "fin": "#3a6a98"
+ },
+ {
+  "id": "weedlinetuna",
+  "name": "Weedline Tuna",
+  "biome": "sargasso",
+  "tier": 2,
+  "shape": "fish",
+  "len": 130,
+  "w": 1024,
+  "h": 414,
+  "colors": [
+   "#1a3a6a",
+   "#4a7aa8",
+   "#e0eef8"
+  ],
+  "fin": "#2a5a88"
+ },
+ {
+  "id": "driftsailfish",
+  "name": "Drift Sailfish",
+  "biome": "sargasso",
+  "tier": 2,
+  "shape": "fish",
+  "len": 230,
+  "w": 1024,
+  "h": 236,
+  "colors": [
+   "#1a3a7a",
+   "#3a78c0",
+   "#e8f4ff"
+  ],
+  "fin": "#2a68b8"
+ },
+ {
+  "id": "matleviathaneel",
+  "name": "Mat Leviathan Eel",
+  "biome": "sargasso",
+  "tier": 3,
+  "shape": "eel",
+  "len": 320,
+  "w": 1024,
+  "h": 351,
+  "colors": [
+   "#3a4a1a",
+   "#7a8a30",
+   "#d0e090"
+  ],
+  "fin": "#a0b840"
+ },
+ {
+  "id": "goldensargassummarlin",
+  "name": "Golden Sargassum Marlin",
+  "biome": "sargasso",
+  "tier": 4,
+  "shape": "fish",
+  "len": 420,
+  "w": 1024,
+  "h": 256,
+  "colors": [
+   "#c8962a",
+   "#ffd85a",
+   "#fff4c0"
+  ],
+  "fin": "#ffc83a"
+ },
+ {
+  "id": "sapphiredamsel",
+  "name": "Sapphire Damsel",
+  "biome": "bluehole",
+  "tier": 0,
+  "shape": "fish",
+  "len": 22,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#1a4ac8",
+   "#4a8af0",
+   "#c0e0ff"
+  ],
+  "fin": "#3a78e8"
+ },
+ {
+  "id": "rimwrasse",
+  "name": "Rim Wrasse",
+  "biome": "bluehole",
+  "tier": 0,
+  "shape": "fish",
+  "len": 34,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#1a8a9a",
+   "#4ac8c8",
+   "#e0ffff"
+  ],
+  "fin": "#2ab0b8"
+ },
+ {
+  "id": "cavecardinal",
+  "name": "Cave Cardinal",
+  "biome": "bluehole",
+  "tier": 0,
+  "shape": "fish",
+  "len": 26,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#8a1a2a",
+   "#e0405a",
+   "#ffc0c8"
+  ],
+  "fin": "#c83048"
+ },
+ {
+  "id": "bluetangrunner",
+  "name": "Blue Tang Runner",
+  "biome": "bluehole",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 670,
+  "colors": [
+   "#1a3ad0",
+   "#3a7af8",
+   "#ffe050"
+  ],
+  "fin": "#2a58e0"
+ },
+ {
+  "id": "cenotegrouper",
+  "name": "Cenote Grouper",
+  "biome": "bluehole",
+  "tier": 1,
+  "shape": "fish",
+  "len": 100,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#2a3a8a",
+   "#5a78c8",
+   "#c0d0f0"
+  ],
+  "fin": "#3a50a8"
+ },
+ {
+  "id": "hammerheadpup",
+  "name": "Hammerhead Pup",
+  "biome": "bluehole",
+  "tier": 1,
+  "shape": "hammer",
+  "len": 180,
+  "w": 1024,
+  "h": 729,
+  "colors": [
+   "#3a4a68",
+   "#7a88a8",
+   "#e0e8f0"
+  ],
+  "fin": "#5a6888"
+ },
+ {
+  "id": "glasssquid",
+  "name": "Glass Squid",
+  "biome": "bluehole",
+  "tier": 1,
+  "shape": "squid",
+  "len": 70,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#a8c8e8",
+   "#d8f0ff",
+   "#ffffff"
+  ],
+  "fin": "#88b0d8"
+ },
+ {
+  "id": "deepwallray",
+  "name": "Deepwall Ray",
+  "biome": "bluehole",
+  "tier": 1,
+  "shape": "ray",
+  "len": 180,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#1a2a5a",
+   "#3a58a8",
+   "#a0b8e8"
+  ],
+  "fin": "#2a3a7a"
+ },
+ {
+  "id": "sapphireturtle",
+  "name": "Sapphire Turtle",
+  "biome": "bluehole",
+  "tier": 2,
+  "shape": "turtle",
+  "len": 120,
+  "w": 1024,
+  "h": 534,
+  "colors": [
+   "#1a4a8a",
+   "#4a88d0",
+   "#e8f4c0"
+  ],
+  "fin": "#3a78c0"
+ },
+ {
+  "id": "midnightholeshark",
+  "name": "Midnight Hole Shark",
+  "biome": "bluehole",
+  "tier": 2,
+  "shape": "fish",
+  "len": 360,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#0a1a3a",
+   "#1a3a68",
+   "#a8c0e0"
+  ],
+  "fin": "#1a2a58"
+ },
+ {
+  "id": "azuregiantoctopus",
+  "name": "Azure Giant Octopus",
+  "biome": "bluehole",
+  "tier": 3,
+  "shape": "octopus",
+  "len": 210,
+  "w": 1024,
+  "h": 652,
+  "colors": [
+   "#1a3a9a",
+   "#4a78e8",
+   "#c0d8ff"
+  ],
+  "fin": "#2a58d0"
+ },
+ {
+  "id": "blueholedragon",
+  "name": "Blue Hole Dragon",
+  "biome": "bluehole",
+  "tier": 4,
+  "shape": "eel",
+  "len": 520,
+  "w": 1024,
+  "h": 302,
+  "colors": [
+   "#0a1a4a",
+   "#2a5ad0",
+   "#a0d8ff"
+  ],
+  "fin": "#4a90ff"
+ },
+ {
+  "id": "squallmackerel",
+  "name": "Squall Mackerel",
+  "biome": "storm",
+  "tier": 0,
+  "shape": "fish",
+  "len": 60,
+  "w": 1024,
+  "h": 293,
+  "colors": [
+   "#3a4a5a",
+   "#6a7a8a",
+   "#d0d8e0"
+  ],
+  "fin": "#4a5a6a"
+ },
+ {
+  "id": "galesardine",
+  "name": "Gale Sardine",
+  "biome": "storm",
+  "tier": 0,
+  "shape": "fish",
+  "len": 30,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#5a6a7a",
+   "#9aa8b8",
+   "#f0f4f8"
+  ],
+  "fin": "#6a7a8a"
+ },
+ {
+  "id": "thunderherring",
+  "name": "Thunder Herring",
+  "biome": "storm",
+  "tier": 0,
+  "shape": "fish",
+  "len": 36,
+  "w": 1024,
+  "h": 317,
+  "colors": [
+   "#4a5a78",
+   "#8a9ac0",
+   "#f0f4ff"
+  ],
+  "fin": "#5a6a88"
+ },
+ {
+  "id": "rainskipjack",
+  "name": "Rain Skipjack",
+  "biome": "storm",
+  "tier": 0,
+  "shape": "fish",
+  "len": 70,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#2a3a5a",
+   "#5a6a98",
+   "#d8e0f0"
+  ],
+  "fin": "#3a4a6a"
+ },
+ {
+  "id": "tempestbonito",
+  "name": "Tempest Bonito",
+  "biome": "storm",
+  "tier": 1,
+  "shape": "fish",
+  "len": 90,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#2a4a6a",
+   "#5a8aa8",
+   "#e0f0f8"
+  ],
+  "fin": "#3a5a7a"
+ },
+ {
+  "id": "lightningbarracuda",
+  "name": "Lightning Barracuda",
+  "biome": "storm",
+  "tier": 1,
+  "shape": "fish",
+  "len": 180,
+  "w": 1024,
+  "h": 176,
+  "colors": [
+   "#3a4a5a",
+   "#7a8a9a",
+   "#e8f0f8"
+  ],
+  "fin": "#8a98a8"
+ },
+ {
+  "id": "cycloneray",
+  "name": "Cyclone Ray",
+  "biome": "storm",
+  "tier": 1,
+  "shape": "ray",
+  "len": 220,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#2a3a4a",
+   "#5a6a88",
+   "#b0c0d8"
+  ],
+  "fin": "#3a4a68"
+ },
+ {
+  "id": "thunderheadmarlin",
+  "name": "Thunderhead Marlin",
+  "biome": "storm",
+  "tier": 2,
+  "shape": "fish",
+  "len": 300,
+  "w": 1024,
+  "h": 236,
+  "colors": [
+   "#1a2a4a",
+   "#4a6aa0",
+   "#e8f0ff"
+  ],
+  "fin": "#2a4a88"
+ },
+ {
+  "id": "stormcallershark",
+  "name": "Stormcaller Shark",
+  "biome": "storm",
+  "tier": 2,
+  "shape": "fish",
+  "len": 420,
+  "w": 1024,
+  "h": 268,
+  "colors": [
+   "#2a3a4a",
+   "#5a6a7a",
+   "#d8e0e8"
+  ],
+  "fin": "#3a4a5a"
+ },
+ {
+  "id": "maelstromsquid",
+  "name": "Maelstrom Squid",
+  "biome": "storm",
+  "tier": 3,
+  "shape": "squid",
+  "len": 360,
+  "w": 1024,
+  "h": 384,
+  "colors": [
+   "#2a2a4a",
+   "#6a5a98",
+   "#d0c8f0"
+  ],
+  "fin": "#5a4a80"
+ },
+ {
+  "id": "hurricanewhale",
+  "name": "Hurricane Whale",
+  "biome": "storm",
+  "tier": 3,
+  "shape": "whale",
+  "len": 700,
+  "w": 1024,
+  "h": 321,
+  "colors": [
+   "#2a3a4a",
+   "#5a6a8a",
+   "#d8e0f0"
+  ],
+  "fin": "#4a5a78"
+ },
+ {
+  "id": "zeusseel",
+  "name": "Zeus's Eel",
+  "biome": "storm",
+  "tier": 4,
+  "shape": "eel",
+  "len": 620,
+  "w": 1024,
+  "h": 269,
+  "colors": [
+   "#1a1a3a",
+   "#4a4aa8",
+   "#fff0a0"
+  ],
+  "fin": "#ffe45a"
+ },
+ {
+  "id": "moonminnow",
+  "name": "Moon Minnow",
+  "biome": "moonwell",
+  "tier": 0,
+  "shape": "fish",
+  "len": 22,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#c8d0f0",
+   "#e8ecff",
+   "#ffffff"
+  ],
+  "fin": "#a8b0e0"
+ },
+ {
+  "id": "lagoontetra",
+  "name": "Lagoon Tetra",
+  "biome": "moonwell",
+  "tier": 0,
+  "shape": "fish",
+  "len": 26,
+  "w": 1024,
+  "h": 341,
+  "colors": [
+   "#2a4a9a",
+   "#6a98e8",
+   "#d0e0ff"
+  ],
+  "fin": "#4a78d0"
+ },
+ {
+  "id": "pearlgoby",
+  "name": "Pearl Goby",
+  "biome": "moonwell",
+  "tier": 0,
+  "shape": "fish",
+  "len": 28,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#e8e0f0",
+   "#f8f4ff",
+   "#ffffff"
+  ],
+  "fin": "#c8c0e0"
+ },
+ {
+  "id": "dreamshrimp",
+  "name": "Dream Shrimp",
+  "biome": "moonwell",
+  "tier": 0,
+  "shape": "fish",
+  "len": 20,
+  "w": 1024,
+  "h": 366,
+  "colors": [
+   "#f0b0d0",
+   "#ffd8ec",
+   "#ffffff"
+  ],
+  "fin": "#e890c0"
+ },
+ {
+  "id": "silvermoonfish",
+  "name": "Silver Moonfish",
+  "biome": "moonwell",
+  "tier": 1,
+  "shape": "fish",
+  "len": 62,
+  "w": 1024,
+  "h": 610,
+  "colors": [
+   "#b8c0d0",
+   "#e0e8f4",
+   "#ffffff"
+  ],
+  "fin": "#98a0b8"
+ },
+ {
+  "id": "opalray",
+  "name": "Opal Ray",
+  "biome": "moonwell",
+  "tier": 1,
+  "shape": "ray",
+  "len": 120,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#8ab0e8",
+   "#c8e0ff",
+   "#f0f8ff"
+  ],
+  "fin": "#6a90d0"
+ },
+ {
+  "id": "nacreseahorse",
+  "name": "Nacre Seahorse",
+  "biome": "moonwell",
+  "tier": 1,
+  "shape": "seahorse",
+  "len": 50,
+  "w": 1024,
+  "h": 2150,
+  "colors": [
+   "#e8d0f0",
+   "#fff0ff",
+   "#ffffff"
+  ],
+  "fin": "#c8a8e0"
+ },
+ {
+  "id": "starlitjelly",
+  "name": "Starlit Jelly",
+  "biome": "moonwell",
+  "tier": 1,
+  "shape": "jelly",
+  "len": 70,
+  "w": 1024,
+  "h": 1117,
+  "colors": [
+   "#a8b0f0",
+   "#d0d8ff",
+   "#ffffff"
+  ],
+  "fin": "#b0b8ff"
+ },
+ {
+  "id": "moonshadoweel",
+  "name": "Moonshadow Eel",
+  "biome": "moonwell",
+  "tier": 2,
+  "shape": "eel",
+  "len": 180,
+  "w": 1024,
+  "h": 444,
+  "colors": [
+   "#2a2a5a",
+   "#5a5aa8",
+   "#c0c0f0"
+  ],
+  "fin": "#8a8ae0"
+ },
+ {
+  "id": "lunarturtle",
+  "name": "Lunar Turtle",
+  "biome": "moonwell",
+  "tier": 2,
+  "shape": "turtle",
+  "len": 130,
+  "w": 1024,
+  "h": 534,
+  "colors": [
+   "#3a4a8a",
+   "#7a88d0",
+   "#f0f0c0"
+  ],
+  "fin": "#5a68b0"
+ },
+ {
+  "id": "eclipsemanta",
+  "name": "Eclipse Manta",
+  "biome": "moonwell",
+  "tier": 3,
+  "shape": "ray",
+  "len": 300,
+  "w": 1024,
+  "h": 683,
+  "colors": [
+   "#0a0a2a",
+   "#2a2a6a",
+   "#a0a0e0"
+  ],
+  "fin": "#1a1a4a"
+ },
+ {
+  "id": "moonwelldragon",
+  "name": "Moonwell Dragon",
+  "biome": "moonwell",
+  "tier": 4,
+  "shape": "eel",
+  "len": 500,
+  "w": 1024,
+  "h": 285,
+  "colors": [
+   "#2a2a6a",
+   "#6a6ae8",
+   "#f0f0ff"
+  ],
+  "fin": "#e0e0ff"
+ }
+]
