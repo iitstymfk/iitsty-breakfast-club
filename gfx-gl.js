@@ -63,6 +63,7 @@ void main(){
   const WATER=COMMON+`
 uniform float uFLOOR,uLight,uNight,uRays,uWamp,uSunX,uSunStr;
 uniform vec3 uHor,uSunCol;
+uniform float uLampX,uLampStr;
 uniform vec3 uCol[6]; uniform float uPos[6]; uniform int uN;
 vec3 grad(float d){
   vec3 c=uCol[0];
@@ -116,6 +117,15 @@ void main(){
   float gx=exp(-abs(w.x-uSunX)/(110.+dy*2.2))*smoothstep(95.,0.,dy);
   float sp=pow(noise(vec2(w.x*.33+uTime*3.1,w.y*.52-uTime*2.2)),7.);
   col+=uSunCol*sp*gx*uSunStr*2.6;
+  /* lantern glow pooling on the water, with shimmer */
+  if(uLampStr>.01){
+    float lx=abs(w.x-uLampX);
+    float pool=exp(-lx/(60.+dy*1.5))*exp(-dy/210.)*uLampStr;
+    float streak=pow(noise(vec2(w.x*.45+uTime*1.5,w.y*.2-uTime*.8)),3.);
+    col+=vec3(1.,.76,.36)*(pool*.26+pool*streak*.6);
+  }
+  /* the deep gets darker and heavier */
+  col*=1.-.2*smoothstep(.35,1.,d)*(1.-.5*L);
   /* drifting particles (marine snow), two parallax layers, more with depth */
   float depthA=smoothstep(40.,420.,dy);
   for(int k=0;k<2;k++){
@@ -157,7 +167,7 @@ void main(){
         uSun:{value:V2()},uSunStr:{value:0},uWarm:{value:0},uNight:{value:0},uCover:{value:.3},uGloom:{value:0}});
       const cols=[],pos=[];for(let i=0;i<6;i++){cols.push(V());pos.push(0)}
       RLGL._wat=layer(WATER,{uRect:{value:V4()},uTime:{value:0},uSURF:{value:330},uFLOOR:{value:4330},uLight:{value:1},uNight:{value:0},uRays:{value:1},
-        uCol:{value:cols},uPos:{value:pos},uN:{value:4},uWamp:{value:1},uSunX:{value:0},uSunStr:{value:0},uHor:{value:V()},uSunCol:{value:V()}});
+        uCol:{value:cols},uPos:{value:pos},uN:{value:4},uWamp:{value:1},uLampX:{value:0},uLampStr:{value:0},uSunX:{value:0},uSunStr:{value:0},uHor:{value:V()},uSunCol:{value:V()}});
       RLGL.ready=true;
     }catch(e){RLGL.fail=true;RLGL.ready=false;try{console.warn('RLGL init failed',e)}catch(_){}}
   };
@@ -190,7 +200,7 @@ void main(){
     if(!RLGL.ready)return false;
     try{
       const L=RLGL._wat,u=L.u;
-      u.uTime.value=o.time;u.uSURF.value=o.surf;u.uFLOOR.value=o.floor;u.uLight.value=o.light;u.uNight.value=o.night;u.uRays.value=o.rays;u.uWamp.value=o.wamp;u.uSunX.value=o.sunX;u.uSunStr.value=o.sunStr;u.uHor.value.set(o.hor[0]/255,o.hor[1]/255,o.hor[2]/255);u.uSunCol.value.set(o.sunCol[0]/255,o.sunCol[1]/255,o.sunCol[2]/255);
+      u.uTime.value=o.time;u.uSURF.value=o.surf;u.uFLOOR.value=o.floor;u.uLight.value=o.light;u.uNight.value=o.night;u.uRays.value=o.rays;u.uWamp.value=o.wamp;u.uLampX.value=o.lampX;u.uLampStr.value=o.lampStr;u.uSunX.value=o.sunX;u.uSunStr.value=o.sunStr;u.uHor.value.set(o.hor[0]/255,o.hor[1]/255,o.hor[2]/255);u.uSunCol.value.set(o.sunCol[0]/255,o.sunCol[1]/255,o.sunCol[2]/255);
       const n=Math.min(6,o.stops.length);u.uN.value=n;
       for(let i=0;i<6;i++){const s=o.stops[Math.min(i,n-1)];u.uPos.value[i]=s[0];const c=hexv(s[1]);u.uCol.value[i].set(c[0],c[1],c[2])}
       blit(ctx,L,o);

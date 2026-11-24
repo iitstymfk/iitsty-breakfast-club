@@ -2046,7 +2046,7 @@ function drawWater(){
   for(const s of st)g.addColorStop(s[0],s[1]);
   ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-20,waveY(-20,TM));for(let x=-20;x<=VW+20;x+=14)ctx.lineTo(x,waveY(x,TM));ctx.lineTo(VW+20,WBOT+60);ctx.lineTo(-20,WBOT+60);ctx.closePath();
   window.RLGLW=false;
-  if(SET.quality>=2&&SET.gl!=0&&window.RLGL&&RLGL.ready){ctx.save();ctx.clip();window.RLGLW=!!RLGL.water(ctx,{x:-12,y:camY-14,w:VW+24,h:VH+28,s:SC*DPR,q:.45,time:TM,surf:SURF,floor:FLOOR,light,night,rays:SCN.rays||1,stops:st,wamp:WAMP,hor:skyCols(dayT)[1],sunX:VW*(.08+.84*((dayT%.5)/.5)),sunStr:(()=>{const v=Math.sin(dayT*TAU);return v>-.15?clamp(v*4+.6,0,1)*light:0})(),sunCol:mix([255,244,200],[255,140,70],1-smooth(0,.5,Math.sin(dayT*TAU)))});ctx.restore()}
+  if(SET.quality>=2&&SET.gl!=0&&window.RLGL&&RLGL.ready){ctx.save();ctx.clip();window.RLGLW=!!RLGL.water(ctx,{x:-12,y:camY-14,w:VW+24,h:VH+28,s:SC*DPR,q:.45,time:TM,surf:SURF,floor:FLOOR,light,night,rays:SCN.rays||1,stops:st,wamp:WAMP,lampX:BX-110,lampStr:(SCN.plat==='dock'||SCN.plat==='pier')&&night>.05?clamp(night*1.2,0,1):0,hor:skyCols(dayT)[1],sunX:VW*(.08+.84*((dayT%.5)/.5)),sunStr:(()=>{const v=Math.sin(dayT*TAU);return v>-.15?clamp(v*4+.6,0,1)*light:0})(),sunCol:mix([255,244,200],[255,140,70],1-smooth(0,.5,Math.sin(dayT*TAU)))});ctx.restore()}
   if(!window.RLGLW)ctx.fill();
   if(night>.02){const g2=ctx.createLinearGradient(0,SURF,0,SURF+1500);g2.addColorStop(0,`rgba(2,8,30,${.6*night})`);g2.addColorStop(1,'rgba(2,8,30,0)');ctx.fillStyle=g2;ctx.fillRect(-20,SURF,VW+40,1500)}
   if(!window.RLGLW&&camY<SURF+300&&light>.1){
