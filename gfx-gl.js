@@ -61,7 +61,8 @@ void main(){
   gl_FragColor=vec4(col,1.);
 }`;
   const WATER=COMMON+`
-uniform float uFLOOR,uLight,uNight,uRays;
+uniform float uFLOOR,uLight,uNight,uRays,uWamp,uSunX,uSunStr;
+uniform vec3 uHor,uSunCol;
 uniform vec3 uCol[6]; uniform float uPos[6]; uniform int uN;
 vec3 grad(float d){
   vec3 c=uCol[0];
@@ -80,7 +81,8 @@ float caustic(vec2 uv,float t){
 }
 void main(){
   vec2 w=worldPos();
-  float dy=max(w.y-uSURF,0.);
+  float wy=uSURF+(sin(w.x*.012+uTime*1.6)*3.+sin(w.x*.027-uTime*1.1)*2.+sin(w.x*.005+uTime*.7)*4.)*uWamp;
+  float dy=max(w.y-wy,0.);
   float d=clamp((w.y-uSURF)/(uFLOOR-uSURF),0.,1.);
   vec3 col=grad(d);
   /* slow murk variation so the gradient never looks flat */
@@ -104,6 +106,30 @@ void main(){
   /* bright shimmer right under the surface */
   float sh=smoothstep(46.,0.,dy)*(.07+.16*noise(vec2(w.x*.045+uTime*.9,w.y*.14+uTime*.4)));
   col+=vec3(.85,1.,.98)*sh*L;
+  /* sky reflection on the surface skin + bright wave edge */
+  float sr=smoothstep(75.,0.,dy);
+  vec3 refl=uHor*.78+vec3(.08);
+  col=mix(col,refl,sr*.4*(.3+.7*L));
+  float rim=smoothstep(8.,0.,dy)*(.4+.6*noise(vec2(w.x*.05+uTime*.9,uTime*.7)));
+  col+=vec3(.9,1.,1.)*rim*.32*L;
+  /* sun glitter column */
+  float gx=exp(-abs(w.x-uSunX)/(110.+dy*2.2))*smoothstep(95.,0.,dy);
+  float sp=pow(noise(vec2(w.x*.33+uTime*3.1,w.y*.52-uTime*2.2)),7.);
+  col+=uSunCol*sp*gx*uSunStr*2.6;
+  /* drifting particles (marine snow), two parallax layers, more with depth */
+  float depthA=smoothstep(40.,420.,dy);
+  for(int k=0;k<2;k++){
+    float fk=float(k),g=38.+fk*27.;
+    vec2 q=w+vec2(uTime*(7.+fk*5.),-uTime*(5.+fk*3.)+fk*40.);
+    vec2 cell=floor(q/g),f=fract(q/g);
+    float h=hash(cell+fk*13.);
+    if(h>.9){
+      vec2 c=vec2(hash(cell+4.2),hash(cell+8.8));
+      float dd=distance(f,c)*g;
+      float tw=.6+.4*sin(uTime*1.7+h*40.);
+      col+=vec3(.7,.92,.88)*smoothstep(2.3,0.,dd)*tw*(.1+.1*L)*depthA;
+    }
+  }
   col+=(hash(w*.7+uTime)-.5)/255.;
   gl_FragColor=vec4(col,1.);
 }`;
@@ -131,7 +157,7 @@ void main(){
         uSun:{value:V2()},uSunStr:{value:0},uWarm:{value:0},uNight:{value:0},uCover:{value:.3},uGloom:{value:0}});
       const cols=[],pos=[];for(let i=0;i<6;i++){cols.push(V());pos.push(0)}
       RLGL._wat=layer(WATER,{uRect:{value:V4()},uTime:{value:0},uSURF:{value:330},uFLOOR:{value:4330},uLight:{value:1},uNight:{value:0},uRays:{value:1},
-        uCol:{value:cols},uPos:{value:pos},uN:{value:4}});
+        uCol:{value:cols},uPos:{value:pos},uN:{value:4},uWamp:{value:1},uSunX:{value:0},uSunStr:{value:0},uHor:{value:V()},uSunCol:{value:V()}});
       RLGL.ready=true;
     }catch(e){RLGL.fail=true;RLGL.ready=false;try{console.warn('RLGL init failed',e)}catch(_){}}
   };
@@ -164,7 +190,7 @@ void main(){
     if(!RLGL.ready)return false;
     try{
       const L=RLGL._wat,u=L.u;
-      u.uTime.value=o.time;u.uSURF.value=o.surf;u.uFLOOR.value=o.floor;u.uLight.value=o.light;u.uNight.value=o.night;u.uRays.value=o.rays;
+      u.uTime.value=o.time;u.uSURF.value=o.surf;u.uFLOOR.value=o.floor;u.uLight.value=o.light;u.uNight.value=o.night;u.uRays.value=o.rays;u.uWamp.value=o.wamp;u.uSunX.value=o.sunX;u.uSunStr.value=o.sunStr;u.uHor.value.set(o.hor[0]/255,o.hor[1]/255,o.hor[2]/255);u.uSunCol.value.set(o.sunCol[0]/255,o.sunCol[1]/255,o.sunCol[2]/255);
       const n=Math.min(6,o.stops.length);u.uN.value=n;
       for(let i=0;i<6;i++){const s=o.stops[Math.min(i,n-1)];u.uPos.value[i]=s[0];const c=hexv(s[1]);u.uCol.value[i].set(c[0],c[1],c[2])}
       blit(ctx,L,o);
