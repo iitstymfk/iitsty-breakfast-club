@@ -1184,15 +1184,15 @@ function spriteOf(sp){
 const VAR_FILTER={albino:'grayscale(1) brightness(1.7)',golden:'sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.15)'};
 const CAN_FILTER=(()=>{try{return 'filter' in document.createElement('canvas').getContext('2d')}catch(e){return false}})();
 function drawSprite(c,sp,img,tt){
-  const [bw,bh]=boxOf(sp),N=10,sw=img.naturalWidth/N,dw=bw/N;
+  const [bw,bh]=boxOf(sp),N=18,sw=img.naturalWidth/N,dw=bw/N;
   c.save();
   if(sp.glow&&sp.shape!=='eel'){c.shadowColor=sp.glow;c.shadowBlur=18}
   if(sp.vk&&CAN_FILTER&&VAR_FILTER[sp.vk])c.filter=VAR_FILTER[sp.vk];
-  const swimmy=!/^(crab|turtle|whale|jelly|octopus)$/.test(sp.shape),amp=bh*.07;
+  const swimmy=!/^(crab|turtle|whale|jelly|octopus)$/.test(sp.shape),amp=bh*.05;
   for(let i=0;i<N;i++){
     const u=1-(i+.5)/N;                         /* 1 at the tail, 0 at the head */
-    const dy=swimmy?Math.sin(tt*6-i*.55)*amp*u*u:0;
-    c.drawImage(img,i*sw,0,sw+1,img.naturalHeight,-bw/2+i*dw,-bh/2+dy,dw+.6,bh);
+    const dy=swimmy?Math.sin(tt*6-i*.32)*amp*u*u:0;
+    const sx=i*sw,sww=Math.min(sw*2.2,img.naturalWidth-sx);c.drawImage(img,sx,0,sww,img.naturalHeight,-bw/2+i*dw,-bh/2+dy,dw*sww/sw,bh);
   }
   c.restore();
 }
