@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07120e">
+<title>PC Dashboard</title>
+<style>
+:root{color-scheme:dark;--acc:#39ff88;--acc2:#ff4fa3;--fg:#f4fff8;--mut:#bfe9d4;--line:rgba(57,255,136,.28);--card:rgba(14,8,30,.66)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:radial-gradient(700px 500px at 90% 0%,rgba(255,79,163,.28),transparent 60%),radial-gradient(600px 500px at 0% 100%,rgba(57,255,136,.2),transparent 60%),linear-gradient(160deg,#07120e,#1c0b2a);
+  padding:max(18px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+main{max-width:520px;margin:0 auto}
+.back{display:inline-block;color:var(--mut);text-decoration:none;font-size:14px;margin-bottom:18px}
+h1{font-size:26px;margin:6px 0 4px;background:linear-gradient(90deg,var(--fg),var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.btn{display:flex;align-items:center;gap:12px;width:100%;padding:16px;border-radius:14px;border:1px solid var(--acc);text-decoration:none;color:#fff;font-weight:700;font-size:17px;margin:10px 0;
+  background:linear-gradient(135deg,rgba(57,255,136,.45),rgba(255,79,163,.4))}
+.btn.alt{background:rgba(255,255,255,.06);border-color:var(--line)}
+.btn i{font-style:normal;font-size:26px}.btn small{display:block;font-weight:400;font-size:13px;color:var(--mut)}
+ol{margin:6px 0 0;padding-left:20px;color:var(--mut);font-size:14px}ol li{margin:5px 0}
+code{background:rgba(255,255,255,.08);padding:1px 6px;border-radius:6px;color:var(--fg)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Breakfast Club</a>
+  <h1>🖥️ PC Dashboard</h1>
+  <p class="sub">Control the home PC from your phone: Jellyfin, Docker, the Minecraft server and bot, game mode, uploads.</p>
+
+  <div class="card">
+    <a class="btn" href="http://100.66.27.64:8790/dash"><i>🖥️</i><span>Open PC Dashboard<small>Signs in with your upload password</small></span></a>
+    <a class="btn alt" href="http://100.66.27.64:8790/"><i>📤</i><span>Upload to the PC<small>Movies, shows, audiobooks, photos</small></span></a>
+  </div>
+
+  <div class="card">
+    <b>Needs Tailscale</b>
+    <ol>
+      <li>Turn on <b>Tailscale</b> on this phone.</li>
+      <li>The PC has to be on with <code>Start Dashboard.bat</code> running.</li>
+      <li>If the page won't load, Tailscale is off or the PC is asleep.</li>
+    </ol>
+  </div>
+</main>
+</body>
+</html>
