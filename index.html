@@ -18635,8 +18635,17 @@ header .gear-btn, #fx-mail-btn { position: absolute; }
 
     /* ---- PC library music (named music:… in the Photo Manager) ---- */
     function pcTracks() { try { return BCAssets.all(A).filter(function (x) { return x.slot.indexOf("music:") === 0 && x.url && /^audio/.test(x.type); }).map(function (x) { return { id: "pc:" + x.slot, name: x.slot.slice(6), url: x.url, pc: 1 }; }); } catch (e) { return []; } }
+    /* ---- songs on the bio pages (iitstymfk.github.io site.json), merged in so both libraries share one list ---- */
+    var WEB = jget("bcx_site_songs", []); if (!Array.isArray(WEB)) WEB = [];
+    function loadWeb() {
+        var pages = [["/", "my bio"], ["/thiccbearcurry/", "thiccbearcurry"]], out = [];
+        Promise.all(pages.map(function (pg) { return fetch(pg[0] + "site.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+            ((d && d.songs) || []).forEach(function (x) { if (x && x.src) out.push({ id: "web:" + pg[0] + x.src, name: (x.title || x.src.replace(/^.*\/|\.[^.]+$/g, "")) + (x.artist ? " — " + x.artist : ""), url: pg[0] + x.src, web: 1, from: pg[1] }); });
+        }, function () {}); })).then(function () { if (!navigator.onLine && !out.length) return; WEB = out; jset("bcx_site_songs", WEB); change(); });
+    }
+    function webTracks() { return WEB.slice(); }
     var ALIAS = {};
-    var tracks = function () { var pc = pcTracks(), seen = {}; pc.forEach(function (t) { seen[t.name.toLowerCase()] = t; }); ALIAS = {}; return pc.concat(LOC.filter(function (t) { var m = seen[t.name.toLowerCase()]; if (m) { ALIAS[t.id] = m; return false; } return true; })); };
+    var tracks = function () { var pc = pcTracks(), seen = {}; pc.forEach(function (t) { seen[t.name.toLowerCase()] = t; }); ALIAS = {}; pc = pc.concat(webTracks().filter(function (t) { var k = t.name.toLowerCase(); if (seen[k]) return false; seen[k] = t; return true; })); return pc.concat(LOC.filter(function (t) { var m = seen[t.name.toLowerCase()]; if (m) { ALIAS[t.id] = m; return false; } return true; })); };
     var pls = function () { var P = jget("bcx_pl", []); return Array.isArray(P) ? P : []; };
 
     /* ---- the player ---- */
@@ -18703,7 +18712,7 @@ header .gear-btn, #fx-mail-btn { position: absolute; }
     var oPL = window.BCPushLocal;
     if (oPL) window.BCPushLocal = function (loud) { return oPL(loud).then(function (r) { return pushMusic(loud).then(function (n) { r.sent = (r.sent || 0) + n; if (M.fails && M.fails.length) { r.skipped = (r.skipped || 0) + M.fails.length; r.why = (r.why || []).concat(M.fails); } return r; }, function (e) { if (loud) throw e; return r; }); }); };
     setTimeout(function () { if (navigator.onLine) pushMusic(false); }, 12000);
-    loadLocal();
+    loadLocal(); loadWeb();
     try { BCAssets.onChange(function (d) { if (d.type === "change") { change(); setTimeout(function () { pushMusic(false); }, 2000); } }); } catch (e) {}
 
     /* ---- the workout music card ---- */
@@ -18718,8 +18727,9 @@ header .gear-btn, #fx-mail-btn { position: absolute; }
         c.querySelector(".body").innerHTML = '<div class="now">' + (s.now && s.playing ? "🎵 " + esc(s.now.name) : s.now ? "⏸ " + esc(s.now.name) : "Nothing playing") + '</div>' +
             '<div class="row"><button class="g" id="bm-prev">⏮</button><button id="bm-tog">' + (s.playing ? "⏸ Pause" : "▶ Play") + '</button><button class="g" id="bm-next">⏭</button><button class="g" id="bm-sh">' + (S.shuffle ? "🔀 Shuffle on" : "🔀 Shuffle off") + '</button></div>' +
             '<div class="row"><select id="bm-pl">' + sel + '</select><input type="range" id="bm-vol" min="0" max="1" step="0.05" value="' + au.volume + '" style="flex:1;min-width:90px"></div>' +
+            '<div class="row" style="font-size:13px">🌐 Also play these on my bio page: <select id="bm-bio"><option value="">Off</option><option value="me">iitstymfk</option><option value="tbc">thiccbearcurry</option></select></div>' +
             '<div class="row"><button class="g" id="bm-add">➕ Add songs from this phone</button><button class="g" id="bm-new">New playlist</button>' + (curPl !== "all" ? '<button class="g" id="bm-ren">Rename</button><button class="g" id="bm-del">Delete list</button>' : "") + '</div>' +
-            '<div class="card-desc">' + (T.length ? "Tick songs to put them in the chosen playlist." : "Add songs from your phone's storage, or put music in the Photo Manager's “Music” section (they sync to every phone).") + '</div>' +
+            '<div class="card-desc">' + (T.length ? "Tick songs to put them in the chosen playlist." : "Add songs from your phone's storage, put music in the Photo Manager's “Music” section (they sync to every phone), or add them in your bio page's 🎵 panel (they show up here too).") + '</div>' +
             T.map(function (t) { var inP = curPl !== "all" && (P.filter(function (p) { return p.id === curPl; })[0] || { ids: [] }).ids.indexOf(t.id) >= 0; return '<div class="trk">' + (curPl !== "all" ? '<input type="checkbox" data-t="' + esc(t.id) + '" ' + (inP ? "checked" : "") + ">" : "") + "<span>" + (t.pc ? "🖥 " : "📱 ") + esc(t.name) + "</span>" + (t.local ? '<button class="g" data-d="' + esc(t.id) + '" style="padding:4px 8px">✕</button>' : "") + "</div>"; }).join("");
         $("bm-pl").value = curPl; if (!open) return;
         $("bm-pl").onchange = function (e) { curPl = e.target.value; paint(); };
@@ -18728,6 +18738,7 @@ header .gear-btn, #fx-mail-btn { position: absolute; }
         $("bm-sh").onclick = function () { M.setShuffle(!S.shuffle); paint(); };
         $("bm-vol").oninput = function (e) { M.setVol(+e.target.value); };
         $("bm-add").onclick = function () { var f = document.createElement("input"); f.type = "file"; f.accept = "audio/*"; f.multiple = true; f.onchange = function () { M.addFiles(f.files).then(function (n) { if (n) toast("Added " + n + " song" + (n > 1 ? "s" : "")); paint(); }); }; f.click(); };
+        (function () { var bs = $("bm-bio"); if (!bs) return; bs.value = ls("bioBcMusic", ""); bs.onchange = function () { lsSet("bioBcMusic", bs.value); toast(bs.value ? "Your songs on this phone will play on your bio page here too (only you hear them)" : "Bio page: Breakfast Club songs off"); }; })();
         $("bm-new").onclick = function () { var n = prompt("Playlist name?", "Leg day"); if (!n) return; var Q = pls(); var id = uid(); Q.push({ id: id, name: n.trim().slice(0, 40), ids: [] }); jset("bcx_pl", Q); curPl = id; paint(); };
         if ($("bm-ren")) $("bm-ren").onclick = function () { var Q = pls(), p = Q.filter(function (x) { return x.id === curPl; })[0]; var n = prompt("New name?", p.name); if (!n) return; p.name = n.trim().slice(0, 40); jset("bcx_pl", Q); paint(); };
         if ($("bm-del")) $("bm-del").onclick = function () { if (!confirm("Delete this playlist? (The songs stay.)")) return; jset("bcx_pl", pls().filter(function (x) { return x.id !== curPl; })); curPl = "all"; paint(); };

@@ -171,7 +171,8 @@
     function idb() { return DBP || (DBP = new Promise(function (ok, no) { var r = indexedDB.open("bcx_music", 1); r.onupgradeneeded = function () { r.result.createObjectStore("songs", { keyPath: "id" }); }; r.onsuccess = function () { ok(r.result); }; r.onerror = function () { no(r.error); }; })); }
     function allSongs() { return idb().then(function (d) { return new Promise(function (ok) { var rq = d.transaction("songs", "readonly").objectStore("songs").getAll(); rq.onsuccess = function () { ok(rq.result || []); }; rq.onerror = function () { ok([]); }; }); }, function () { return []; }); }
     function pcSongs() { try { return BCAssets.all("index").filter(function (x) { return x.slot.indexOf("music:") === 0 && x.url && /^audio/.test(x.type); }).map(function (x) { return { id: "pc:" + x.slot, name: x.slot.slice(6), url: x.url }; }); } catch (e) { return []; } }
-    BCX.songList = function () { return allSongs().then(function (L) { return pcSongs().concat(L.map(function (x) { return { id: "loc:" + x.id, name: x.name }; })); }); };
+    function webSongs() { try { var W = JSON.parse(localStorage.getItem("bcx_site_songs") || "[]"); return Array.isArray(W) ? W.map(function (x) { return { id: x.id, name: x.name, url: x.url }; }) : []; } catch (e) { return []; } }
+    BCX.songList = function () { return allSongs().then(function (L) { return pcSongs().concat(webSongs(), L.map(function (x) { return { id: "loc:" + x.id, name: x.name }; })); }); };
     BCX.playlists = function () { var P = jget("bcx_pl", []); return Array.isArray(P) ? P : []; };
     BCX.appMusic = {
         get: function () { return jget("bc_appmusic", {}); },
