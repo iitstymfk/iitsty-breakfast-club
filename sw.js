@@ -1,8 +1,10 @@
 /* Iitstys Breakfast Club: offline support.
    Bump CACHE_VERSION whenever you upload new files so phones refresh their saved copy.
    (Synced photos and videos are not kept here; they live in the app's own photo storage.) */
-const CACHE_VERSION = "v154";
+const CACHE_VERSION = "v155";
 const CACHE = "breakfast-club-" + CACHE_VERSION;
+/* game art lives in its own cache that survives build bumps (served instantly, refreshed in the background) */
+const IMG = "breakfast-club-img";
 const CORE = [
   "./",
   "./index.html",
@@ -27,7 +29,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k.startsWith("breakfast-club-") && k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k.startsWith("breakfast-club-") && k !== CACHE && k !== IMG).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -55,6 +57,15 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(fetch(req, { cache: "no-cache" })
       .then((res) => { if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); } return res; })
       .catch(() => caches.match(req)));
+    return;
+  }
+
+  // Game art: instant from the art cache, quietly refreshed so changed pictures still update.
+  if (/\/assets\/.*\.(webp|png|json)$/.test(new URL(req.url).pathname)) {
+    event.respondWith(caches.open(IMG).then((c) => c.match(req).then((hit) => {
+      const net = fetch(req).then((res) => { if (res.ok) c.put(req, res.clone()); return res; }).catch(() => hit);
+      return hit || net;
+    })));
     return;
   }
 

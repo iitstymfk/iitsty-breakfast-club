@@ -1178,7 +1178,10 @@ const fitK=m=>1;
 const SPRITES={};
 function spriteOf(sp){
   const id=(sp.base||sp).id;let e=SPRITES[id];
-  if(!e){e=SPRITES[id]={ok:false,img:new Image()};e.img.onload=()=>{e.ok=true;try{window.dispatchEvent(new Event('rl-sprite'))}catch(_){}};e.img.onerror=()=>{e.bad=true};e.img.src='assets/fish/'+id+'.png'}
+  if(!e&&!window.GFXSET)return null;
+  if(!e&&window.GFXSET&&!GFXSET.has('assets/fish/'+id+'.png')){SPRITES[id]={ok:false,bad:true};return null}
+  if(!e&&window.SPRC&&SPRC['assets/fish/'+id+'.png']){const im=SPRC['assets/fish/'+id+'.png'];e=SPRITES[id]={ok:im.complete&&im.naturalWidth>0,img:im};if(!e.ok)im.addEventListener('load',()=>{e.ok=true})}
+  if(!e){e=SPRITES[id]={ok:false,img:new Image()};e.img.onload=()=>{e.ok=true;try{window.dispatchEvent(new Event('rl-sprite'))}catch(_){}};e.img.onerror=()=>{e.bad=true};e.img.src=(window.WEBP||(x=>x))('assets/fish/'+id+'.png')}
   return e.ok?e.img:null;
 }
 const VAR_FILTER={albino:'grayscale(1) brightness(1.7)',golden:'sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.15)'};
@@ -2152,9 +2155,9 @@ function drawHookStuff0(){
 }
 function hexA(h,a){return rgb(hex(h),a)}
 /* GFX: sprite baits (assets/bait/<id>.png) and rod shop art (assets/rods/rod<i>.png) */
-const BAITSPR=new Set(['worm','cricket','minnow','shrimp','glow','fly','chum','scent','pearl','star']),RODSPR=new Set([0,1,3,4,5,6]);const SPRC={};
-function sprImg(src){let i=SPRC[src];if(!i){i=SPRC[src]=new Image();i.src=src}return(i.complete&&i.naturalWidth)?i:null}
-function baitIc(b){return BAITSPR.has(b.id)?`<img src="assets/bait/${b.id}.png" alt="${b.ic}" style="height:1.35em;width:auto;vertical-align:middle">`:b.ic}
+window.SPRC=window.SPRC||{};window.WEBP=src=>src.replace(/\.png$/,'.webp');const BAITSPR=new Set(['worm','cricket','minnow','shrimp','glow','fly','chum','scent','pearl','star']),RODSPR=new Set([0,1,3,4,5,6]);
+function sprImg(src){let i=SPRC[src];if(!i){i=SPRC[src]=new Image();i.src=WEBP(src)}return(i.complete&&i.naturalWidth)?i:null}
+function baitIc(b){return BAITSPR.has(b.id)?`<img src="assets/bait/${b.id}.webp" alt="${b.ic}" style="height:1.35em;width:auto;vertical-align:middle">`:b.ic}
 function drawBait(x,y,b){
   if(BAITSPR.has(b.id)){const im=sprImg('assets/bait/'+b.id+'.png');if(im){const H=b.id==='worm'?24:20,W=H*im.naturalWidth/im.naturalHeight;ctx.save();ctx.translate(x,y);if(b.id==='glow'){ctx.shadowColor='#7dfcff';ctx.shadowBlur=18}if(b.id!=='worm'){ctx.strokeStyle='#d7dde4';ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(0,-8);ctx.lineTo(0,2);ctx.stroke()}ctx.drawImage(im,-W/2-2,b.id==='worm'?-10:-2,W,H);ctx.restore();return}}
   ctx.save();ctx.translate(x,y);
@@ -2316,7 +2319,7 @@ function drawHull(){
 }
 /* GFX: sprite boats (assets/boats/*.png); falls back to code hull until loaded */
 const BOATSPR=[{f:'skiff',w:215,deck:.42},{f:'cruiser',w:280,deck:.67},{f:'trawler',w:310,deck:.58},{f:'yacht',w:320,deck:.55}];
-function boatSprite(){const k=BOATSPR[S.boatKind|0];if(!k)return null;if(!k.img){k.img=new Image();k.img.onerror=()=>{k.bad=1};k.img.src='assets/boats/'+k.f+'.png'}return(!k.bad&&k.img.complete&&k.img.naturalWidth)?k:null}
+function boatSprite(){const k=BOATSPR[S.boatKind|0];if(!k)return null;if(!k.img&&SPRC['assets/boats/'+k.f+'.png'])k.img=SPRC['assets/boats/'+k.f+'.png'];if(!k.img){k.img=new Image();k.img.onerror=()=>{k.bad=1};k.img.src=WEBP('assets/boats/'+k.f+'.png')}return(!k.bad&&k.img.complete&&k.img.naturalWidth)?k:null}
 function drawHullBoat(){
   const night1=night;
   // lantern post + glow
@@ -3160,6 +3163,12 @@ window.addEventListener('keydown',e=>{
 window.addEventListener('keyup',e=>{if(e.key===' '){keysDown[' ']=0;pressEnd()}});
 $('hotbar').addEventListener('pointerdown',e=>{const s=e.target.closest('.slot');if(s){e.stopPropagation();selectBait(+s.dataset.i);return}const g=e.target.closest('.gbtn');if(g){e.stopPropagation();const k=g.dataset.g;if(k==='bobup'||k==='bobdn'){S.gear.bobD=clamp(S.gear.bobD+(k==='bobdn'?1:-1),1,10);updateHUD()}else toggleGear(k)}});
 $('bMute').onclick=()=>{muted=!muted;applyVolumes();$('bMute').textContent=muted?'🔇':'🔊'};
+/* GFX: preload every sprite before play so nothing flashes from the old drawing to the new art */
+(function(){const b=$('play');if(!b)return;const lbl=b.innerHTML;let done=0,tot=0,open=false;const finish=()=>{if(open)return;open=true;b.disabled=false;b.innerHTML=lbl};
+  b.disabled=true;b.innerHTML='⏳ Loading art…';setTimeout(finish,9000);
+  fetch('assets/gfx-manifest.json').then(r=>r.json()).then(L=>{window.GFXSET=new Set(L);tot=L.length;if(!tot)return finish();
+    L.forEach(src=>{const im=SPRC[src]||(SPRC[src]=new Image());const end=()=>{done++;if(!open)b.innerHTML='⏳ Loading art '+Math.round(100*done/tot)+'%';if(done>=tot)finish()};
+      if(im.complete&&im.src)end();else{im.addEventListener('load',end,{once:true});im.addEventListener('error',end,{once:true});if(!im.src)im.src=WEBP(src)}})}).catch(finish)})();
 $('play').onclick=()=>{started=true;setTimeout(checkRot,0);$('title').classList.add('hidden');initAudio();updateHUD();if(!S.tut.welcome){S.tut.welcome=1;toast(T('🎣 Hold to reel · release to sink · click when ❗ appears!'))}};
 /* ---- main ---- */
 function resize(){const cap=SET.quality===0?1:SET.quality===1?1.5:2;DPR=Math.min(window.devicePixelRatio||1,cap);const w=innerWidth,h=innerHeight;cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);cv.style.width=w+'px';cv.style.height=h+'px';SC=h/VH;VW=w/SC;BX=Math.min(250,VW*.2);hook.tx=clamp(hook.tx,BX+90,VW-30);CPAT=null}
@@ -4247,7 +4256,7 @@ ACT.decbuy=t=>{const c=+t.dataset.c,k=t.dataset.k;if(S.money<c)return toast('Not
 const PETS=[['cat','🐱 Cat',250,'#e89a4a'],['dog','🐶 Dog',300,'#c8955a'],['otter','🦦 Otter',800,'#7a5a3a'],['parrot','🦜 Parrot',600,'#3ac85a']];
 /* GFX: sprite pets (assets/pets/<kind>.png, facing right); code pet until loaded */
 const PETSPR={};
-function petSprite(kind){let k=PETSPR[kind];if(!k){k=PETSPR[kind]={img:new Image()};k.img.onerror=()=>{k.bad=1};k.img.src='assets/pets/'+kind+'.png'}return(!k.bad&&k.img.complete&&k.img.naturalWidth)?k.img:null}
+function petSprite(kind){let k=PETSPR[kind];if(!k&&SPRC['assets/pets/'+kind+'.png'])k=PETSPR[kind]={img:SPRC['assets/pets/'+kind+'.png']};if(!k){k=PETSPR[kind]={img:new Image()};k.img.onerror=()=>{k.bad=1};k.img.src=WEBP('assets/pets/'+kind+'.png')}return(!k.bad&&k.img.complete&&k.img.naturalWidth)?k.img:null}
 function drawPet(g,kind,x,y,s,face,t,mv){
   {const im=petSprite(kind);if(im){const H=(kind==='parrot'?40:34)*s,W=H*im.naturalWidth/im.naturalHeight,bob=mv?Math.abs(Math.sin(t*10))*3:Math.sin(t*2)*1;g.save();g.translate(x,y-bob*s+2*s);g.scale(face,1);g.drawImage(im,-W/2,-H,W,H);g.restore();return}}
   if(SET.quality>=2&&window.__petHQ){try{return __petHQ(g,kind,x,y,s,face,t,mv,PETC||PETS.find(p=>p[0]===kind)[3])}catch(e){}}
@@ -4783,7 +4792,7 @@ function cozyLuck(){const t=cozyOn();return t?t[2]:0}
 function itemSize(it){return Math.round(34*it.s)}
 /* GFX: decor sprites (assets/decor/<index>.png); emoji until loaded */
 const DECSPR=new Set(Array.from({length:62},(_,i)=>i));
-function decIc(i){return DECSPR.has(i)?`<img src="assets/decor/${i}.png" alt="" style="height:1.5em;width:auto;vertical-align:middle">`:DEC2[i].e}
+function decIc(i){return DECSPR.has(i)?`<img src="assets/decor/${i}.webp" alt="" style="height:1.5em;width:auto;vertical-align:middle">`:DEC2[i].e}
 function decSpr(k,c){if(!DECSPR.has(k))return null;const src='assets/decor/'+k+'.png';const im=sprImg(src);if(!im&&c){const j=SPRC[src];if(j&&!j._rp){j._rp=1;j.addEventListener('load',()=>{try{roomPaint(c)}catch(e){}})}}return im}
 function roomPaint(c){
   const g=c.getContext('2d'),d=D2();g.setTransform(c.width/420,0,0,c.width/420,0,0);
