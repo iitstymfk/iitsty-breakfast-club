@@ -1548,6 +1548,8 @@ function setHook(){const s=hook.strike;if(!s)return;hook.strike=null;bite(s.f)}
 function missStrike(){const s=hook.strike;hook.strike=null;if(!s)return;const f=s.f;f.state='wild';flee(f,hook.x,3);f.cool=8;toast('💨 Missed the strike! Click/Space the moment ❗ appears');sfx.lose()}
 function updateFish(dt){
   const inFish=hook.state==='fish';
+  /* hook speed this frame, so chasing fish can always catch a sinking/rising hook */
+  const hvx=hook._px==null?0:(hook.x-hook._px)/Math.max(dt,.001),hvy=hook._py==null?0:(hook.y-hook._py)/Math.max(dt,.001),hsp=Math.min(900,Math.hypot(hvx,hvy));hook._px=hook.x;hook._py=hook.y;
   for(let i=respawn.length-1;i>=0;i--){respawn[i].t-=dt;if(respawn[i].t<=0){if(eligible(respawn[i].sp))spawnFish(respawn[i].sp,false);respawn.splice(i,1)}}
   const preds=[];
   for(const f of fish.slice()){
@@ -1563,7 +1565,7 @@ function updateFish(dt){
       if(L>=sp.shy){
         if(d<attractRad(f)){
           chasing=true;f.look=0;f.flipT=Math.max(0,(f.flipT||0)-dt);{const dc=hook.x-f.x,want=dc>0?1:-1;if(want!==f.dir&&Math.abs(dc)>m*.55+12&&f.flipT<=0){f.dir=want;f.flipT=.6}}
-          const spd=f.v*2.6+50,step=Math.min(spd*dt,d);if(d>1){f.x+=dx/d*step;f.y+=dy/d*step*.9}
+          const base=f.v*2.6+50,lunge=d<140?1.7:1,spd=Math.max(base,hsp*1.35+60)*lunge,step=Math.min(spd*dt,d);if(d>1){f.x+=dx/d*step;f.y+=dy/d*step*.9}
           f.by=f.y;
           if(d<14+m*.07){f.nib+=dt;hook.jig=.6;if(f.nib>.4){onNibble(f);continue}}else f.nib=Math.max(0,f.nib-dt);
         }else f.nib=Math.max(0,f.nib-dt);
