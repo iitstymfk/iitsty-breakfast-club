@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rig test</title>
+<style>html,body{margin:0;background:#7ec8f0;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style></head><body><canvas id="c"></canvas>
+<script>
+/* Cut-out rig player: parts PNG + pivots (in source-image pixels). Same code can go into any game. */
+const RIG={};
+async function loadRig(name){const j=await (await fetch('assets/rig/'+name+'.json')).json();const P={};await Promise.all(Object.entries(j.parts).map(([k,v])=>new Promise(r=>{const im=new Image();im.onload=r;im.src='assets/rig/'+k+'.png';P[k]=Object.assign({im},v)})));j.P=P;RIG[name]=j;return j}
+function part(g,R,k,ang,dx,dy,dark){const p=R.P[k];if(!p)return;g.save();g.translate(p.px+(dx||0),p.py+(dy||0));g.rotate(ang||0);if(dark)g.filter='brightness(.72)';g.drawImage(p.im,p.x-p.px,p.y-p.py);g.restore()}
+/* attach a child part to its parent: rotate the child pivot along with the parent */
+function child(g,R,parentK,pang,k,ang,dark){const pp=R.P[parentK],c=R.P[k];g.save();g.translate(pp.px,pp.py);g.rotate(pang);g.translate(-pp.px,-pp.py);part(g,R,k,ang,0,0,dark);g.restore()}
+function drawHuman(g,x,y,s,ph,dir,walk){const R=RIG.human;g.save();g.translate(x,y);g.scale(s*dir,s);g.translate(-R.P.h_body.px,-R.ground);
+  const w=walk?1:0,sn=Math.sin(ph),bob=-Math.abs(Math.cos(ph))*10*w+Math.sin(ph*.5)*2*(1-w);g.translate(0,bob);
+  const legA=.42*sn*w,knee=t=>Math.max(0,Math.sin(t+1.3))*.6*w;
+  child(g,R,'h_thigh',-legA,'h_shin',knee(ph+Math.PI),true);part(g,R,'h_thigh',-legA,0,0,true);
+  child(g,R,'h_thigh',legA,'h_shin',knee(ph));part(g,R,'h_thigh',legA);
+  part(g,R,'h_body',0);part(g,R,'h_head',.04*Math.sin(ph*2)*w+.03*Math.sin(ph*.4));part(g,R,'h_arm',-.38*sn*w+.04*Math.sin(ph*.5));g.restore()}
+function drawCat(g,x,y,s,ph,dir,walk){const R=RIG.cat;g.save();g.translate(x,y);g.scale(s*dir,s);g.translate(-700,-R.ground);
+  const w=walk?1:0,bob=-Math.abs(Math.sin(ph))*5*w;g.translate(0,bob);const L=R.legs,ph4=[0,Math.PI,0,Math.PI];
+  part(g,R,'c_tail',.12*Math.sin(ph*.7)+.05*Math.sin(ph*2.3));
+  part(g,R,L[1],.22*Math.sin(ph+ph4[1])*w,0,0,true);part(g,R,L[2],.22*Math.sin(ph+ph4[2])*w,0,0,true);
+  part(g,R,'c_body',0);part(g,R,'c_head',.05*Math.sin(ph*2)*w+.04*Math.sin(ph*.5));
+  part(g,R,L[0],.22*Math.sin(ph+ph4[0])*w);part(g,R,L[3],.22*Math.sin(ph+ph4[3])*w);g.restore()}
+const cv=document.getElementById('c'),g=cv.getContext('2d');let W,H;function rs(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio}addEventListener('resize',rs);rs();
+let T=0;window.__t=null;
+Promise.all([loadRig('human'),loadRig('cat')]).then(()=>{function fr(ts){T=window.__t!=null?window.__t:ts/1000;g.clearRect(0,0,W,H);
+  const gy=H*.86;g.fillStyle='#9a6a38';g.fillRect(0,gy,W,H-gy);g.fillStyle='#4a2c14';g.fillRect(0,gy,W,6);
+  const sc=H/1700,sp=W*.12,cx=((T*sp)%(W+600))-300;
+  drawCat(g,cx-W*.05,gy+4,sc*.75,T*6.5,1,1);drawHuman(g,cx+W*.22,gy+4,sc,T*5.2,1,1);
+  drawHuman(g,W*.82,gy+4,sc,T*5.2,-1,0);drawCat(g,W*.62,gy+4,sc*.75,T,-1,0);
+  requestAnimationFrame(fr)}requestAnimationFrame(fr);window.__ready=1});
+</script></body></html>
