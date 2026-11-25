@@ -18644,6 +18644,33 @@ header .gear-btn, #fx-mail-btn { position: absolute; }
         }, function () {}); })).then(function () { if (!navigator.onLine && !out.length) return; WEB = out; jset("bcx_site_songs", WEB); change(); });
     }
     function webTracks() { return WEB.slice(); }
+    /* ---- put a song on the bio page: uses the bio's own login on this phone (same site, iitstymfk.github.io) ---- */
+    var BIO_FN = "https://nbqifpnkdwjzvapyztqh.supabase.co/functions/v1/bio-owner", BIO_KEY = "sb_publishable_dPkzVxWoTvXLkaIYwy9xQw_X6G49pGS";
+    function bioLogin() { var who = ls("bioWho", "") || "iitstymfk"; return { who: who, dir: who === "thiccbearcurry" ? "thiccbearcurry/" : "", sess: ls("bioSession", ""), key: ls("ghToken", "") }; }
+    function bioGh(L, path, method, body) {
+        var direct = function () { if (!L.key) throw new Error("Log in on your bio page on this phone first"); return fetch("https://api.github.com/repos/iitstymfk/iitstymfk.github.io/contents/" + L.dir + path + (method === "GET" ? (path.indexOf("?") < 0 ? "?" : "&") + "_=" + Date.now() : ""), { method: method, headers: { Authorization: "Bearer " + L.key, Accept: "application/vnd.github+json" }, body: body ? JSON.stringify(body) : undefined }); };
+        var go = L.sess ? fetch(BIO_FN, { method: "POST", headers: { "Content-Type": "application/json", apikey: BIO_KEY }, body: JSON.stringify({ action: "gh", page: L.who, session: L.sess, method: method, path: L.dir + path, body: body }) }).then(function (r) { if ((r.status === 413 || r.status === 546) && L.key) return direct(); return r; }, function () { return direct(); }) : Promise.resolve().then(direct);
+        return go.then(function (r) { if (r.status === 401) throw new Error("Your bio login ran out. Log in on your bio page again"); if (!r.ok && r.status !== 404) return r.json().catch(function () { return {}; }).then(function (j) { throw new Error(j.message || j.error || ("error " + r.status)); }); return r; });
+    }
+    function b64(blob) { return new Promise(function (ok, no) { var fr = new FileReader(); fr.onload = function () { ok(String(fr.result).split(",")[1]); }; fr.onerror = no; fr.readAsDataURL(blob); }); }
+    function songBlob(t) { if (t.url) return fetch(t.url).then(function (r) { return r.blob(); }); return tx("readonly", function (s2) { return s2.get(t.id.slice(4)); }).then(function (x) { if (!x) throw new Error("song not found"); return x.blob; }); }
+    function toBio(t) {
+        var L = bioLogin(); if (!L.sess && !L.key) return Promise.reject(new Error("Log in on your bio page on this phone first (open it with #owner)"));
+        return songBlob(t).then(function (blob) {
+            if (blob.size > 40e6) throw new Error("That song is over 40 MB");
+            var ext = /mp4|aac|m4a/.test(blob.type) ? "m4a" : /ogg|opus/.test(blob.type) ? "ogg" : /wav/.test(blob.type) ? "wav" : "mp3";
+            var slug = t.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || ("song-" + Date.now().toString(36)), path = "music/" + slug + "." + ext;
+            return bioGh(L, path + "?ref=main", "GET").then(function (r) { return r.status === 404 ? null : r.json().then(function (j) { return j.sha; }); })
+                .then(function (sha) { return b64(blob).then(function (c) { var body = { message: "Add song " + slug, content: c, branch: "main" }; if (sha) body.sha = sha; return bioGh(L, path, "PUT", body); }); })
+                .then(function () {
+                    var save = function (n) { return bioGh(L, "site.json?ref=main", "GET").then(function (r) { return r.status === 404 ? { d: { songs: [] }, sha: null } : r.json().then(function (j) { return { d: JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, ""))))), sha: j.sha }; }); })
+                        .then(function (o) { var d = o.d; d.songs = (d.songs || []).filter(function (x) { return x.src !== path && (x.title || "").toLowerCase() !== t.name.toLowerCase(); }); d.songs.push({ title: t.name, artist: "", src: path, themes: [] });
+                            var body = { message: "Update site.json", content: btoa(unescape(encodeURIComponent(JSON.stringify(d, null, 2)))), branch: "main" }; if (o.sha) body.sha = o.sha; return bioGh(L, "site.json", "PUT", body); })
+                        .catch(function (e) { if (n < 3 && /match|409|conflict/i.test(String(e.message))) return new Promise(function (ok) { setTimeout(ok, 1200 * n); }).then(function () { return save(n + 1); }); throw e; }); };
+                    return save(1);
+                }).then(function () { WEB.push({ id: "web:/" + L.dir + path, name: t.name, url: "/" + L.dir + path, web: 1 }); jset("bcx_site_songs", WEB); change(); return L.who; });
+        });
+    }
     var ALIAS = {};
     var tracks = function () { var pc = pcTracks(), seen = {}; pc.forEach(function (t) { seen[t.name.toLowerCase()] = t; }); ALIAS = {}; pc = pc.concat(webTracks().filter(function (t) { var k = t.name.toLowerCase(); if (seen[k]) return false; seen[k] = t; return true; })); return pc.concat(LOC.filter(function (t) { var m = seen[t.name.toLowerCase()]; if (m) { ALIAS[t.id] = m; return false; } return true; })); };
     var pls = function () { var P = jget("bcx_pl", []); return Array.isArray(P) ? P : []; };
@@ -18729,7 +18756,7 @@ header .gear-btn, #fx-mail-btn { position: absolute; }
             '<div class="row"><select id="bm-pl">' + sel + '</select><input type="range" id="bm-vol" min="0" max="1" step="0.05" value="' + au.volume + '" style="flex:1;min-width:90px"></div>' +
             '<div class="row"><button class="g" id="bm-add">➕ Add songs from this phone</button><button class="g" id="bm-new">New playlist</button>' + (curPl !== "all" ? '<button class="g" id="bm-ren">Rename</button><button class="g" id="bm-del">Delete list</button>' : "") + '</div>' +
             '<div class="card-desc">' + (T.length ? "Tick songs to put them in the chosen playlist." : "Add songs from this phone, the Photo Manager's “Music” section, or your bio page — it's all one music list.") + '</div>' +
-            T.map(function (t) { var inP = curPl !== "all" && (P.filter(function (p) { return p.id === curPl; })[0] || { ids: [] }).ids.indexOf(t.id) >= 0; return '<div class="trk">' + (curPl !== "all" ? '<input type="checkbox" data-t="' + esc(t.id) + '" ' + (inP ? "checked" : "") + ">" : "") + "<span>♪ " + esc(t.name) + "</span>" + (t.local ? '<button class="g" data-d="' + esc(t.id) + '" style="padding:4px 8px">✕</button>' : "") + "</div>"; }).join("");
+            T.map(function (t) { var inP = curPl !== "all" && (P.filter(function (p) { return p.id === curPl; })[0] || { ids: [] }).ids.indexOf(t.id) >= 0; return '<div class="trk">' + (curPl !== "all" ? '<input type="checkbox" data-t="' + esc(t.id) + '" ' + (inP ? "checked" : "") + ">" : "") + "<span>♪ " + esc(t.name) + "</span>" + (!t.web ? '<button class="g" data-up="' + esc(t.id) + '" title="Add to my bio page" style="padding:4px 8px">⬆</button>' : "") + (t.local ? '<button class="g" data-d="' + esc(t.id) + '" style="padding:4px 8px">✕</button>' : "") + "</div>"; }).join("");
         $("bm-pl").value = curPl; if (!open) return;
         $("bm-pl").onchange = function (e) { curPl = e.target.value; paint(); };
         $("bm-tog").onclick = function () { var st2 = M.state(); if (st2.now && st2.ctx === "workout" && st2.pl === curPl) M.toggle(); else M.play(curPl, "workout"); };
@@ -18741,6 +18768,7 @@ header .gear-btn, #fx-mail-btn { position: absolute; }
         if ($("bm-ren")) $("bm-ren").onclick = function () { var Q = pls(), p = Q.filter(function (x) { return x.id === curPl; })[0]; var n = prompt("New name?", p.name); if (!n) return; p.name = n.trim().slice(0, 40); jset("bcx_pl", Q); paint(); };
         if ($("bm-del")) $("bm-del").onclick = function () { if (!confirm("Delete this playlist? (The songs stay.)")) return; jset("bcx_pl", pls().filter(function (x) { return x.id !== curPl; })); curPl = "all"; paint(); };
         c.querySelectorAll("[data-t]").forEach(function (b) { b.onchange = function () { var Q = pls(), p = Q.filter(function (x) { return x.id === curPl; })[0]; if (!p) return; p.ids = p.ids.filter(function (x) { return x !== b.dataset.t; }); if (b.checked) p.ids.push(b.dataset.t); jset("bcx_pl", Q); }; });
+        c.querySelectorAll("[data-up]").forEach(function (b) { b.onclick = function () { var t = tracks().filter(function (x) { return x.id === b.dataset.up; })[0]; if (!t) return; b.disabled = true; b.textContent = "…"; toast("Adding " + t.name + " to your bio…"); toBio(t).then(function (who) { toast("✓ " + t.name + " is on your bio (" + who + ") — live in about a minute"); paint(); }, function (e) { toast("Couldn't add it: " + e.message, 6000); b.disabled = false; b.textContent = "⬆"; }); }; });
         c.querySelectorAll("[data-d]").forEach(function (b) { b.onclick = function () { if (confirm("Remove this song from the phone?")) M.delLocal(b.dataset.d).then(paint); }; });
     }
     if (view && !$("bcx-music")) {
