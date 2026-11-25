@@ -2895,8 +2895,11 @@ const LOOKS={
 function shadeC(h,a){const n=parseInt(h.slice(1),16),r=clamp((n>>16)+a,0,255),g=clamp(((n>>8)&255)+a,0,255),b=clamp((n&255)+a,0,255);return'rgb('+r+','+g+','+b+')'}
 /* o: {x,y,s,face,t,pose:'idle|walk|fish|wave|hold',reach:[x,y],item,front} — feet at (x,y), ~100 units tall */
 /* GFX: townsfolk sprites (assets/npc/<who>.png, front view); player stays code-drawn (animated) */
+const CHARSPR=new Set([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,24,25,26,27,28,29,30,31,32,33,34,35,36,38,39,40,41,42,43,44,45,46,47]),FOLKSPR=1;/* painted player presets pc<i>.png and townsfolk folk<i>.png */
+function drawSprPerson(g,src,o){const im=sprImg(src);if(!im)return false;const sc=o.s||1,H=118*sc,W=H*im.naturalWidth/im.naturalHeight,t=o.t||0,walk=o.pose==='walk',bob=walk?Math.abs(Math.sin(t*8))*3*sc:0,br=walk?1:1+Math.sin(t*2.2)*.012,rot=walk?Math.sin(t*8)*.03:o.pose==='wave'?Math.sin(t*6)*.025:0;g.save();g.translate(o.x,o.y);g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(0,0,W*.38,5*sc,0,0,Math.PI*2);g.fill();g.translate(0,-bob);g.rotate(rot);g.scale(1,br);g.drawImage(im,-W/2,-H,W,H);g.restore();return true}
 const NPCSPR=new Set(['ada','barney','bo','coral','iris','marlowe','mayor','pete']);
 function drawPerson(g,who,o){
+  {const L0=LOOKS[who];if(L0&&L0.spr&&drawSprPerson(g,L0.spr,o))return}
   if(who!=='player'&&NPCSPR.has(who)){const im=sprImg('assets/npc/'+who+'.png');if(im){const sc=o.s||1,H=118*sc,W=H*im.naturalWidth/im.naturalHeight,t=o.t||0,br=1+Math.sin(t*2.2)*.012,wv=o.pose==='wave'?Math.sin(t*6)*.025:0;g.save();g.translate(o.x,o.y);g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(0,0,W*.38,5*sc,0,0,Math.PI*2);g.fill();g.rotate(wv);g.scale(1,br);g.drawImage(im,-W/2,-H,W,H);g.restore();return}}
   const L=LOOKS[who],t=o.t||0,pose=o.pose||'idle',walk=pose==='walk',sw=walk?Math.sin(t*9):0,br=Math.sin(t*2.2)*(walk?0:.8),bob=walk?Math.abs(Math.sin(t*9))*-2.2:br*.4;
   g.save();g.translate(o.x,o.y);g.scale((o.face||1)*(o.s||1),o.s||1);g.lineJoin='round';g.lineCap='round';
@@ -4030,7 +4033,7 @@ Object.assign(LOOKS,{
  mayor:{skin:'#e8b890',hair:'#aaa',hat:'cap',hatc:'#2a3a2a',coat:'#2a4a3a',pants:'#1c2a22',boots:'#111',beard:'#ccc',brow:'#bbb',buttons:1,belly:2,suspenders:1}
 });
 const FOLKC=[['#e8a0a0','#3a4a6a','#6a3a1a'],['#a0c8e8','#5a3a2a','#2a2a2a'],['#c8e8a0','#3a3a5a','#c8a050'],['#e8d8a0','#2a4a4a','#8a3a2a'],['#d0a0e8','#4a3a3a','#3a2a1a'],['#a0e8d8','#5a2a3a','#d8d0c0']];
-FOLKC.forEach((c,i)=>{LOOKS['folk'+i]={skin:['#f1c7a0','#d9a070','#8a5a3a','#f4d0b0','#c88a5a','#f0c9a0'][i],hair:c[2],hat:i%3===0?'cap':'none',hatc:c[1],coat:c[0],pants:c[1],boots:'#2a1a10',brow:c[2]}});
+FOLKC.forEach((c,i)=>{LOOKS['folk'+i]={spr:FOLKSPR?'assets/chars/folk'+i+'.png':null,skin:['#f1c7a0','#d9a070','#8a5a3a','#f4d0b0','#c88a5a','#f0c9a0'][i],hair:c[2],hat:i%3===0?'cap':'none',hatc:c[1],coat:c[0],pants:c[1],boots:'#2a1a10',brow:c[2]}});
 PLACES.tavern={n:"The Salty Mug",ic:'🍻',sub:'Tales, tips, rumors and legends',who:'barney',th:'stall',acc:'#8a3a1a',tabs:[['tales','📖 Tales'],['tips','💡 Tips'],['rumors','🗣️ Rumors'],['legends','📜 Legends']],lock:()=>S.town.lvl>=1,lockMsg:'The tavern is still being built — fund it at the Town Hall!'};
 PLACES.museum={n:"Reel Harbor Museum",ic:'🏛️',sub:'Donate rare catches for permanent perks',who:'iris',th:'journal',acc:'#5a3a8a',tabs:[['museum','🏛️ Exhibits']],lock:()=>S.town.lvl>=2,lockMsg:'The museum is still under construction — fund it at the Town Hall!'};
 PLACES.hall={n:"Town Hall",ic:'📋',sub:'Fund new buildings for Reel Harbor',who:'mayor',th:'journal',acc:'#2f6a4a',tabs:[['fund','🏗️ Town Fund']]};
@@ -4315,6 +4318,7 @@ function lookFrom(o){
   if(o.bot===1){L.skirt=BOTC[o.bc%BOTC.length];L.pants=SKINS[o.sk]}
   if(o.sc)L.scarf=SCARFC[o.sc];if(o.gl)L.glasses=1;if(o.gg)L.goggles=1;if(o.fk)L.freckles=1;
   if(!boy){L.lash=1;L.lip='#c8506a'}else if(o.bd===1)L.beard=hair;else if(o.bd===2)L.mus=hair;
+  if(o.pre!=null&&typeof PRE!=='undefined'&&PRE[o.pre]&&Object.keys(PRE[o.pre]).every(k=>k==='n'||PRE[o.pre][k]===o[k])&&CHARSPR.has(o.pre))L.spr='assets/chars/pc'+o.pre+'.png';
   return L;
 }
 function applyLook(){LOOKS.player=S.look?lookFrom(S.look):Object.assign({},LOOKS_DEF)}
@@ -4356,8 +4360,8 @@ RENDER.look=function(){
   h+=row('Scarf',SCARFC.map((c,i)=>swatch('sc',i,c,cur.sc)).join(''));
   return h;
 };
-RENDER_AFTER.look=function(b){b.querySelectorAll('canvas[data-pv]').forEach(c=>{const o=PRE[+c.dataset.pv],g=c.getContext('2d');LOOKS.pv=lookFrom(o);g.clearRect(0,0,84,112);drawPerson(g,'pv',{x:42,y:104,s:.92,t:0,pose:'idle'})})};
-ACT.lkpre=t=>{S.look=Object.assign({},PRE[+t.dataset.i]);delete S.look.n;lookChanged()};
+RENDER_AFTER.look=function(b){b.querySelectorAll('canvas[data-pv]').forEach(c=>{const o=Object.assign({pre:+c.dataset.pv},PRE[+c.dataset.pv]),g=c.getContext('2d');LOOKS.pv=lookFrom(o);if(LOOKS.pv.spr&&!sprImg(LOOKS.pv.spr)){const j=SPRC[LOOKS.pv.spr];if(j&&!j._pv){j._pv=1;j.addEventListener('load',()=>{if(c.isConnected){LOOKS.pv=lookFrom(o);g.clearRect(0,0,84,112);drawPerson(g,'pv',{x:42,y:104,s:.92,t:0,pose:'idle'})}})}}g.clearRect(0,0,84,112);drawPerson(g,'pv',{x:42,y:104,s:.92,t:0,pose:'idle'})})};
+ACT.lkpre=t=>{S.look=Object.assign({},PRE[+t.dataset.i],{pre:+t.dataset.i});delete S.look.n;lookChanged()};
 ACT.lkflt=t=>{lookF=t.dataset.v};
 ACT.lkrand=()=>{const g=Math.random()<.5?'b':'g',o=Object.assign({},PRE[Math.floor(Math.random()*PRE.length)]);delete o.n;o.g=g;o.sk=Math.random()*SKINS.length|0;o.hc=Math.random()*HAIRC.length|0;o.tc=Math.random()*TOPC.length|0;S.look=o;lookChanged()};
 ACT.lkreset=()=>{S.look=null;lookChanged()};
