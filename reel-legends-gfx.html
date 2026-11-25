@@ -2307,12 +2307,16 @@ function drawHull(){
     c.fillStyle='#5a7a9a';c.fillRect(-120,-40,8,18);c.fillStyle='#e8a030';c.beginPath();c.moveTo(-124,-40);c.lineTo(-104,-40);c.lineTo(-114,-60);c.fill();
   }
 }
+/* GFX: sprite boats (assets/boats/*.png); falls back to code hull until loaded */
+const BOATSPR=[{f:'skiff',w:215,deck:.42},{f:'cruiser',w:280,deck:.67},{f:'trawler',w:310,deck:.58},{f:'yacht',w:320,deck:.55}];
+function boatSprite(){const k=BOATSPR[S.boatKind|0];if(!k)return null;if(!k.img){k.img=new Image();k.img.onerror=()=>{k.bad=1};k.img.src='assets/boats/'+k.f+'.png'}return(!k.bad&&k.img.complete&&k.img.naturalWidth)?k:null}
 function drawHullBoat(){
   const night1=night;
   // lantern post + glow
   ctx.strokeStyle='#3a2a1a';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-78,-20);ctx.lineTo(-78,-76);ctx.stroke();
   if(night1>.05){const g=ctx.createRadialGradient(-78,-80,2,-78,-80,170);g.addColorStop(0,`rgba(255,210,120,${.55*night1})`);g.addColorStop(1,'rgba(255,210,120,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(-78,-80,170,0,TAU);ctx.fill()}
   ctx.fillStyle='#2b2b2b';rr(ctx,-86,-92,16,18,4);ctx.fill();ctx.fillStyle=night1>.2?'#ffe08a':'#b99b55';rr(ctx,-83,-89,10,12,3);ctx.fill();
+  const bs=boatSprite();if(bs){const h=bs.w*bs.img.naturalHeight/bs.img.naturalWidth;ctx.drawImage(bs.img,-100,-20-bs.deck*h,bs.w,h);return}
   // hull
   ctx.beginPath();ctx.moveTo(-92,-20);ctx.quadraticCurveTo(-80,14,-30,18);ctx.lineTo(42,18);ctx.quadraticCurveTo(86,12,104,-30);ctx.quadraticCurveTo(8,-12,-92,-20);ctx.closePath();
   let g=ctx.createLinearGradient(0,-24,0,20);g.addColorStop(0,'#a66a3a');g.addColorStop(1,'#4d2c14');ctx.fillStyle=g;ctx.fill();
@@ -4192,7 +4196,11 @@ ACT.decsel=t=>{S.decor[t.dataset.k]=+t.dataset.i;sfx.click()};
 ACT.decbuy=t=>{const c=+t.dataset.c,k=t.dataset.k;if(S.money<c)return toast('Not enough money');S.money-=c;sfx.coin();if(t.dataset.i!=null){const pre=k==='wall'?'w':'f';S.decor.own[pre+t.dataset.i]=1;S.decor[k]=+t.dataset.i}else S.decor.own[k]=1};
 /* ---- pets ---- */
 const PETS=[['cat','🐱 Cat',250,'#e89a4a'],['dog','🐶 Dog',300,'#c8955a'],['otter','🦦 Otter',800,'#7a5a3a'],['parrot','🦜 Parrot',600,'#3ac85a']];
+/* GFX: sprite pets (assets/pets/<kind>.png, facing right); code pet until loaded */
+const PETSPR={};
+function petSprite(kind){let k=PETSPR[kind];if(!k){k=PETSPR[kind]={img:new Image()};k.img.onerror=()=>{k.bad=1};k.img.src='assets/pets/'+kind+'.png'}return(!k.bad&&k.img.complete&&k.img.naturalWidth)?k.img:null}
 function drawPet(g,kind,x,y,s,face,t,mv){
+  {const im=petSprite(kind);if(im){const H=(kind==='parrot'?40:34)*s,W=H*im.naturalWidth/im.naturalHeight,bob=mv?Math.abs(Math.sin(t*10))*3:Math.sin(t*2)*1;g.save();g.translate(x,y-bob*s+2*s);g.scale(face,1);g.drawImage(im,-W/2,-H,W,H);g.restore();return}}
   if(SET.quality>=2&&window.__petHQ){try{return __petHQ(g,kind,x,y,s,face,t,mv,PETC||PETS.find(p=>p[0]===kind)[3])}catch(e){}}
   const c=PETC||PETS.find(p=>p[0]===kind)[3],bob=mv?Math.abs(Math.sin(t*10))*3:Math.sin(t*2)*1;g.save();g.translate(x,y-bob*s);g.scale(face*s,s);
   if(kind==='parrot'){g.fillStyle='#6a4a2a';g.fillRect(-14,0,28,3);g.fillStyle=c;g.beginPath();g.ellipse(0,-14,8,14,.1,0,TAU);g.fill();g.fillStyle='#e8d030';g.beginPath();g.ellipse(-2,-10,5,8,.1,0,TAU);g.fill();g.fillStyle='#e8402a';g.beginPath();g.moveTo(-6,-2);g.lineTo(-12,10);g.lineTo(-2,0);g.fill();g.fillStyle=c;g.beginPath();g.arc(4,-28,7,0,TAU);g.fill();g.fillStyle='#f2b134';g.beginPath();g.moveTo(9,-29);g.lineTo(16,-26);g.lineTo(9,-24);g.fill();g.fillStyle='#fff';g.beginPath();g.arc(5,-30,2,0,TAU);g.fill();g.fillStyle='#111';g.beginPath();g.arc(5.5,-30,1,0,TAU);g.fill()}
@@ -4645,7 +4653,7 @@ setInterval(()=>{
       toast((hot?'🔥 HOT SPOT! ':'📍 ')+nm+(hot?' — the fish are thick here!':''));sfx.splash();save()}}
 },50);
 /* boat colour pennant for owned boat type */
-(function(){const d0=drawBoat;drawBoat=function(){d0();try{if(LOOKS.player.fixed)return;const k=bk();if(!k||!(S.boatKind>0))return;ctx.save();ctx.translate(B.x,B.y);ctx.rotate(B.a);ctx.strokeStyle='#3a2810';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-70,-20);ctx.lineTo(-70,-78);ctx.stroke();ctx.fillStyle=k.col;ctx.beginPath();ctx.moveTo(-70,-78);ctx.lineTo(-44,-70);ctx.lineTo(-70,-62);ctx.fill();ctx.restore()}catch(_){}}})();
+(function(){const d0=drawBoat;drawBoat=function(){d0();try{if(LOOKS.player.fixed)return;const k=bk();if(!k||!(S.boatKind>0)||boatSprite())return;ctx.save();ctx.translate(B.x,B.y);ctx.rotate(B.a);ctx.strokeStyle='#3a2810';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-70,-20);ctx.lineTo(-70,-78);ctx.stroke();ctx.fillStyle=k.col;ctx.beginPath();ctx.moveTo(-70,-78);ctx.lineTo(-44,-70);ctx.lineTo(-70,-62);ctx.fill();ctx.restore()}catch(_){}}})();
 /* ===== b29: cottage v2 (free decor, trophies, comfort), pets v2, shared Aquarium ===== */
 const DEC2=`🛋️|Sofa|400|furn
 🪑|Armchair|160|furn
