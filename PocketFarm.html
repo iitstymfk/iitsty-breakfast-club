@@ -323,6 +323,9 @@ const shd = (cx, cy, rx, ry) => `<ellipse class="shd" cx="${cx}" cy="${cy}" rx="
 const win = (x, y, w = 16, h = 14) => `<rect class="win" x="${x}" y="${y}" width="${w}" height="${h}" rx="2.5" stroke="${OL}" stroke-width="2"/><path d="M${x + w / 2} ${y}v${h}M${x} ${y + h / 2}h${w}" stroke="${OL}" stroke-width="1.4"/><rect x="${x - 2}" y="${y + h - 1}" width="${w + 4}" height="4" rx="1.5" fill="#fff6e6" stroke="${OL}" stroke-width="1.5"/>`;
 const smoke = (x, y) => `<g><circle class="pf" cx="${x}" cy="${y}" r="5"/><circle class="pf" cx="${x}" cy="${y}" r="5"/><circle class="pf" cx="${x}" cy="${y}" r="5"/></g>`;
 const chimney = (x, y, h = 22) => `<rect x="${x}" y="${y}" width="12" height="${h}" fill="#a0704c" stroke="${OL}" stroke-width="2"/><rect x="${x - 2}" y="${y - 3}" width="16" height="6" rx="1.5" fill="#7a5238" stroke="${OL}" stroke-width="2"/>${smoke(x + 6, y - 6)}`;
+// 3D-style art (rendered from the free KayKit + Quaternius 3D packs, see assets/farm3d). Setting: Sky & weather > "3D-style art". Off = the original drawings.
+const A3 = () => { try { return !(G && G.set && G.set.art3d === 0); } catch(e) { return true; } };
+const im3 = (k, x, y, w, h) => `<image href="assets/farm3d/${k}.png" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMax meet"/>`;
 const sign = (x, y, e, w = 30) => `<rect x="${x - w / 2}" y="${y - 9}" width="${w}" height="17" rx="5" fill="#f8e7bd" stroke="${OL}" stroke-width="2"/><text x="${x}" y="${y + 4.5}" font-size="12" text-anchor="middle">${e}</text>`;
 const bale = (x, y) => `<rect x="${x}" y="${y}" width="18" height="12" rx="3" fill="#f2c94c" stroke="#a87f1c" stroke-width="1.6"/><path d="M${x + 6} ${y}v12M${x + 12} ${y}v12" stroke="#c99a26" stroke-width="1.2"/>`;
 const flowers = (x, y, c = '#ff6b8b') => `<rect x="${x}" y="${y}" width="18" height="6" rx="2" fill="#8d5525" stroke="${OL}" stroke-width="1.5"/><circle cx="${x + 4}" cy="${y - 1}" r="3" fill="${c}"/><circle cx="${x + 9}" cy="${y - 2}" r="3" fill="#ffd54f"/><circle cx="${x + 14}" cy="${y - 1}" r="3" fill="${c}"/>`;
@@ -522,10 +525,11 @@ function car(kind, col) {
 }
 // nature
 function tree(x, y, s = 1, kind = 0) {
+    if(A3()) { const k = ['tree1', 'tree2', 'tree3', 'tree4'][(Math.abs(Math.round(x * 7 + y * 3 + kind * 5))) % 4], w = 56 * s, h = 82 * s; return `<g><ellipse cx="${x}" cy="${y + 2}" rx="${22 * s}" ry="${5 * s}" class="shd"/>${im3(k, x - w / 2, y - h + 6 * s, w, h)}</g>`; }
     if(kind === 1) return `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="2" rx="20" ry="5" class="shd"/><rect x="-3" y="-12" width="6" height="14" fill="#7a4a22" stroke="${OL}" stroke-width="1.5"/><path d="M0 -62 L18 -24 H-18 Z M0 -48 L22 -10 H-22 Z" fill="url(#gLeaf2)" stroke="${OL}" stroke-width="1.8" stroke-linejoin="round"/></g>`;
     return `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="2" rx="24" ry="6" class="shd"/><rect x="-4" y="-18" width="8" height="20" rx="2" fill="#7a4a22" stroke="${OL}" stroke-width="1.6"/><g class="sway"><circle cx="-12" cy="-26" r="14" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.8"/><circle cx="12" cy="-26" r="14" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.8"/><circle cx="0" cy="-40" r="16" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.8"/><circle cx="-5" cy="-45" r="5" fill="#fff" opacity=".22"/></g></g>`;
 }
-const bush = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="2" rx="16" ry="4" class="shd"/><circle cx="-8" cy="-5" r="8" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.4"/><circle cx="8" cy="-5" r="8" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.4"/><circle cx="0" cy="-10" r="9" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.4"/><circle cx="-3" cy="-12" r="1.6" fill="#ff6b8b"/><circle cx="6" cy="-7" r="1.6" fill="#ffd54f"/></g>`;
+const bush = (x, y, s = 1) => A3() ? `<g><ellipse cx="${x}" cy="${y + 2}" rx="${16 * s}" ry="${4 * s}" class="shd"/>${im3('bush', x - 22 * s, y - 34 * s, 44 * s, 38 * s)}</g>` : `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="2" rx="16" ry="4" class="shd"/><circle cx="-8" cy="-5" r="8" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.4"/><circle cx="8" cy="-5" r="8" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.4"/><circle cx="0" cy="-10" r="9" fill="url(#gLeaf)" stroke="${OL}" stroke-width="1.4"/><circle cx="-3" cy="-12" r="1.6" fill="#ff6b8b"/><circle cx="6" cy="-7" r="1.6" fill="#ffd54f"/></g>`;
 const flower = (x, y, c) => `<g transform="translate(${x} ${y})"><path d="M0 0v-6" stroke="#3f8a2a" stroke-width="1.2"/><circle cx="0" cy="-7" r="2.6" fill="${c}"/><circle cx="0" cy="-7" r="1" fill="#ffd54f"/></g>`;
 const cloud = (s = 1) => `<svg viewBox="0 0 120 60" width="${120 * s}" height="${60 * s}"><g fill="#fff"><ellipse cx="40" cy="40" rx="30" ry="18"/><ellipse cx="66" cy="30" rx="28" ry="24"/><ellipse cx="88" cy="42" rx="24" ry="15"/><rect x="20" y="40" width="88" height="17" rx="8"/></g></svg>`;
 
@@ -583,6 +587,11 @@ function background(W, H, road) {
     [[578, 902, .85, 0], [544, 1048, .9, 0], [588, 1060, .75, 1], [28, 1238, .8, 0], [140, 1240, .7, 1], [252, 1238, .75, 0], [372, 1240, .7, 1], [470, 1238, .8, 0], [578, 1240, .75, 1]].forEach(([x, y, sc, kd]) => s += tree(x, y, sc, kd));
     return `<svg id="bg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">${s}</svg>`;
 }
+{ const _fm = B.feedmill, _bk = B.bakery, _nb = B.nb, _tent = D.tent;
+  B.feedmill = (...a) => A3() ? svg(108, 112, shd(54, 108, 44, 6) + im3('windmill', 2, 0, 104, 110) + sign(84, 98, '🌾')) : _fm(...a);
+  B.bakery = (...a) => A3() ? svg(108, 112, shd(54, 108, 46, 6) + im3('house_red', 2, 2, 104, 108) + sign(84, 98, '🥖')) : _bk(...a);
+  B.nb = (...a) => A3() ? svg(112, 112, shd(56, 108, 50, 6) + im3('house_green', 2, 0, 108, 110) + sign(86, 98, '🏘️')) : _nb(...a);
+  D.tent = (...a) => A3() ? svg(80, 70, shd(40, 66, 36, 5) + im3('tent', 2, 0, 76, 68)) : _tent(...a); }
 return {B, D, car, cloud, sprout, pond, background, tree};
 })();
 
@@ -685,9 +694,9 @@ const fresh=()=>({v:3,coins:120,gems:5,xp:0,lv:1,
  shop:[],shopNext:0,ord:[],vis:null,visNext:0,
  nb:{day:0,bought:{},help:{},hearts:{}},st:{},claimed:{},own:['spring','classic','picket','none','none'],decor:[],
  eq:{theme:'spring',plot:'classic',fence:'picket',hat:'none',fx:'none'},qi:0,daily:{day:-1,streak:0},lure:{n:5,ts:0},cd:{},spin:'',
- set:{snd:1,vib:1,fast:0,real:0,wfx:1},wx:null,seen:now()});
+ set:{snd:1,vib:1,fast:0,real:0,wfx:1,art3d:1},wx:null,seen:now()});
 function load(){let s=null;try{s=JSON.parse(localStorage.getItem(KEY))}catch(e){}
- G=fresh();if(s&&s.v==3){Object.assign(G,s);G.set=Object.assign({snd:1,vib:1,fast:0,real:0,wfx:1},s.set);G.nb=Object.assign({day:0,bought:{},help:{},hearts:{}},s.nb);G.lure=s.lure||{n:5,ts:0};G.eq=Object.assign(fresh().eq,s.eq)}
+ G=fresh();if(s&&s.v==3){Object.assign(G,s);G.set=Object.assign({snd:1,vib:1,fast:0,real:0,wfx:1,art3d:1},s.set);G.nb=Object.assign({day:0,bought:{},help:{},hearts:{}},s.nb);G.lure=s.lure||{n:5,ts:0};G.eq=Object.assign(fresh().eq,s.eq)}
  shorten()}
 // Saves from the old version can hold timers of up to 90 minutes. Pull every running timer in to the new, shorter length.
 function shorten(){const t=now();
@@ -1028,7 +1037,7 @@ GAMES.eggs={t:'🥚 Egg hunt',h:()=>`<p class="mut">Tap the eggs before they rol
 
 SH.sky=c=>{const T=WX[W],h=SK.h,t=now(),x=G.wx,tg=(k,l)=>`<div class="tg"><span>${l}</span><button class="${G.set[k]?'on':''}" data-a="set" data-k="${k}" aria-label="${l}"></button></div>`,
  fc=x.nx.slice(0,3).map((k,i)=>`<span class="ch">${WX[k].e} ${WX[k].n}${i==0?' · in <span data-e="'+x.end+'">'+fmt(x.end-t)+'</span>':''}</span>`).join('');
- return ['🌦️ Sky & weather',`<div class="cd"><div class="rt"><span class="big">${PH=='night'?'🌙':PH=='dawn'?'🌅':PH=='dusk'?'🌇':'☀️'}</span><div><b data-clk>${clockStr(h)} · ${periodOf(h)}</b><br><small>${G.set.real?'Matches your real clock':'A full day lasts 8 minutes'}</small></div></div><div class="tl"><i style="left:${h/24*100}%"></i></div></div><div class="cd"><div class="rt"><span class="big">${T.e}</span><div><b>${T.n}</b><br><small>${T.d}</small></div></div></div><h3>Forecast</h3><div>${fc}</div><p class="mut">Weather changes every few minutes, even while you are away.</p><h3>Good to know</h3><p class="mut">🌙 At night the animals sleep, the windows light up and fewer customers stop by.<br>🌧️ Rain and storms make crops grow 30% faster and fish bite sooner.<br>❄️ Snow only falls with the Winter theme and slows crops by 20%.</p><h3>Settings</h3>${tg('real','Sky follows my real clock')}${tg('wfx','Rain, snow and lightning effects')}`]};
+ return ['🌦️ Sky & weather',`<div class="cd"><div class="rt"><span class="big">${PH=='night'?'🌙':PH=='dawn'?'🌅':PH=='dusk'?'🌇':'☀️'}</span><div><b data-clk>${clockStr(h)} · ${periodOf(h)}</b><br><small>${G.set.real?'Matches your real clock':'A full day lasts 8 minutes'}</small></div></div><div class="tl"><i style="left:${h/24*100}%"></i></div></div><div class="cd"><div class="rt"><span class="big">${T.e}</span><div><b>${T.n}</b><br><small>${T.d}</small></div></div></div><h3>Forecast</h3><div>${fc}</div><p class="mut">Weather changes every few minutes, even while you are away.</p><h3>Good to know</h3><p class="mut">🌙 At night the animals sleep, the windows light up and fewer customers stop by.<br>🌧️ Rain and storms make crops grow 30% faster and fish bite sooner.<br>❄️ Snow only falls with the Winter theme and slows crops by 20%.</p><h3>Settings</h3>${tg('real','Sky follows my real clock')}${tg('wfx','Rain, snow and lightning effects')}${tg('art3d','3D-style art (trees, windmill, houses, tent)')}`]};
 
 /* ================= ACTIONS ================= */
 const ACT={};
@@ -1093,7 +1102,7 @@ ACT.nbh=(k,e)=>{const i=+k,t=now();if((G.nb.help[i]||0)>t)return;G.nb.help[i]=t+
 ACT.dec=()=>open('dec');
 ACT.decor=k=>{const d=DC.find(x=>x[0]==k);if(!d||G.coins<d[3]||G.lv<d[4]||G.decor.includes(k))return;G.coins-=d[3];G.decor.push(k);drawDecor();snd('lvl');refresh()};
 ACT.cos=k=>{const[g,id]=k.split(':'),it=COS[g].find(x=>x[0]==id);if(!G.own.includes(id)){if(G.coins<it[3])return toast('Not enough coins',1);G.coins-=it[3];G.own.push(id)}G.eq[g]=id;look();if(g=='hat')penRows();snd('pop');refresh()};
-ACT.set=k=>{G.set[k]=G.set[k]?0:1;if(k=='fast')toast(G.set.fast?'Quick timers on for new timers':'Normal timers');paint();save()};
+ACT.set=k=>{G.set[k]=G.set[k]?0:1;if(k=='art3d'){save();toast(G.set.art3d?'3D-style art on':'Original art on');setTimeout(()=>location.reload(),350);return}if(k=='fast')toast(G.set.fast?'Quick timers on for new timers':'Normal timers');paint();save()};
 ACT.reset=()=>{if(!S.cur.rs){S.cur.rs=1;return paint()}try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
 // games / daily
 ACT.game=k=>{const g=GAMES[k];if(!g)return;if((G.cd[k]||0)>now())return toast('Come back soon!');open('game',{k});g.i()};
