@@ -1,7 +1,7 @@
 /* Iitstys Breakfast Club: offline support.
    Bump CACHE_VERSION whenever you upload new files so phones refresh their saved copy.
    (Synced photos and videos are not kept here; they live in the app's own photo storage.) */
-const CACHE_VERSION = "v161";
+const CACHE_VERSION = "v162";
 const CACHE = "breakfast-club-" + CACHE_VERSION;
 /* game art lives in its own cache that survives build bumps (served instantly, refreshed in the background) */
 const IMG = "breakfast-club-img";
