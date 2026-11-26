@@ -2253,7 +2253,7 @@ function palm(c,x,y,s,dk){
 }
 /* ---- 3D-style sprites (rendered from the free Quaternius Nature MegaKit + KayKit Hexagon packs, assets/reel3d). Setting "3D-style trees" turns them off. ---- */
 const R3={},R3T={};let HZC={};
-function r3(k){if(SET.r3d==0)return null;let i=R3[k];if(!i){i=R3[k]=new Image();i.src='assets/reel3d/'+k+'.png'}return i.complete&&i.naturalWidth?i:null}
+function r3(k){if(SET.r3d==0)return null;let i=R3[k];if(!i){i=R3[k]=new Image();i.src='assets/reel3d/'+k+'.webp'}return i.complete&&i.naturalWidth?i:null}
 function r3all(ks){let ok=true;for(const k of ks)if(!r3(k))ok=false;return ok}
 function r3tint(k,col,a){const key=k+col.join(',')+a;if(R3T[key])return R3T[key];const im=r3(k);if(!im)return null;const cv=document.createElement('canvas');cv.width=im.naturalWidth;cv.height=im.naturalHeight;const g=cv.getContext('2d');g.drawImage(im,0,0);g.globalCompositeOperation='source-atop';g.fillStyle=`rgba(${col[0]},${col[1]},${col[2]},${a})`;g.fillRect(0,0,cv.width,cv.height);return R3T[key]=cv}
 const HZSET={trees:['tree1','tree2','tree3','tree4','tree5','bush'],forest:['pine1','pine2','pine3','pine4','pine5'],swamp:['dead1','dead2','dead3','twist1','dead2','twist3']};
