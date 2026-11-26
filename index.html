@@ -3470,19 +3470,6 @@ body.ui2 .gear-btn{box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
                                     <div class="app-title">Dungeon Dwellers</div>
                                 </div>
 
-                                <!-- App 5b: Reel Legends GFX (test copy) -->
-
-                                <div class="app-item" onclick="window.location.href='reel-legends-gfx.html'">
-                                    <div
-                                        class="app-thumb"
-                                        style="background: linear-gradient(135deg, #0277bd, #26c6da)"
-                                    >
-                                        🎣
-                                    </div>
-
-                                    <div class="app-title">Reel Legends GFX</div>
-                                </div>
-
                                 <!-- App 6: The Gray Ledger -->
 
                                 <div class="app-item" onclick="window.location.href='gray-ledger.html'">
@@ -22305,7 +22292,7 @@ body.ui2 .settings-nav-btn.active{background-image:linear-gradient(180deg,rgba(2
     var S=function(i,l,p,g){return{i:i,l:l,k:p+":"+g,f:function(){goSet(p,g)}}},G=function(i,l,u){return{i:i,l:l,k:"url:"+u,f:function(){location.href=u}}};
     return[["Every day",daily],
       ["Rewards, pet & shop",[S("⭐","Points & Rewards","settings-pets","points"),S("🐾","My Pet","settings-pets","pet"),S("🛍️","Shop","settings-pets","shops"),S("🧪","Toy Physics","settings-pets","physics"),{i:"💌",l:"Love Notes",k:"mail",f:function(){var b=document.querySelector("#fx-mail-badge");b=b&&b.parentElement;if(b)b.click()}}]],
-      ["Games",[G("🕹️","Arcade","arcade.html"),G("💞","Together Arcade","duo.html"),G("🎣","Reel Legends","reel-legends.html"),G("🎣","Reel Legends GFX","reel-legends-gfx.html"),G("👻","Reel Spooky","reel-spooky.html"),G("⚔️","Dungeon Dwellers","dungeon-dwellers.html"),G("📖","The Gray Ledger","gray-ledger.html"),G("🌱","Pocket Farm","PocketFarm.html"),G("💰","Loot & Ledger","loot-ledger.html"),G("👻","Mystery Club","mystery.html"),G("🔐","Escape Room Duo","escape.html"),G("🎨","Color Art","color-art.html")]],
+      ["Games",[G("🕹️","Arcade","arcade.html"),G("💞","Together Arcade","duo.html"),G("🎣","Reel Legends","reel-legends.html"),G("👻","Reel Spooky","reel-spooky.html"),G("⚔️","Dungeon Dwellers","dungeon-dwellers.html"),G("📖","The Gray Ledger","gray-ledger.html"),G("🌱","Pocket Farm","PocketFarm.html"),G("💰","Loot & Ledger","loot-ledger.html"),G("👻","Mystery Club","mystery.html"),G("🔐","Escape Room Duo","escape.html"),G("🎨","Color Art","color-art.html")]],
       ["Home PC",[G("🖥️","PC Dashboard","pc-dashboard.html")]],
       ["Settings",[S("🎨","Theme & Colors","settings-look","theme"),S("✨","Effects & Sound","settings-look","effects"),S("🧩","Tabs & Units","settings-look","layout"),S("🏠","Household","settings-look","home"),S("🔄","Sync","settings-data","sync"),S("💾","Backup & Reset","settings-data","backup"),S("🕹️","App Library","settings-data","apps"),{i:"🧭",l:"Navigation style",k:"navstyle",f:function(){goSet("settings-look","theme");setTimeout(function(){var e=document.getElementById("setting-bcnav");if(e){e.scrollIntoView({block:"center"});e.focus()}},700)}}]]];
   }

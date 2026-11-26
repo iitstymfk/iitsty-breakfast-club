@@ -12,7 +12,7 @@
     if (window.BCX) return;
     var FILE = (location.pathname.split("/").pop() || "").toLowerCase();
     var BCX_BG = null;
-    var APP = { "": "club", "index.html": "club", "arcade.html": "arcade", "duo.html": "duo", "pocketfarm.html": "farm", "color-art.html": "color", "loot-ledger.html": "loot", "dungeon-dwellers.html": "dd", "reel-legends.html": "reel", "reel-legends-gfx.html": "reel", "reel-spooky.html": "spooky" }[FILE] || "other";
+    var APP = { "": "club", "index.html": "club", "arcade.html": "arcade", "duo.html": "duo", "pocketfarm.html": "farm", "color-art.html": "color", "loot-ledger.html": "loot", "dungeon-dwellers.html": "dd", "reel-legends.html": "reel", "reel-spooky.html": "spooky" }[FILE] || "other";
     var APPS = [["club", "🏆", "Club"], ["arcade", "🕹️", "Arcade"], ["duo", "💞", "Together Arcade"], ["farm", "🌾", "Pocket Farm"], ["dd", "⚔️", "Dungeon Dwellers"], ["color", "🎨", "Pixel Art"], ["loot", "💰", "Loot Ledger"], ["reel", "🎣", "Reel Legends"], ["spooky", "👻", "Reel Spooky"]];
     /* ================= background audio guard =================
        When the app is hidden (switched apps, phone locked, tab changed) every sound engine on
